@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/lux/bootstrap.min.css">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="empty_table">
+    <table class="table table-striped">
+        <tr class="table-header">
+            <th>ID</th>
+            <th th:text="#{search.table.name}">Name</th>
+            <th th:text="#{search.table.location}">Last seen location</th>
+            <th th:text="#{search.table.date}">Last seen date</th>
+        </tr>
+        <tr>
+            <td>No results</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

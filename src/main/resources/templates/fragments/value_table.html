@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="value_table">
+  <table class="table table-striped">
+    <tr class="table-header">
+      <th>ID</th>
+      <th th:text="#{search.table.name}">Name</th>
+      <th th:text="#{search.table.location}">Last seen location</th>
+      <th th:text="#{search.table.date}">Last seen date</th>
+    </tr>
+    <tr th:each="pet: ${pets}">
+      <td th:text="${pet.id}">Pet ID</td>
+      <td th:text="${pet.name}">Pet Name</td>
+      <td th:text="${pet.longitude}">Last SeenLocation</td>
+      <td th:text="${pet.lastSeenDate}">Last Seen Date</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
