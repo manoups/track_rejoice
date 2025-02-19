@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 
 
-@Service
+//@Service
 //@EnableCaching(proxyTargetClass = true)
 class CustomOAuth2UserService : DefaultOAuth2UserService() {
     @Throws(OAuth2AuthenticationException::class)

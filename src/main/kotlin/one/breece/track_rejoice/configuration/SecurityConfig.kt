@@ -14,21 +14,21 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
-    @Autowired
-    private lateinit var oauthUserService: CustomOAuth2UserService
+//    @Autowired
+//    private lateinit var oauthUserService: CustomOAuth2UserService
 
     @Bean
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain? {
-        http.authorizeRequests()
-            .requestMatchers("/", "/login", "/oauth/**").permitAll()
-            .anyRequest().authenticated()
-            .and()
+        http.authorizeHttpRequests().anyRequest().permitAll()
+//            .requestMatchers("/", "/login", "/oauth/**").permitAll()
+//            .anyRequest().authenticated()
+//            .and()
 //            .formLogin().permitAll()
 //            .and()
-            .oauth2Login()
+//            .oauth2Login()
 //            .loginPage("/login")
-            .userInfoEndpoint { oauthUserService }
+//            .userInfoEndpoint { oauthUserService }
 //            .userService(oauthUserService)
         return http.build()
         /*http

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8"/>
   <title>Pet List</title>
-  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+<!--  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen"/>-->
 
-  <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>
+<!--  <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>-->
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
@@ -30,13 +30,21 @@
 
 </head>
 <body>
+
+<div id="mapid" style="width:  600px; height: 400px;"></div>
+<form th:action="@{/search}" method="post" id="form">
+  <input type="text" th:name="lat" id="lat" hidden>
+  <input type="text" th:name="lng" id="lng" hidden>
+  <input type="text" th:name="zoom" id="zoom" >
+  <input type="submit" value="Search">
+</form>
 <div class="container bg-white shadow-md p-5 form-layout text-center">
   <table>
     <tr>
       <th>ID</th>
-      <th>Name</th>
-      <th>Last seen location</th>
-      <th>Last seen date</th>
+      <th th:text="#{search.table.name}">Name</th>
+      <th th:text="#{search.table.location}">Last seen location</th>
+      <th th:text="#{search.table.date}">Last seen date</th>
     </tr>
     <tr th:each="pet: ${pets}">
       <td th:text="${pet.id}">Pet ID</td>
@@ -46,14 +54,6 @@
     </tr>
   </table>
 </div>
-<div id="mapid" style="width:  600px; height: 400px;"></div>
-<form th:action="@{/search}" method="post" id="form">
-  <input type="text" th:name="lat" id="lat" hidden>
-  <input type="text" th:name="lng" id="lng" hidden>
-  <input type="text" th:name="zoom" id="zoom" >
-  <input type="submit" value="Search">
-</form>
-
 <script th:inline="javascript">
   var mymap = L.map('mapid', {minZoom: 3,
     maxZoom: 10})
