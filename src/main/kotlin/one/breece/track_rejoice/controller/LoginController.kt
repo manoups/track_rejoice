@@ -18,7 +18,11 @@ class LoginController(private val petService: PetService) {
         return "login"
     }
 
-    @PostMapping("/dologin")
+    @RequestMapping("/logout")
+    fun logout():String {
+        return "logout-success"
+    }
+//    @PostMapping("/dologin")
     fun index(@Valid loginCommand: LoginCommand, bindingResult: BindingResult, model: Model): String {
         return if (bindingResult.hasErrors()) {
             "login"

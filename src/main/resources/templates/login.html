@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta username="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
 <body>
 <div class="container">
     <h2>Checkout Form</h2>
-    <form class="form-horizontal" th:object="${loginCommand}" th:action="@{/dologin}" method="post">
+    <form class="form-horizontal" th:object="${loginCommand}" th:action="@{/login}" method="post">
         <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
             <p th:text="#{loginCommand.hasErrors}">Error Message</p>
         </div>

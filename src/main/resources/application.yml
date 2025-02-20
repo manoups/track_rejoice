@@ -22,16 +22,16 @@ spring:
     user: ${spring.datasource.username}
     schemas: migrations
     locations: classpath:db/migration/postgresql
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId: 760121390009-sgn0o84bb0jo3q0hu4rult1fb3qnhfv1.apps.googleusercontent.com
-            clientSecret: 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
-            scope:
-              - email
-              - profile
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            clientId: 760121390009-sgn0o84bb0jo3q0hu4rult1fb3qnhfv1.apps.googleusercontent.com
+#            clientSecret: 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
+#            scope:
+#              - email
+#              - profile
 hibernate.dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
 logging:
     level:
