@@ -11,7 +11,7 @@ class Role(
     var id: Long? = null,
     @Column(nullable = false, unique = true)
     val name: String,
-    @ManyToMany(mappedBy = "roles" )
+    @ManyToMany(mappedBy = "authorities" )
     val appUsers: MutableSet<AppUser> = HashSet()
 ):GrantedAuthority {
     override fun getAuthority(): String {

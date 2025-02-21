@@ -1,19 +1,34 @@
 package one.breece.track_rejoice.controller
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.commands.LoginCommand
 import one.breece.track_rejoice.commands.UserCommand
 import one.breece.track_rejoice.service.UserService
+import org.springframework.context.MessageSource
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import java.util.*
+import java.util.function.Consumer
 
 
 @Controller
-class LoginController(private val userService: UserService) {
+class LoginController(var messages: MessageSource, private val userService: UserService) {
     @RequestMapping("/login")
-    fun login(model: Model): String {
+    fun login(
+        request: HttpServletRequest,
+        model: Model,
+        @RequestParam("messageKey") messageKey: Optional<String>,
+        @RequestParam("error") error: Optional<String>
+    ): String {
+        val locale: Locale = request.locale
+        model.addAttribute("lang", locale.language)
+        messageKey.ifPresent {
+            model.addAttribute("message", messages.getMessage(it, null, locale))
+        }
+        error.ifPresent { model.addAttribute("error", it) }
         model.addAttribute("loginCommand", LoginCommand())
         return "login"
     }

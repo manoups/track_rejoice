@@ -1,19 +1,37 @@
 package one.breece.track_rejoice.configuration
 
+import one.breece.track_rejoice.repository.UserRepository
+import one.breece.track_rejoice.security.CustomRememberMeServices
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.access.expression.SecurityExpressionHandler
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.core.session.SessionRegistry
+import org.springframework.security.core.session.SessionRegistryImpl
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.FilterInvocation
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler
+import org.springframework.security.web.authentication.AuthenticationFailureHandler
+import org.springframework.security.web.authentication.RememberMeServices
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl
+import org.springframework.security.web.session.HttpSessionEventPublisher
 
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(
+        http: HttpSecurity,
+        customAuthenticationFailureHandler: AuthenticationFailureHandler
+    ): SecurityFilterChain {
         http {
             csrf {  disable() }
             authorizeHttpRequests {
@@ -28,6 +46,7 @@ class SecurityConfig {
                 loginPage = "/login"
                 failureUrl = "/login?error=true"
                 defaultSuccessUrl("/pets", true)
+                authenticationFailureHandler = customAuthenticationFailureHandler
             }
             logout {
                 clearAuthentication = true
@@ -40,8 +59,61 @@ class SecurityConfig {
     }
 
     @Bean
-    fun passwordEncoder(): BCryptPasswordEncoder {
-        return BCryptPasswordEncoder()
+    fun customWebSecurityExpressionHandler(): SecurityExpressionHandler<FilterInvocation> {
+        val expressionHandler = DefaultWebSecurityExpressionHandler()
+        expressionHandler.setRoleHierarchy(roleHierarchy())
+        return expressionHandler
+    }
+
+       /* @Bean
+        fun authProvider(userRepository: UserRepository, userDetailsService: UserDetailsService): DaoAuthenticationProvider {
+            val authProvider = CustomAuthenticationProvider(userRepository)
+            authProvider.setUserDetailsService(userDetailsService)
+            authProvider.setPasswordEncoder(passwordEncoder())
+    //        authProvider.setPostAuthenticationChecks(differentLocationChecker())
+            return authProvider
+        }*/
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder(11)
+    }
+
+    @Bean
+    fun sessionRegistry(): SessionRegistry {
+        return SessionRegistryImpl()
+    }
+
+    @Bean
+    fun rememberMeServices(userDetailsService: UserDetailsService, userRepository: UserRepository): RememberMeServices {
+        val rememberMeServices =
+            CustomRememberMeServices("theKey", userDetailsService, InMemoryTokenRepositoryImpl(), userRepository)
+        return rememberMeServices
+    }
+
+/*    @Bean(name = ["GeoIPCountry"])
+    @Throws(IOException::class)
+    fun databaseReader(): DatabaseReader {
+        val resource = File(
+            javaClass
+                .classLoader
+                .getResource("maxmind/GeoLite2-Country.mmdb")
+                .file
+        )
+        return DatabaseReader.Builder(resource).build()
+    }*/
+
+    @Bean
+    fun roleHierarchy(): RoleHierarchy {
+        val roleHierarchy = RoleHierarchyImpl()
+        val hierarchy = "ROLE_ADMIN > ROLE_STAFF \n ROLE_STAFF > ROLE_USER"
+        roleHierarchy.setHierarchy(hierarchy)
+        return roleHierarchy
+    }
+
+    @Bean
+    fun httpSessionEventPublisher(): HttpSessionEventPublisher {
+        return HttpSessionEventPublisher()
     }
 
     /*@Bean

@@ -2,14 +2,17 @@ package one.breece.track_rejoice.service.impl
 
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
-import one.breece.track_rejoice.domain.Role
-import one.breece.track_rejoice.domain.AppUser
 import one.breece.track_rejoice.commands.UserCommand
+import one.breece.track_rejoice.domain.AppUser
+import one.breece.track_rejoice.domain.Role
+import one.breece.track_rejoice.dto.AppUserDetails
 import one.breece.track_rejoice.repository.RoleRepository
 import one.breece.track_rejoice.repository.UserRepository
+import one.breece.track_rejoice.service.LoginAttemptService
 import one.breece.track_rejoice.service.UserService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -20,9 +23,10 @@ class UserServiceImpl(
     private val repository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val entityManager: EntityManager
+    private val entityManager: EntityManager,
+    private val loginAttemptService: LoginAttemptService
 ) :
-    UserService , UserDetailsService {
+    UserService, UserDetailsService {
     @Transactional
     override fun saveUser(userCommand: UserCommand) {
         val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email!!)
@@ -32,20 +36,24 @@ class UserServiceImpl(
         if (role == null) {
             role = checkRoleExist()
         }
-        appUser.roles.add(role)
+        appUser.authorities.add(role)
         repository.save(appUser)
     }
 
-    override fun findUserByEmail(email: String): Optional<UserDetails> {
-        return repository.findByEmail(email)
+    override fun findUserByEmail(email: String): Optional<AppUserDetails> {
+        return repository.findByUsername(email)
     }
 
-    override fun findAllUsers(): List<UserDetails> {
+    override fun findAllUsers(): List<AppUserDetails> {
         return repository.findAllUsers()
     }
 
-    override fun loadUserByUsername(email: String): UserDetails? {
-        return repository.findByEmail(email).orElse(null)
+    @Throws(UsernameNotFoundException::class)
+    override fun loadUserByUsername(email: String): UserDetails {
+        if (loginAttemptService.isBlocked) {
+            throw UsernameNotFoundException("blocked")
+        }
+        return repository.findByUsername(email).orElseThrow { UsernameNotFoundException("User not found: $email") }
     }
 
     override fun createUser(user: UserDetails?) {
@@ -56,20 +64,25 @@ class UserServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override fun deleteUser(username: String?) {
-        TODO("Not yet implemented")
+    override fun deleteUser(username: String) {
+        repository.getByUsername(username).ifPresent(repository::delete)
     }
 
     override fun changePassword(oldPassword: String?, newPassword: String?) {
         TODO("Not yet implemented")
     }
 
-    override fun userExists(username: String?): Boolean {
-        TODO("Not yet implemented")
+    override fun userExists(username: String): Boolean {
+        return repository.findByUsername(username).isPresent
     }
 
-    override fun updatePassword(user: UserDetails?, newPassword: String?): UserDetails {
-        TODO("Not yet implemented")
+    override fun updatePassword(user: UserDetails, newPassword: String): UserDetails? {
+        val findByEmail = repository.getByUsername(user.username)
+        findByEmail.ifPresent {
+            it.password = passwordEncoder.encode(newPassword)
+            repository.save(it)
+        }
+        return repository.findByUsername(user.username).orElse(null)
     }
 
     private fun checkRoleExist(): Role {

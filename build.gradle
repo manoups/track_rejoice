@@ -34,7 +34,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'io.sentry:sentry-spring-boot-starter-jakarta'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'org.springframework.modulith:spring-modulith-starter-core'
     implementation 'org.springframework.modulith:spring-modulith-starter-jpa'
@@ -43,6 +42,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.n52.jackson:jackson-datatype-jts:1.2.10'
     implementation 'org.hibernate.orm:hibernate-spatial:6.6.7.Final'
+    implementation("com.google.guava:guava:33.4.0-jre")
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.springframework.modulith:spring-modulith-actuator'
     runtimeOnly 'org.springframework.modulith:spring-modulith-observability'
