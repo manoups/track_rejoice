@@ -1,4 +1,7 @@
-var mymap = L.map('mapid', {
+var mymap = null;
+
+window.onload = function() {
+    mymap = L.map('mapid', {
     minZoom: 3,
     maxZoom: 18
 })

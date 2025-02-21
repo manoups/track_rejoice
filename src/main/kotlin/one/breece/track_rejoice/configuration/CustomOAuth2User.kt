@@ -1,6 +1,7 @@
 package one.breece.track_rejoice.configuration
 
 
+/*
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -21,4 +22,4 @@ class CustomOAuth2User(private val oauth2User: OAuth2User ): OAuth2User {
     fun getEmail(): String? {
         return oauth2User.getAttribute("email")
     }
-}
+}*/

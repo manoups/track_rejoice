@@ -2,8 +2,7 @@ package one.breece.track_rejoice.controller
 
 import one.breece.track_rejoice.service.PetService
 import org.springframework.data.domain.Pageable
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam
 class PetController(private val petService: PetService) {
 
     @GetMapping("/pets")
-    fun greetings(@AuthenticationPrincipal principal: OAuth2AuthorizedClient?, model: Model): String {
+    fun greetings(model: Model): String {
+        val principal = SecurityContextHolder.getContext()
         model.addAttribute("pets", petService.findAll())
         return "search"
     }
