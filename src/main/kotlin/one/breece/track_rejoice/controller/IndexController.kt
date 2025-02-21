@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.controller
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 class IndexController {
     @RequestMapping("secured")
-    fun secured(): String {
+    fun secured(@AuthenticationPrincipal principal: AuthenticationPrincipal?): String {
         val context = SecurityContextHolder.getContext().authentication.isAuthenticated
         return "secured"
     }

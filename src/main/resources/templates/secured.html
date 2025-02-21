@@ -1,41 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Secured</title>
+    <title>Welcome to Spring Security Thymeleaf tutorial</title>
 </head>
 <body>
-
-<div class="container" style="height: 100vh;">
-    <div class="row" >
-        <div class="col-md-12">
-            <h1>Spring Security Demo</h1>
-        </div>
-    </div>
-
-    <div class="row" sec:authorize="isAuthenticated()">
-        <div class="col-md-10 col-md-offset-2">
-            <h2 style="color: green">User is Logged In</h2>
-        </div>
-    </div>
-
-    <div class="row" sec:authorize="!isAuthenticated()">
-        <div class="col-md-10 col-md-offset-2">
-            <h2 style="color: red">User is Logged Out</h2>
-        </div>
-    </div>
-
-    <div class="row" sec:authorize="isAuthenticated()">
-        <div class="col-md-10 col-md-offset-2">
-            <h2>User Has Role Admin</h2>
-        </div>
-    </div>
-
-    <div class="row" sec:authorize="isAuthenticated()">
-        <div class="col-md-10 col-md-offset-2">
-            <h2>User Has Role User</h2>
-        </div>
-    </div>
+<h2>Welcome</h2>
+<p>Spring Security Thymeleaf tutorial</p>
+<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+<div sec:authorize="isAuthenticated()">
+    Text visible only to authenticated users.
+</div>
+Authenticated username:
+<div sec:authentication="name"></div>
+Authenticated user roles:
+<div sec:authorize="isAuthenticated()">
+    <div sec:authentication="principal.authorities"></div>
 </div>
 </body>
 </html>
