@@ -19,8 +19,8 @@ abstract class LookupSubject(
     val lastSeenDate: Date = Date(),
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval =  true, mappedBy="lookupSubject")
     val traceHistory: MutableSet<Trace> =  HashSet(),
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = -1,
-    @Version val version: Long = -1,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
+    @Version val version: Short = 0,
     @CreationTimestamp val createdAt: Date? = null,
     @UpdateTimestamp val updatedAt: Date? = null,
 )

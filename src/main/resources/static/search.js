@@ -14,8 +14,6 @@ if (data && 0 < data.length && data[0].latitude !== null && data[0].longitude !=
         attribution: 'Pets'
     }).addTo(mymap);
 
-
-    console.log("list: " + data.length);
     for (var i = 0; i < data.length; i++) {
         if (data[i].latitude !== null && data[i].longitude !== "") {
             L.marker([data[i].latitude, data[i].longitude]).addTo(mymap)

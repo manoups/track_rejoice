@@ -7,8 +7,8 @@ import java.util.*
 
 @Entity
 class Trace(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = -1,
-    @Version val version: Long = -1,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
+    @Version val version: Short = 0,
     @ManyToOne(optional = false, fetch = FetchType.LAZY) val lookupSubject: LookupSubject? = null,
     @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
     val location: Point,

@@ -2,3 +2,34 @@ body {
     background-color: #f0f0f0;
     overflow-x: hidden;
 }
+
+
+.login-form, .logout-form, .default-form {
+    max-width: 400px;
+    padding: 0 15px 15px 15px;
+    margin: 0 auto 2rem auto;
+    box-sizing: border-box;
+}
+
+.content {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.p-5 {
+    padding: 3rem !important;
+}
+
+.screenreader {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+}

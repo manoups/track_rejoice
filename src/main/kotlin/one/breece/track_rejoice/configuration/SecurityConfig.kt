@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 
 
@@ -22,7 +19,8 @@ class SecurityConfig {
             authorizeHttpRequests {
                 authorize("/css/**", permitAll)
                 authorize("/user/**", hasAuthority("ROLE_USER"))
-                authorize("login*", permitAll)
+                authorize("login*" , permitAll)
+                authorize("register/**", permitAll)
                 authorize("secured*", permitAll)
                 authorize(anyRequest, authenticated)
             }
@@ -46,7 +44,7 @@ class SecurityConfig {
         return BCryptPasswordEncoder()
     }
 
-    @Bean
+    /*@Bean
     fun userDetailsService(): InMemoryUserDetailsManager {
         val user1: UserDetails = User.withUsername("user")
             .password(passwordEncoder().encode("user"))
@@ -57,7 +55,7 @@ class SecurityConfig {
             .roles("ADMIN", "USER")
             .build()
         return InMemoryUserDetailsManager(user1, admin)
-    }
+    }*/
 }
 //    @Autowired
 //    private lateinit var oauthUserService: CustomOAuth2UserService
