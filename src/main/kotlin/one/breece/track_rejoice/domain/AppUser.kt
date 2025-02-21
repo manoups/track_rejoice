@@ -34,9 +34,14 @@ class AppUser(
     val enabled: Boolean = false,
     @Enumerated(EnumType.STRING)
     val provider: Provider = Provider.LOCAL
-): UserDetails {
+) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return roles
+        return roles.map {
+            object : GrantedAuthority {
+                override fun getAuthority(): String = it.authority
+                override fun toString() = it.authority
+            }
+        }.toMutableSet()
     }
 
     override fun getPassword(): String {

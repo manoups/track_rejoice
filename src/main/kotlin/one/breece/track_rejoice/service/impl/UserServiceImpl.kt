@@ -9,6 +9,7 @@ import one.breece.track_rejoice.repository.RoleRepository
 import one.breece.track_rejoice.repository.UserRepository
 import one.breece.track_rejoice.service.UserService
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -21,7 +22,7 @@ class UserServiceImpl(
     private val passwordEncoder: PasswordEncoder,
     private val entityManager: EntityManager
 ) :
-    UserService {
+    UserService , UserDetailsService {
     @Transactional
     override fun saveUser(userCommand: UserCommand) {
         val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email!!)
