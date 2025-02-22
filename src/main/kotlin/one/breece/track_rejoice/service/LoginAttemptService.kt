@@ -1,21 +1,16 @@
 package one.breece.track_rejoice.service
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import com.google.common.cache.LoadingCache
 import jakarta.servlet.http.HttpServletRequest
+import one.breece.track_rejoice.security.config.AttemptConfig
 import org.springframework.stereotype.Service
 import java.util.concurrent.ExecutionException
-import java.util.concurrent.TimeUnit
 
 @Service
-class LoginAttemptService(private val request: HttpServletRequest) {
-    private val attemptsCache: LoadingCache<String, Int> =
-        CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.DAYS).build(object : CacheLoader<String, Int>() {
-            override fun load(key: String): Int {
-                return 0
-            }
-        })
+class LoginAttemptService(
+    private val request: HttpServletRequest,
+    private val attemptsCache: LoadingCache<String, Int>
+) {
 
     fun loginFailed(key: String) {
         var attempts = try {
@@ -30,7 +25,7 @@ class LoginAttemptService(private val request: HttpServletRequest) {
     val isBlocked: Boolean
         get() {
             return try {
-                attemptsCache.get(clientIP()) >= MAX_ATTEMPT
+                attemptsCache.get(clientIP()) >= AttemptConfig.MAX_ATTEMPT
             } catch (e: ExecutionException) {
                 false
             }
@@ -42,9 +37,5 @@ class LoginAttemptService(private val request: HttpServletRequest) {
             return request.remoteAddr
         }
         return xfHeader.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
-    }
-
-    companion object {
-        const val MAX_ATTEMPT: Int = 3
     }
 }

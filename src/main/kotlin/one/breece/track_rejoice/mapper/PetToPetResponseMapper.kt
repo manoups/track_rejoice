@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.mapper
 
 import one.breece.track_rejoice.domain.Pet
-import one.breece.track_rejoice.dto.PetResponse
+import one.breece.track_rejoice.web.dto.PetResponse
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 

@@ -1,25 +1,26 @@
-package one.breece.track_rejoice.controller
+package one.breece.track_rejoice.web.controller
 
 import jakarta.validation.Valid
-import one.breece.track_rejoice.commands.PetSearchCommand
+import one.breece.track_rejoice.commands.APBCommand
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
-//@RequestMapping("/announcement")
+@RequestMapping("/apb")
 class PetSearchController {
 
-    @RequestMapping("/searchform")
+    @GetMapping("/form")
     fun checkoutForm(model: Model): String {
-        model.addAttribute("petSearchCommand",  PetSearchCommand())
+        model.addAttribute("petSearchCommand",  APBCommand())
         return "checkoutform"
     }
 
-    @PostMapping("/post")
-    fun index(@Valid petSearchCommand: PetSearchCommand, bindingResult: BindingResult): String {
+    @PostMapping("/form")
+    fun index(@Valid APBCommand: APBCommand, bindingResult: BindingResult): String {
         return if (bindingResult.hasErrors()) {
             "checkoutform"
         } else {

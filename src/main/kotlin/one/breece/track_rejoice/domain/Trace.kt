@@ -9,7 +9,7 @@ import java.util.*
 class Trace(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
     @Version val version: Short = 0,
-    @ManyToOne(optional = false, fetch = FetchType.LAZY) val lookupSubject: LookupSubject? = null,
+    @ManyToOne(optional = false, fetch = FetchType.LAZY) val allPointsBulletin: AllPointsBulletin? = null,
     @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
     val location: Point,
     @CreationTimestamp

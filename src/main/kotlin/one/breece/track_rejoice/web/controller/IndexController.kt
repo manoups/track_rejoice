@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.controller
+package one.breece.track_rejoice.web.controller
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
