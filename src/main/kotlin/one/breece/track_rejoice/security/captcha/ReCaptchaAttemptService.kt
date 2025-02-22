@@ -1,19 +1,11 @@
 package one.breece.track_rejoice.security.captcha
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
+import com.google.common.cache.LoadingCache
+import one.breece.track_rejoice.security.config.AttemptConfig
 import org.springframework.stereotype.Service
-import java.util.concurrent.TimeUnit
 
 @Service
-class ReCaptchaAttemptService {
-    private val MAX_ATTEMPT = 4
-    private val attemptsCache =
-        CacheBuilder.newBuilder().expireAfterWrite(4, TimeUnit.HOURS).build(object : CacheLoader<String?, Int>() {
-            override fun load(key: String): Int {
-                return 0
-            }
-        })
+class ReCaptchaAttemptService(private val attemptsCache: LoadingCache<String, Int>) {
 
     fun reCaptchaSucceeded(key: String) {
         attemptsCache.invalidate(key)
@@ -26,6 +18,6 @@ class ReCaptchaAttemptService {
     }
 
     fun isBlocked(key: String): Boolean {
-        return attemptsCache.getUnchecked(key) >= MAX_ATTEMPT
+        return attemptsCache.getUnchecked(key) >= AttemptConfig.MAX_ATTEMPT
     }
 }
