@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Pet List</title>
+    <title>Track Rejoice</title>
     <!--  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen"/>-->
 
     <!--  <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>-->
@@ -36,7 +36,7 @@
 <body>
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
-    <div id="mapid" style="width:  600px; height: 400px;"></div>
+    <div id="mapid" style="width: 600px; height: 400px;"></div>
     <form th:action="@{/search}" method="post" id="form">
         <input type="text" th:name="lat" id="lat" hidden>
         <input type="text" th:name="lng" id="lng" hidden>
