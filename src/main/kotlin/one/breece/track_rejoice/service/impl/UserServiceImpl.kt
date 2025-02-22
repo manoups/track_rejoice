@@ -6,13 +6,13 @@ import one.breece.track_rejoice.commands.UserCommand
 import one.breece.track_rejoice.domain.AppUser
 import one.breece.track_rejoice.domain.Role
 import one.breece.track_rejoice.domain.VerificationToken
-import one.breece.track_rejoice.web.dto.AppUserDetails
-import one.breece.track_rejoice.web.error.UserAlreadyExistException
 import one.breece.track_rejoice.repository.RoleRepository
 import one.breece.track_rejoice.repository.UserRepository
 import one.breece.track_rejoice.repository.VerificationTokenRepository
 import one.breece.track_rejoice.service.LoginAttemptService
 import one.breece.track_rejoice.service.UserService
+import one.breece.track_rejoice.web.dto.AppUserDetails
+import one.breece.track_rejoice.web.error.UserAlreadyExistException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -28,8 +28,7 @@ class UserServiceImpl(
     private val passwordEncoder: PasswordEncoder,
     private val entityManager: EntityManager,
     private val loginAttemptService: LoginAttemptService,
-    private val tokenRepository: VerificationTokenRepository,
-    private val userRepository: UserRepository
+    private val tokenRepository: VerificationTokenRepository
 ) :
     UserService, UserDetailsService {
 
@@ -58,9 +57,31 @@ class UserServiceImpl(
     }
 
     override fun createVerificationTokenForUser(userDetails: AppUserDetails, token: String) {
-        val user = userRepository.getByUsername(userDetails.username).orElseThrow { UsernameNotFoundException("User not found") }
-        val myToken: VerificationToken = VerificationToken(token = token, user = user)
-        tokenRepository.save(myToken)    }
+        val user = repository.getByUsername(userDetails.username)
+            .orElseThrow { UsernameNotFoundException("User not found") }
+        tokenRepository.save(VerificationToken(token = token, user = user))
+    }
+
+    @Transactional
+    override fun validateVerificationToken(token: String): TokenEnum {
+        val verificationTokenOptional = tokenRepository.findByToken(token)
+        if (verificationTokenOptional.isEmpty)
+            return TokenEnum.INVALID
+        return validateVerificationToken(verificationTokenOptional.get())
+    }
+
+    private fun validateVerificationToken(verificationToken: VerificationToken): TokenEnum {
+        val user = verificationToken.user
+        val cal = Calendar.getInstance()
+        if ((verificationToken.expiryDate.time - cal.time.time) <= 0) {
+            tokenRepository.delete(verificationToken)
+            return TokenEnum.EXPIRED
+        }
+        user.enabled = true
+        tokenRepository.delete(verificationToken);
+        repository.save(user)
+        return TokenEnum.VALID
+    }
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(email: String): UserDetails {
@@ -105,6 +126,6 @@ class UserServiceImpl(
     }
 
     private fun emailExists(email: String): Boolean {
-        return userRepository.findByUsername(email).isPresent
+        return repository.findByUsername(email).isPresent
     }
 }

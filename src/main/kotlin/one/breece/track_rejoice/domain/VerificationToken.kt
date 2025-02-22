@@ -11,7 +11,7 @@ class VerificationToken (
     var token: String? = null,
     @OneToOne(targetEntity = AppUser::class, fetch = FetchType.EAGER, optional =  false)
     @JoinColumn(nullable = false, name = "app_user_id", foreignKey = ForeignKey(name = "FK_VERIFY_USER"))
-    private var user: AppUser? = null,
+    val user: AppUser,
 ) {
     var expiryDate: Date = calculateExpiryDate(EXPIRATION)
 

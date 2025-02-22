@@ -31,7 +31,7 @@ class AppUser(
     val accountNonExpired: Boolean = false,
     val accountNonLocked: Boolean = false,
     val credentialsNonExpired: Boolean = false,
-    val enabled: Boolean = false,
+    var enabled: Boolean = false,
     override val isUsing2FA: Boolean = false,
     @Enumerated(EnumType.STRING)
     val provider: Provider = Provider.LOCAL
@@ -57,4 +57,6 @@ class AppUser(
     override fun getUsername(): String {
         return username
     }
+
+    override fun isEnabled() = enabled
 }
