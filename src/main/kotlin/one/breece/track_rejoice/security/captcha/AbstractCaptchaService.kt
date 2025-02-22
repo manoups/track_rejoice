@@ -2,7 +2,7 @@ package one.breece.track_rejoice.security.captcha
 
 import jakarta.servlet.http.HttpServletRequest
 import one.breece.track_rejoice.configuration.CaptchaSettings
-import one.breece.track_rejoice.exception.ReCaptchaInvalidException
+import one.breece.track_rejoice.web.error.ReCaptchaInvalidException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.util.StringUtils

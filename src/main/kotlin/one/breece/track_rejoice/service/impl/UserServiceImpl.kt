@@ -6,8 +6,8 @@ import one.breece.track_rejoice.commands.UserCommand
 import one.breece.track_rejoice.domain.AppUser
 import one.breece.track_rejoice.domain.Role
 import one.breece.track_rejoice.domain.VerificationToken
-import one.breece.track_rejoice.dto.AppUserDetails
-import one.breece.track_rejoice.exception.UserAlreadyExistException
+import one.breece.track_rejoice.web.dto.AppUserDetails
+import one.breece.track_rejoice.web.error.UserAlreadyExistException
 import one.breece.track_rejoice.repository.RoleRepository
 import one.breece.track_rejoice.repository.UserRepository
 import one.breece.track_rejoice.repository.VerificationTokenRepository
@@ -34,7 +34,7 @@ class UserServiceImpl(
     UserService, UserDetailsService {
 
     @Transactional
-    override fun saveUser(userCommand: UserCommand):AppUserDetails {
+    override fun saveUser(userCommand: UserCommand): AppUserDetails {
         if (emailExists(userCommand.email!!)) {
             throw UserAlreadyExistException("User exists already")
         }

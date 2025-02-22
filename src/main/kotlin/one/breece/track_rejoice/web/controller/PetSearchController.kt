@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.controller
+package one.breece.track_rejoice.web.controller
 
 import jakarta.validation.Valid
 import one.breece.track_rejoice.commands.APBCommand

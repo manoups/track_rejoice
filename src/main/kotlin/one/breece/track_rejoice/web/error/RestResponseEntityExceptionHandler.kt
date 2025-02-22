@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.exception
+package one.breece.track_rejoice.web.error
 
 import one.breece.track_rejoice.util.GenericResponse
 import org.springframework.context.MessageSource
@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.mail.MailAuthenticationException
 import org.springframework.validation.BindException
 import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
-@ControllerAdvice(basePackages = ["one.breece.track_rejoice"])
+@RestControllerAdvice
 class RestResponseEntityExceptionHandler(private val messages: MessageSource) : ResponseEntityExceptionHandler() {
     // API
     // 400

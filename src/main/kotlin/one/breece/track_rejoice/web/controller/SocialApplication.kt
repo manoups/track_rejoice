@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.controller
+package one.breece.track_rejoice.web.controller
 
 import org.springframework.boot.SpringApplication
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration

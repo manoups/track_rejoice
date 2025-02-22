@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.listener
 
-import one.breece.track_rejoice.dto.AppUserDetails
+import one.breece.track_rejoice.web.dto.AppUserDetails
 import one.breece.track_rejoice.event.OnRegistrationCompleteEvent
 import one.breece.track_rejoice.service.UserService
 import org.springframework.context.ApplicationListener
@@ -43,7 +43,7 @@ class RegistrationListener(
         val recipientAddress: String = user.username
         val subject = "Registration Confirmation"
         val confirmationUrl: String = event.appUrl + "/registrationConfirm?token=" + token
-        val message = messages!!.getMessage(
+        val message = messages.getMessage(
             "message.regSuccLink",
             null,
             "You registered successfully. To confirm your registration, please click on the below link.",
@@ -53,7 +53,7 @@ class RegistrationListener(
         email.setTo(recipientAddress)
         email.setSubject(subject)
         email.setText("$message \r\n$confirmationUrl")
-        email.setFrom(env!!.getProperty("support.email"))
+        email.setFrom(env.getProperty("support.email"))
         return email
     }
 }

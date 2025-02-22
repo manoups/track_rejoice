@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.dto
+package one.breece.track_rejoice.web.dto
 
 import org.springframework.security.core.userdetails.UserDetails
 

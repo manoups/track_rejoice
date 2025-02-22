@@ -3,7 +3,7 @@ package one.breece.track_rejoice.domain
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
-import one.breece.track_rejoice.dto.AppUserDetails
+import one.breece.track_rejoice.web.dto.AppUserDetails
 
 @Entity
 class AppUser(

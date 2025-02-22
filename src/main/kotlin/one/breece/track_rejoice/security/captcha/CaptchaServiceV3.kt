@@ -2,9 +2,9 @@ package one.breece.track_rejoice.security.captcha
 
 import jakarta.servlet.http.HttpServletRequest
 import one.breece.track_rejoice.configuration.CaptchaSettings
-import one.breece.track_rejoice.dto.GoogleResponse
-import one.breece.track_rejoice.exception.ReCaptchaInvalidException
-import one.breece.track_rejoice.exception.ReCaptchaUnavailableException
+import one.breece.track_rejoice.web.dto.GoogleResponse
+import one.breece.track_rejoice.web.error.ReCaptchaInvalidException
+import one.breece.track_rejoice.web.error.ReCaptchaUnavailableException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

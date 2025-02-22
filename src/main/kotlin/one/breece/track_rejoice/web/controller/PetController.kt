@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.controller
+package one.breece.track_rejoice.web.controller
 
 import one.breece.track_rejoice.service.PetService
 import org.springframework.data.domain.Pageable

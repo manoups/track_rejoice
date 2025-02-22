@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.security.captcha
 
-import one.breece.track_rejoice.exception.ReCaptchaInvalidException
+import one.breece.track_rejoice.web.error.ReCaptchaInvalidException
 
 interface ICaptchaService {
     @Throws(ReCaptchaInvalidException::class)

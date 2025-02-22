@@ -1,9 +1,9 @@
-package one.breece.track_rejoice.controller
+package one.breece.track_rejoice.web.controller
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.commands.UserCommand
-import one.breece.track_rejoice.dto.AppUserDetails
+import one.breece.track_rejoice.web.dto.AppUserDetails
 import one.breece.track_rejoice.event.OnRegistrationCompleteEvent
 import one.breece.track_rejoice.security.captcha.CaptchaServiceV3
 import one.breece.track_rejoice.security.captcha.ICaptchaService
@@ -12,10 +12,11 @@ import one.breece.track_rejoice.util.GenericResponse
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-//@RequestMapping("/register")
+@RequestMapping("/register")
 class RegistrationCaptchaController(private val userService: UserService,
                                     private val captchaServiceV3: ICaptchaService,
                                     private var eventPublisher: ApplicationEventPublisher
@@ -29,7 +30,7 @@ class RegistrationCaptchaController(private val userService: UserService,
         return "register-v3"
     }*/
 
-    @PostMapping("/register/v3")
+    @PostMapping("/v3")
     fun captchaV3RegisterUserAccount(
         userCommand: @Valid UserCommand,
         request: HttpServletRequest

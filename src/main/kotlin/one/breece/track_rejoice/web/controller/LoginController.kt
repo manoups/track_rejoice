@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.controller
+package one.breece.track_rejoice.web.controller
 
 import jakarta.servlet.http.HttpServletRequest
 import one.breece.track_rejoice.commands.LoginCommand
