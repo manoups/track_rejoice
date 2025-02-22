@@ -5,9 +5,12 @@ import jakarta.transaction.Transactional
 import one.breece.track_rejoice.commands.UserCommand
 import one.breece.track_rejoice.domain.AppUser
 import one.breece.track_rejoice.domain.Role
+import one.breece.track_rejoice.domain.VerificationToken
 import one.breece.track_rejoice.dto.AppUserDetails
+import one.breece.track_rejoice.exception.UserAlreadyExistException
 import one.breece.track_rejoice.repository.RoleRepository
 import one.breece.track_rejoice.repository.UserRepository
+import one.breece.track_rejoice.repository.VerificationTokenRepository
 import one.breece.track_rejoice.service.LoginAttemptService
 import one.breece.track_rejoice.service.UserService
 import org.springframework.security.core.userdetails.UserDetails
@@ -24,12 +27,18 @@ class UserServiceImpl(
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
     private val entityManager: EntityManager,
-    private val loginAttemptService: LoginAttemptService
+    private val loginAttemptService: LoginAttemptService,
+    private val tokenRepository: VerificationTokenRepository,
+    private val userRepository: UserRepository
 ) :
     UserService, UserDetailsService {
+
     @Transactional
-    override fun saveUser(userCommand: UserCommand) {
-        val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email!!)
+    override fun saveUser(userCommand: UserCommand):AppUserDetails {
+        if (emailExists(userCommand.email!!)) {
+            throw UserAlreadyExistException("User exists already")
+        }
+        val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email)
         val roleOptional = roleRepository.findByName("ROLE_ADMIN")
         entityManager.flush()
         var role: Role? = roleOptional.getOrNull()
@@ -37,7 +46,7 @@ class UserServiceImpl(
             role = checkRoleExist()
         }
         appUser.authorities.add(role)
-        repository.save(appUser)
+        return repository.save(appUser)
     }
 
     override fun findUserByEmail(email: String): Optional<AppUserDetails> {
@@ -47,6 +56,11 @@ class UserServiceImpl(
     override fun findAllUsers(): List<AppUserDetails> {
         return repository.findAllUsers()
     }
+
+    override fun createVerificationTokenForUser(userDetails: AppUserDetails, token: String) {
+        val user = userRepository.getByUsername(userDetails.username).orElseThrow { UsernameNotFoundException("User not found") }
+        val myToken: VerificationToken = VerificationToken(token = token, user = user)
+        tokenRepository.save(myToken)    }
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(email: String): UserDetails {
@@ -90,4 +104,7 @@ class UserServiceImpl(
         return roleRepository.saveAndFlush(role)
     }
 
+    private fun emailExists(email: String): Boolean {
+        return userRepository.findByUsername(email).isPresent
+    }
 }

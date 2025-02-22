@@ -9,7 +9,7 @@ import java.util.*
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-abstract class LookupSubject(
+abstract class AllPointsBulletin(
 //    We should not store the trace as a polygon because we want to track timestamps
 //    @Column(name = "geometry_polygon", columnDefinition = "geometry(Polygon, 4326)", nullable = false)
 //    var geometryPolygon: Polygon,
@@ -17,7 +17,7 @@ abstract class LookupSubject(
     val lastSeenLocation: Point,
     @Nonnull
     val lastSeenDate: Date = Date(),
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval =  true, mappedBy="lookupSubject")
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval =  true, mappedBy="allPointsBulletin")
     val traceHistory: MutableSet<Trace> =  HashSet(),
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
     @Version val version: Short = 0,

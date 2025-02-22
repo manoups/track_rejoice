@@ -4,6 +4,7 @@ import one.breece.track_rejoice.repository.UserRepository
 import one.breece.track_rejoice.security.CustomRememberMeServices
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.access.expression.SecurityExpressionHandler
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
@@ -36,9 +37,12 @@ class SecurityConfig {
             csrf {  disable() }
             authorizeHttpRequests {
                 authorize("/css/**", permitAll)
+                authorize("/js/**", permitAll)
                 authorize("/user/**", hasAuthority("ROLE_USER"))
                 authorize("login*" , permitAll)
-                authorize("register/**", permitAll)
+                authorize("/register*", permitAll)
+                authorize("/successRegister*", permitAll)
+                authorize("/emailError*", permitAll)
                 authorize("secured*", permitAll)
                 authorize(anyRequest, authenticated)
             }

@@ -3,7 +3,7 @@ package one.breece.track_rejoice.domain
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
-import org.springframework.security.core.userdetails.UserDetails
+import one.breece.track_rejoice.dto.AppUserDetails
 
 @Entity
 class AppUser(
@@ -11,6 +11,7 @@ class AppUser(
     private var password: String,
     @NotBlank
     @Email
+    @Column(nullable = false, unique = true)
     private val username: String,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +32,10 @@ class AppUser(
     val accountNonLocked: Boolean = false,
     val credentialsNonExpired: Boolean = false,
     val enabled: Boolean = false,
-    val isUsing2FA: Boolean = false,
+    override val isUsing2FA: Boolean = false,
     @Enumerated(EnumType.STRING)
     val provider: Provider = Provider.LOCAL
-) : UserDetails {
+) : AppUserDetails {
     override fun getAuthorities(): MutableSet<Role> {
         return authorities
             /*.map {

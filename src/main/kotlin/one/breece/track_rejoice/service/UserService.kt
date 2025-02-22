@@ -7,9 +7,10 @@ import org.springframework.security.provisioning.UserDetailsManager
 import java.util.*
 
 interface UserService: UserDetailsManager, UserDetailsPasswordService {
-    fun saveUser(userCommand: UserCommand)
+    fun saveUser(userCommand: UserCommand):AppUserDetails
 
     fun findUserByEmail(email: String): Optional<AppUserDetails>
 
     fun findAllUsers(): List<AppUserDetails>
+    fun createVerificationTokenForUser(user: AppUserDetails, token: String)
 }

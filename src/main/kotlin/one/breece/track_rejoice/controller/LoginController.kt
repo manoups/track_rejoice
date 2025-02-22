@@ -4,18 +4,26 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.commands.LoginCommand
 import one.breece.track_rejoice.commands.UserCommand
+import one.breece.track_rejoice.security.captcha.CaptchaServiceV3
 import one.breece.track_rejoice.service.UserService
+import org.slf4j.LoggerFactory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.MessageSource
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import java.util.function.Consumer
 
 
 @Controller
-class LoginController(var messages: MessageSource, private val userService: UserService) {
+class LoginController(
+    var messages: MessageSource,
+    private val userService: UserService,
+    val captchaServiceV3: CaptchaServiceV3,
+    var eventPublisher: ApplicationEventPublisher
+) {
+
     @RequestMapping("/login")
     fun login(
         request: HttpServletRequest,
@@ -34,7 +42,7 @@ class LoginController(var messages: MessageSource, private val userService: User
     }
 
     // handler method to handle user registration form request
-    @GetMapping("/register")
+    /*@GetMapping("/register")
     fun showRegistrationForm(model: Model): String {
         // create model object to store form data
         model.addAttribute("user", UserCommand())
@@ -69,4 +77,15 @@ class LoginController(var messages: MessageSource, private val userService: User
         userService.saveUser(userCommand)
         return "redirect:/register?success"
     }
+*/
+    @GetMapping("/register-v3")
+    fun showRegistrationFormV3(model: Model): String {
+        // create model object to store form data
+        model.addAttribute("user", UserCommand())
+        return "register-v3"
+    }
+
+
+
+
 }

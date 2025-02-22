@@ -15,5 +15,5 @@ class Pet(
     val species: SpeciesEnum,
     val breed: String,
     val color: String,
-    val transponderCode: Int? = null,
-):LookupSubject(lastSeenLocation)
+    val transponderCode: Long? = null,
+):AllPointsBulletin(lastSeenLocation)
