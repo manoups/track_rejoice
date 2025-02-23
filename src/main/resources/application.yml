@@ -53,7 +53,9 @@ spring:
 support:
   email: USERNAME@gmail.com
 
-hibernate.dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+hibernate:
+  dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+#  tenant_identifier_resolver: one.breece.track_rejoice.configuration.TenantIdentifierResolver
 logging:
     level:
       org:
@@ -69,3 +71,5 @@ google:
       site: 6LePt94qAAAAAC835Gey8z39oANFjHs_rUzrX5gi
       secret: 6LePt94qAAAAALU1w7HqtqAtMu41i4LvEeOgDkXj
       threshold: 0.5
+geocoding:
+  key: 67bb5db6197e2623610027dpz0edd61

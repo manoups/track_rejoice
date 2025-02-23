@@ -32,17 +32,20 @@ class UserServiceImpl(
 ) :
     UserService, UserDetailsService {
 
+        companion object {
+            const val ROLE_USER = "ROLE_USER"
+        }
     @Transactional
     override fun saveUser(userCommand: UserCommand): AppUserDetails {
         if (emailExists(userCommand.email!!)) {
             throw UserAlreadyExistException("User exists already")
         }
         val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email)
-        val roleOptional = roleRepository.findByName("ROLE_ADMIN")
+        val roleOptional = roleRepository.findByName(ROLE_USER)
         entityManager.flush()
         var role: Role? = roleOptional.getOrNull()
         if (role == null) {
-            role = checkRoleExist()
+            role = checkRoleExist(ROLE_USER)
         }
         appUser.authorities.add(role)
         return repository.save(appUser)
@@ -120,8 +123,8 @@ class UserServiceImpl(
         return repository.findByUsername(user.username).orElse(null)
     }
 
-    private fun checkRoleExist(): Role {
-        val role = Role(name = "ROLE_ADMIN")
+    private fun checkRoleExist(roleName: String): Role {
+        val role = Role(name = roleName)
         return roleRepository.saveAndFlush(role)
     }
 

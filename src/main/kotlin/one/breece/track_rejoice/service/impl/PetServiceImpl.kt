@@ -1,12 +1,14 @@
 package one.breece.track_rejoice.service.impl
 
 import jakarta.transaction.Transactional
+import one.breece.track_rejoice.commands.APBCommand
 import one.breece.track_rejoice.domain.Pet
 import one.breece.track_rejoice.domain.SpeciesEnum
 import one.breece.track_rejoice.domain.Trace
 import one.breece.track_rejoice.web.dto.CreatePetRequest
 import one.breece.track_rejoice.web.dto.PetResponse
 import one.breece.track_rejoice.repository.PetRepository
+import one.breece.track_rejoice.service.GeocodingService
 import one.breece.track_rejoice.service.PetService
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
@@ -17,18 +19,20 @@ import java.util.*
 @Service
 class PetServiceImpl(
     private val repository: PetRepository,
-    private val petToPetResponseMapper: Converter<Pet, PetResponse>
+    private val petToPetResponseMapper: Converter<Pet, PetResponse>,
+    private val geocodingService: GeocodingService
 ) : PetService {
     @Transactional
-    fun invoke(requestBody: CreatePetRequest): PetResponse {
+    override fun createAPB(apbCommand: APBCommand): PetResponse {
+        val lastSeenLocation = geocodingService.geocode(apbCommand.address)!!
         val newPet = Pet(
-            name = requestBody.name,
-            lastSeenLocation = requestBody.lastSeenLocation,
-            species = SpeciesEnum.valueOf(requestBody.species),
-            breed = requestBody.breed,
-            color = requestBody.color,
+            name = apbCommand.name!!,
+            lastSeenLocation = lastSeenLocation,
+            species = SpeciesEnum.DOG,
+            breed = apbCommand.breed!!,
+            color = apbCommand.color,
         )
-        newPet.traceHistory.add(Trace(location = requestBody.lastSeenLocation))
+        newPet.addToTraceHistory(lastSeenLocation)
 
         val geofence = repository.save(newPet)
         return petToPetResponseMapper.convert(geofence)!!

@@ -17,7 +17,7 @@
       <td th:text="${pet.id}">Pet ID</td>
       <td th:text="${pet.name}">Pet Name</td>
       <td th:text="${pet.longitude}">Last SeenLocation</td>
-      <td th:text="${pet.lastSeenDate}">Last Seen Date</td>
+      <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
     </tr>
   </table>
 </div>

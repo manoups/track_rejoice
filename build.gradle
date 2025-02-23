@@ -43,7 +43,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.n52.jackson:jackson-datatype-jts:1.2.10'
     implementation 'org.hibernate.orm:hibernate-spatial:6.6.7.Final'
-    implementation("com.google.guava:guava:33.4.0-jre")
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
+    implementation 'com.google.guava:guava:33.4.0-jre'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.springframework.modulith:spring-modulith-actuator'
