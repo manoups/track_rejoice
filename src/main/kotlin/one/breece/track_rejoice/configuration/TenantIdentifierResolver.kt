@@ -24,7 +24,7 @@ class TenantIdentifierResolver: CurrentTenantIdentifierResolver<Long>, Hibernate
         return if (authentication == null || authentication.principal !is AppUser) {
             false
         } else
-            (SecurityContextHolder.getContext().authentication.principal as AppUser).authorities.map { it.authority }.contains("ADMIN")
+            (SecurityContextHolder.getContext().authentication.principal as AppUser).authorities.map { it.authority }.contains("ROLE_ADMIN")
     }
 
     override fun customize(hibernateProperties: MutableMap<String, Any>) {

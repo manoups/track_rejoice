@@ -1,6 +1,5 @@
 package one.breece.track_rejoice.service.impl
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import one.breece.track_rejoice.commands.AddressCommand
 import one.breece.track_rejoice.service.GeocodingService
 import one.breece.track_rejoice.web.dto.CoordinateDTO
@@ -40,7 +39,7 @@ For example:
 
 https://geocode.maps.co/search?street=555+5th+Ave&city=New+York&state=NY&postalcode=10017&country=US&api_key=api_key */
 @Service
-class GeocodeMapsCoImpl(private val objectMapper: ObjectMapper) : GeocodingService {
+class GeocodeMapsCoImpl : GeocodingService {
     companion object {
         const val URI = "https://geocode.maps.co"
     }
@@ -66,7 +65,7 @@ class GeocodeMapsCoImpl(private val objectMapper: ObjectMapper) : GeocodingServi
             .queryParam("country", addressCommand.country)
             .queryParam("postalcode", addressCommand.zipCode)
             .queryParam("api_key", apiKey)
-            .build(true).toUriString()
+            .build().toUriString()
         val responseEntity = RestTemplate()
         return responseEntity.getForEntity(uriComponents, Array<CoordinateDTO>::class.java).body!!
     }
