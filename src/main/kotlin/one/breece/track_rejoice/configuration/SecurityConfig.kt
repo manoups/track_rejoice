@@ -35,7 +35,7 @@ class SecurityConfig {
         http {
             csrf {  disable() }
             authorizeHttpRequests {
-                authorize("/pets", authenticated)
+                authorize("/", authenticated)
                 authorize("/apb/*", authenticated)
                 authorize("/search", authenticated)
 //                authorize("/css/**", permitAll)
@@ -52,7 +52,7 @@ class SecurityConfig {
             formLogin {
                 loginPage = "/login"
                 failureUrl = "/login?error=true"
-                defaultSuccessUrl("/pets", true)
+                defaultSuccessUrl("/", true)
                 authenticationFailureHandler = customAuthenticationFailureHandler
             }
             logout {
