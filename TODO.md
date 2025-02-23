@@ -7,3 +7,4 @@
 - [ ] upload images to S3 in form
 - [ ] continue on account validation via token consumption
 - [ ] projections in repositories as part of method name (see Spring docs)
+- [ ] limit number of submit attempts in registration form

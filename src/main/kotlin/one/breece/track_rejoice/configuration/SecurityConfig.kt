@@ -35,19 +35,19 @@ class SecurityConfig {
         http {
             csrf {  disable() }
             authorizeHttpRequests {
-                authorize("/", authenticated)
-                authorize("/apb/*", authenticated)
-                authorize("/search", authenticated)
-//                authorize("/css/**", permitAll)
-//                authorize("/js/**", permitAll)
-//                authorize("/user/**", hasAuthority("ROLE_USER"))
-//                authorize("login*" , permitAll)
-//                authorize("/register*", permitAll)
-//                authorize("/register/**", permitAll)
-//                authorize("/successRegister*", permitAll)
-//                authorize("/emailError*", permitAll)
-//                authorize("secured*", permitAll)
-                authorize(anyRequest, permitAll)
+//                authorize("/", authenticated)
+//                authorize("/apb/*", authenticated)
+//                authorize("/search", authenticated)
+                authorize("/css/**", permitAll)
+                authorize("/js/**", permitAll)
+                authorize("/user/**", hasAuthority("ROLE_USER"))
+                authorize("login*" , permitAll)
+                authorize("/register*", permitAll)
+                authorize("/register/**", permitAll)
+                authorize("/successRegister*", permitAll)
+                authorize("/emailError*", permitAll)
+                authorize("secured*", permitAll)
+                authorize(anyRequest, authenticated)
             }
             formLogin {
                 loginPage = "/login"
