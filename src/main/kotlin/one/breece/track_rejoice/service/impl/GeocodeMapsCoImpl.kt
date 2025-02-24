@@ -57,6 +57,16 @@ class GeocodeMapsCoImpl : GeocodingService {
         return gf.createPoint(sf.create(doubleArrayOf(coordinatesFromAddress[0].lon, coordinatesFromAddress[0].lat), 2))
     }
 
+    override fun reverseGeocode(lat: Double, lon: Double): AddressCommand? {
+        val uriComponents = UriComponentsBuilder.fromUriString(URI)
+            .path("reverse")
+            .queryParam("lat", lat)
+            .queryParam("lon", lon)
+            .build().toUriString()
+        val responseEntity = RestTemplate()
+        return responseEntity.getForEntity(uriComponents, AddressCommand::class.java).body!!
+    }
+
     private fun getCoordinatesFromAddress(addressCommand: AddressCommand): Array<CoordinateDTO> {
         val uriComponents = UriComponentsBuilder.fromUriString(URI)
             .path("search")

@@ -11,4 +11,5 @@ data class APBCommand(
     val color: String? = null,
     val address: AddressCommand = AddressCommand(),
     @field:NotNull val lastSeenDate: LocalDateTime? = null,
+    @Size(max = 500) val additionalInformation: String? = null,
 )

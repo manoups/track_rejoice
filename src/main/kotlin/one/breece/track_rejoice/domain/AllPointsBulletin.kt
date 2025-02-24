@@ -27,6 +27,7 @@ abstract class AllPointsBulletin(
     @UpdateTimestamp val updatedAt: Date? = null,
     @TenantId
     var createdBy: Long? = null,
+    @Lob var extraInfo: String? = null
 ) {
     @Transient
     fun addToTraceHistory(location: Point) {
