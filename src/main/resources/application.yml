@@ -73,3 +73,8 @@ google:
       threshold: 0.5
 geocoding:
   key: 67bb5db6197e2623610027dpz0edd61
+management:
+  endpoints:
+    web:
+      exposure:
+        include: httpexchanges

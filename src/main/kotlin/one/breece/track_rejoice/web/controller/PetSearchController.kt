@@ -16,7 +16,7 @@ class PetSearchController(private val petService: PetService) {
 
     @GetMapping("/form")
     fun checkoutForm(model: Model): String {
-        model.addAttribute("petSearchCommand",  APBCommand())
+        model.addAttribute("apbCommand",  APBCommand())
         return "checkoutform"
     }
 

@@ -1,18 +1,21 @@
 package one.breece.track_rejoice.web.controller
 
+import one.breece.track_rejoice.commands.APBCommand
 import one.breece.track_rejoice.commands.AddressCommand
 import one.breece.track_rejoice.service.GeocodingService
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
 
-@RestController
+@Controller
 @RequestMapping(value = ["/geolocation"])
 class GeoLocationController(private val geocodingService: GeocodingService) {
 
-    @GetMapping
-    fun geoLocation(@RequestParam lat: Double, @RequestParam lon: Double): AddressCommand? {
-        return geocodingService.reverseGeocode(lat, lon)
+    @RequestMapping
+    fun geoLocation(@RequestParam lat: Double, @RequestParam lon: Double, model: Model): String {
+        val reverseGeocode = geocodingService.reverseGeocode(lat, lon)
+        model.addAttribute("apbCommand",  APBCommand(address = reverseGeocode?:AddressCommand()))
+        return "checkoutform"
     }
 }

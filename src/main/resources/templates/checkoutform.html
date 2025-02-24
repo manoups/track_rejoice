@@ -22,17 +22,18 @@
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
     <h2>Checkout Form</h2>
-    <form class="form-horizontal" th:object="${petSearchCommand}" th:action="@{/apb/form}" method="post">
+    <form class="form-horizontal" th:object="${apbCommand}" th:action="@{/apb/form}" method="post"
+          name="mainForm">
         <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
             <p th:text="#{checkoutCommand.hasErrors}">Error Message</p>
         </div>
         <div class="form-group" th:class="${#fields.hasErrors('name')} ? 'form-group has-error' : 'form-group'">
             <label class="col-sm-2 control-label" th:text="#{search.form.name}">Name:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{name}" th:errorclass="has-error" required />
+                <input type="text" class="form-control" th:field="*{name}" th:errorclass="has-error" required/>
                 <div class="help-block" th:if="${#fields.hasErrors('name')}">
                     <ul>
-                        <li th:each="err : ${#fields.errors('name')}" th:text="${err}" />
+                        <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
                     </ul>
                 </div>
             </div>
@@ -43,7 +44,7 @@
                 <input type="text" class="form-control" th:field="*{breed}" th:errorclass="has-error" required/>
                 <div class="help-block" th:if="${#fields.hasErrors('breed')}">
                     <ul>
-                        <li th:each="err : ${#fields.errors('breed')}" th:text="${err}" />
+                        <li th:each="err : ${#fields.errors('breed')}" th:text="${err}"/>
                     </ul>
                 </div>
             </div>
@@ -54,58 +55,48 @@
                 <input type="text" class="form-control" th:field="*{color}">
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" th:text="#{search.form.street.name}">Street Name:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{address.street}" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" th:text="#{search.form.street.number}">Street Number:</label>
-            <div class="col-sm-10">
-                <input type="number" class="form-control" th:field="*{address.streetNumber}" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" th:text="#{search.form.zip.code}">Zip Code:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{address.zipCode}" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" th:text="#{search.form.place}">Place:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{address.place}" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" th:text="#{search.form.country}">Country:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{address.country}" required>
-            </div>
-        </div>
+        <form th:replace="~{fragments/address::address}"></form>
         <div class="form-group" th:class="${#fields.hasErrors('lastSeenDate')} ? 'form-group has-error' : 'form-group'">
-            <label for="lastSeenDate" class="col-sm-2 control-label" th:text="#{search.table.date}">Last Seen Date:</label>
+            <label for="lastSeenDate" class="col-sm-2 control-label" th:text="#{search.table.date}">Last Seen
+                Date:</label>
             <div class="col-sm-10">
-                <input id="lastSeenDate" type="datetime-local" class="form-control" th:field="*{lastSeenDate}" th:errorclass="has-error"/>
+                <input id="lastSeenDate" type="datetime-local" class="form-control" th:field="*{lastSeenDate}"
+                       th:errorclass="has-error"/>
                 <div class="help-block" th:if="${#fields.hasErrors('lastSeenDate')}">
                     <ul>
-                        <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}" />
+                        <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}"/>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label for="additionalInfo" class="col-sm-2 control-label" th:text="#{search.form.extra.info}">Additional Info:</label>
+            <label for="additionalInfo" class="col-sm-2 control-label" th:text="#{search.form.extra.info}">Additional
+                Info:</label>
             <div class="col-sm-10">
-                <input  id="additionalInfo" type="text" class="form-control" th:field="*{additionalInformation}">
+                <input id="additionalInfo" type="text" class="form-control" th:field="*{additionalInformation}">
             </div>
         </div>
         <div class="row col-12">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
+    <form th:action="@{/geolocation}" method="get" name="lonLatForm">
+        <input type="text" id="lat" name="lat" hidden>
+        <input type="text" id="lon" name="lon" hidden>
+    </form>
+    <script>
+        if (document.getElementById("address.street").value === ""
+            && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                document.getElementById('lat').value = position.coords.latitude;
+                document.getElementById('lon').value = position.coords.longitude;
+                document.lonLatForm.submit();
+            });
+        }
+    </script>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

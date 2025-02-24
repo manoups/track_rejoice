@@ -2,11 +2,14 @@ package one.breece.track_rejoice.service.impl
 
 import one.breece.track_rejoice.commands.AddressCommand
 import one.breece.track_rejoice.service.GeocodingService
+import one.breece.track_rejoice.web.dto.AddressDTO
 import one.breece.track_rejoice.web.dto.CoordinateDTO
+import one.breece.track_rejoice.web.dto.GeocodingCoDTO
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
@@ -39,7 +42,7 @@ For example:
 
 https://geocode.maps.co/search?street=555+5th+Ave&city=New+York&state=NY&postalcode=10017&country=US&api_key=api_key */
 @Service
-class GeocodeMapsCoImpl : GeocodingService {
+class GeocodeMapsCoImpl(private val geocodingCoDtoToAddressCommandMapper: Converter<AddressDTO, AddressCommand>) : GeocodingService {
     companion object {
         const val URI = "https://geocode.maps.co"
     }
@@ -62,9 +65,12 @@ class GeocodeMapsCoImpl : GeocodingService {
             .path("reverse")
             .queryParam("lat", lat)
             .queryParam("lon", lon)
+            .queryParam("api_key", apiKey)
             .build().toUriString()
         val responseEntity = RestTemplate()
-        return responseEntity.getForEntity(uriComponents, AddressCommand::class.java).body!!
+        val body = responseEntity.getForEntity(uriComponents, GeocodingCoDTO::class.java).body
+        return if (body == null) AddressCommand()
+        else geocodingCoDtoToAddressCommandMapper.convert(body.address)
     }
 
     private fun getCoordinatesFromAddress(addressCommand: AddressCommand): Array<CoordinateDTO> {
