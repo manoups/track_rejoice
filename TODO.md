@@ -10,4 +10,3 @@
 - [ ] limit number of submit attempts in registration form
 - [ ] resend token for validation
 - [ ] create dropdowns on forms
-- [x] add address autocomplete

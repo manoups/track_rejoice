@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 
@@ -16,17 +17,19 @@ import org.springframework.web.bind.annotation.RequestParam
 class PetController(private val petService: PetService) {
 
     @GetMapping("/")
-    fun search(
+    fun search (
         @CurrentSecurityContext context: SecurityContext,
-        @RequestParam(defaultValue = "0.0") lng: Double,
+        @RequestParam(defaultValue = "0.0") lon: Double,
         @RequestParam(defaultValue = "0.0") lat: Double,
         @RequestParam(name = "distance", defaultValue = "0.0001") distanceInMeters: Double,
+        @RequestParam(name = "zoom", defaultValue = "7") zoom: Int,
         pageable: Pageable,
         model: Model
     ): String {
-        model.addAttribute("pets", petService.findAllByLngLat(lng, lat, distanceInMeters, pageable).content)
-        model.addAttribute("centre_lng", lng)
-        model.addAttribute("centre_lat", lat)
+        model.addAttribute("pets", petService.findAllByLngLat(lon, lat, distanceInMeters, pageable).content)
+        model.addAttribute("lon", lon)
+        model.addAttribute("lat", lat)
+        model.addAttribute("zoom", zoom)
         model.addAttribute("firstName", getName(context))
         return "index"
     }
@@ -37,19 +40,21 @@ class PetController(private val petService: PetService) {
         } else null
     }
 
-    @PostMapping("/search")
-    fun searchQ(
-        @RequestParam lng: Double,
-        @RequestParam lat: Double,
-        @RequestParam(name = "distance", defaultValue = "1") distanceInMeters: Double,
+    @RequestMapping("/search")
+    fun searchQuery(
+        @CurrentSecurityContext context: SecurityContext,
+        @RequestParam(defaultValue = "0.0") lon: Double,
+        @RequestParam(defaultValue = "0.0") lat: Double,
+        @RequestParam(name = "distance", defaultValue = "0.01") distanceInMeters: Double,
         @RequestParam(name = "zoom", defaultValue = "7") zoom: Int,
         pageable: Pageable,
         model: Model
     ): String {
-        model.addAttribute("pets", petService.findAllByLngLat(lng, lat, distanceInMeters, pageable).content)
-        model.addAttribute("centre_lng", lng)
-        model.addAttribute("centre_lat", lat)
+        model.addAttribute("pets", petService.findAllByLngLat(lon, lat, distanceInMeters, pageable).content)
+        model.addAttribute("lon", lon)
+        model.addAttribute("lat", lat)
         model.addAttribute("zoom", zoom)
+        model.addAttribute("firstName", getName(context))
         return "index"
     }
 }

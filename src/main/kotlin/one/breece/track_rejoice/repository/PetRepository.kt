@@ -13,16 +13,16 @@ interface PetRepository : CrudRepository<Pet, Long> {
         """
             SELECT *
             FROM pet p join   all_points_bulletin l ON p.id=l.id
-            WHERE ST_DWithin(l.last_seen_location, ST_SetSRID(ST_MakePoint(:lng, :lat), 4326), :distanceInMeters)
+            WHERE ST_DWithin(l.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters)
         """,
         nativeQuery = true,
         countQuery = """
             SELECT count(distinct p.id)
             FROM   all_points_bulletin p
-            WHERE ST_DWithin(p.last_seen_location, ST_SetSRID(ST_MakePoint(:lng, :lat), 4326), :distanceInMeters)
+            WHERE ST_DWithin(p.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters)
         """,
     )
-    fun findAllByLngLat(lng: Double, lat: Double, distanceInMeters: Double, pageable: Pageable): Page<Pet>
+    fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageable: Pageable): Page<Pet>
 
     @Query(
         """

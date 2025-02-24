@@ -37,11 +37,11 @@
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
     <div id="mapid" style="width: 600px; height: 400px;"></div>
-    <form th:action="@{/search}" method="post" id="form">
-        <input type="text" th:name="lat" id="lat" th:value="0.0" hidden>
-        <input type="text" th:name="lng" id="lng" th:value="0.0" hidden>
-        <input type="text" th:name="zoom" id="zoom">
-        <input type="submit" value="Search">
+    <form th:action="@{/search}" method="get" id="form" name="coords">
+        <input type="text" th:name="lat" id="lat" th:value="${lat}" hidden>
+        <input type="text" th:name="lon" id="lon" th:value="${lon}" hidden>
+        <input type="text" th:name="zoom" id="zoom" hidden>
+        <input th:remove="all" type="submit" value="Search">
     </form>
 </div>
 <div class="container bg-white shadow-md p-5 form-layout text-center">
@@ -60,37 +60,35 @@
         attributionControl: false
     })
     const data = [[${pets}]];
-    const zoom = [[${zoom}]];
+
     const name = [[${firstName}]]
 
-    let latitude = 0;
-    let longitude = 0;
-    let initZoom = 10;
+    let lat = [[${lat}]]
+    let latitude = lat || 0;
+    let longitude = [[${lon}]] || 0;
+    let initZoom = [[${zoom}]] || 10;
 
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
 
-    if (navigator.geolocation) {
+    if (!lat && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            initZoom = 18;
+            document.getElementById("lat").value = position.coords.latitude;
+            document.getElementById("lon").value = position.coords.longitude;
+            document.getElementById("zoom").value = 18;
+            document.coords.submit();
             mymap.setView([latitude, longitude], initZoom);
             L.marker([latitude, longitude]).addTo(mymap)
-                .bindPopup(name||"You");
+                .bindPopup(name || "You");
         })
     } else {
         mymap.setView([latitude, longitude], initZoom);
     }
 
-    if (data && 0 < data.length && data[0].latitude !== null && data[0].longitude !== "") {
-        console.log("list: " + data.length);
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].latitude !== null && data[i].longitude !== "") {
-                L.marker([data[i].latitude, data[i].longitude]).addTo(mymap)
-                    .bindPopup(data[i].name)
-                    .openPopup();
-            }
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].latitude && data[i].longitude !== "") {
+            L.marker([data[i].latitude, data[i].longitude]).addTo(mymap)
+                .bindPopup(data[i].name);
         }
     }
     document.getElementById('zoom').value = mymap.getZoom();
@@ -113,7 +111,8 @@
         // location = '/search?lng=' + x + '&lat=' + y + '&distance=1'
         // (param1 = 'value1', param2 = 'value2');
         document.getElementById('lat').value = lat;
-        document.getElementById('lng').value = lng;
+        document.getElementById('lon').value = lng;
+        document.coords.submit();
         // You can use these coordinates for further actions, like displaying a popup
     });
 </script>

@@ -4,8 +4,6 @@ import jakarta.transaction.Transactional
 import one.breece.track_rejoice.commands.APBCommand
 import one.breece.track_rejoice.domain.Pet
 import one.breece.track_rejoice.domain.SpeciesEnum
-import one.breece.track_rejoice.domain.Trace
-import one.breece.track_rejoice.web.dto.CreatePetRequest
 import one.breece.track_rejoice.web.dto.PetResponse
 import one.breece.track_rejoice.repository.PetRepository
 import one.breece.track_rejoice.service.GeocodingService
@@ -38,8 +36,8 @@ class PetServiceImpl(
         return petToPetResponseMapper.convert(geofence)!!
     }
 
-    override fun findAllByLngLat(lng: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse> {
-        return repository.findAllByLngLat(lng, lat, distanceInMeters, pageRequest).map { petToPetResponseMapper.convert(it)!! }
+    override fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse> {
+        return repository.findAllByLngLat(lon, lat, distanceInMeters, pageRequest).map { petToPetResponseMapper.convert(it)!! }
     }
 
     override fun findById(petId: Long): Optional<PetResponse> {

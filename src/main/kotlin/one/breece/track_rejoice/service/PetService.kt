@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable
 import java.util.*
 
 interface PetService : APBService {
-    fun findAllByLngLat(lng: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse>
+    fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse>
     fun findById(petId: Long): Optional<PetResponse>
     fun findDistanceBetween(id1: Long, id2: Long): Double
     fun findAll(): List<PetResponse>

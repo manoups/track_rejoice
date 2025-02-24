@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/apb")
-class PetSearchController(private val petService: PetService) {
+class APBFormController(private val petService: PetService) {
 
     @GetMapping("/form")
     fun checkoutForm(model: Model): String {
