@@ -39,6 +39,10 @@ spring:
           timeout: 8000
   main:
     allow-bean-definition-overriding: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 #  security:
 #    oauth2:

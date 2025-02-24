@@ -5,4 +5,5 @@ import one.breece.track_rejoice.web.dto.PetResponse
 
 interface APBService {
     fun createAPB(apbCommand: APBCommand): PetResponse
+    fun deleteById(id: Long)
 }

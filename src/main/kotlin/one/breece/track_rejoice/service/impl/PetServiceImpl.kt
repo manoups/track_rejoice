@@ -36,6 +36,10 @@ class PetServiceImpl(
         return petToPetResponseMapper.convert(geofence)!!
     }
 
+    override fun deleteById(id: Long) {
+        repository.deleteById(id)
+    }
+
     override fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse> {
         return repository.findAllByLngLat(lon, lat, distanceInMeters, pageRequest).map { petToPetResponseMapper.convert(it)!! }
     }
