@@ -40,7 +40,7 @@ class UserServiceImpl(
         if (emailExists(userCommand.email!!)) {
             throw UserAlreadyExistException("User exists already")
         }
-        val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email)
+        val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email, userCommand.firstName!!, userCommand.lastName!!)
         val roleOptional = roleRepository.findByName(ROLE_USER)
         entityManager.flush()
         var role: Role? = roleOptional.getOrNull()

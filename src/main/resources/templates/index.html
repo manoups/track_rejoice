@@ -56,18 +56,34 @@
 <script th:inline="javascript">
     var mymap = L.map('mapid', {
         minZoom: 3,
-        maxZoom: 18
+        maxZoom: 20,
+        attributionControl: false
     })
-    var data = [[${pets}]];
-    var zoom = [[${zoom}]]
+    const data = [[${pets}]];
+    const zoom = [[${zoom}]];
+    const name = [[${firstName}]]
+
+    let latitude = 0;
+    let longitude = 0;
+    let initZoom = 10;
+
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            initZoom = 18;
+            mymap.setView([latitude, longitude], initZoom);
+            L.marker([latitude, longitude]).addTo(mymap)
+                .bindPopup(name||"You");
+        })
+    } else {
+        mymap.setView([latitude, longitude], initZoom);
+    }
 
     if (data && 0 < data.length && data[0].latitude !== null && data[0].longitude !== "") {
-        mymap.setView([data[0].latitude, data[0].longitude], 10);
-        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Pets'
-        }).addTo(mymap);
-
-
         console.log("list: " + data.length);
         for (var i = 0; i < data.length; i++) {
             if (data[i].latitude !== null && data[i].longitude !== "") {
@@ -76,13 +92,6 @@
                     .openPopup();
             }
         }
-    } else {
-        var centre_lng = [[${centre_lng}]];
-        var centre_lat = [[${centre_lat}]];
-        mymap.setView([centre_lat, centre_lng], zoom);
-        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Pets'
-        }).addTo(mymap);
     }
     document.getElementById('zoom').value = mymap.getZoom();
 

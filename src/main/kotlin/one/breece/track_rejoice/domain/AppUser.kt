@@ -13,6 +13,10 @@ class AppUser(
     @Email
     @Column(nullable = false, unique = true)
     private val username: String,
+    @NotBlank
+    val firstName: String,
+    @NotBlank
+    val lastName: String,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,

@@ -41,10 +41,10 @@ class RegistrationCaptchaController(private val userService: UserService,
         return registerNewUserHandler(userCommand, request)
     }
 
-    private fun registerNewUserHandler(accountDto: UserCommand, request: HttpServletRequest): GenericResponse {
-        LOGGER.debug("Registering user account with information: {}", accountDto)
+    private fun registerNewUserHandler(userCommand: UserCommand, request: HttpServletRequest): GenericResponse {
+        LOGGER.debug("Registering user account with information: {}", userCommand)
 
-        val registered: AppUserDetails = userService.saveUser(accountDto)
+        val registered: AppUserDetails = userService.saveUser(userCommand)
         eventPublisher.publishEvent(OnRegistrationCompleteEvent(registered, request.locale, getAppUrl(request)))
         return GenericResponse("success")
     }

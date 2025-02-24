@@ -25,7 +25,7 @@ abstract class AbstractCaptchaService(
     protected fun securityCheck(response: String) {
         LOGGER.debug("Attempting to validate response {}", response)
 
-        if (reCaptchaAttemptService.isBlocked(clientIP)) {
+        if (reCaptchaAttemptService.isBlocked(clientIP())) {
             throw ReCaptchaInvalidException("Client exceeded maximum number of failed attempts")
         }
 
@@ -38,14 +38,13 @@ abstract class AbstractCaptchaService(
         return StringUtils.hasLength(response) && RESPONSE_PATTERN.matcher(response).matches()
     }
 
-    protected val clientIP: String
-        get() {
-            val xfHeader = request.getHeader("X-Forwarded-For")
-            if (xfHeader == null || xfHeader.isEmpty() || !xfHeader.contains(request.remoteAddr)) {
-                return request.remoteAddr
-            }
-            return xfHeader.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+    protected fun clientIP(): String {
+        val xfHeader = request.getHeader("X-Forwarded-For")
+        if (xfHeader == null || xfHeader.isEmpty() || !xfHeader.contains(request.remoteAddr)) {
+            return request.remoteAddr
         }
+        return xfHeader.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+    }
 
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(AbstractCaptchaService::class.java)

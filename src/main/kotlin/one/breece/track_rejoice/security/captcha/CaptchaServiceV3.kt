@@ -22,7 +22,7 @@ class CaptchaServiceV3(captchaSettings: CaptchaSettings,
         securityCheck(response)
 
         val verifyUri =
-            URI.create(java.lang.String.format(RECAPTCHA_URL_TEMPLATE, reCaptchaSecret, response, clientIP))
+            URI.create(java.lang.String.format(RECAPTCHA_URL_TEMPLATE, reCaptchaSecret, response, clientIP()))
         try {
             val googleResponse: GoogleResponse? = restTemplate.getForObject(verifyUri, GoogleResponse::class.java)
             LOGGER.debug("Google's response: {} ", googleResponse.toString())
@@ -31,14 +31,14 @@ class CaptchaServiceV3(captchaSettings: CaptchaSettings,
                     .equals(action) || googleResponse.score < captchaSettings.threshold
             ) {
                 if (googleResponse?.hasClientError() == true) {
-                    reCaptchaAttemptService.reCaptchaFailed(super.clientIP)
+                    reCaptchaAttemptService.reCaptchaFailed(super.clientIP())
                 }
                 throw ReCaptchaInvalidException("reCaptcha was not successfully validated")
             }
         } catch (rce: RestClientException) {
             throw ReCaptchaUnavailableException("Registration unavailable at this time.  Please try again later.", rce)
         }
-        reCaptchaAttemptService.reCaptchaSucceeded(super.clientIP)
+        reCaptchaAttemptService.reCaptchaSucceeded(super.clientIP())
     }
 
     companion object {
