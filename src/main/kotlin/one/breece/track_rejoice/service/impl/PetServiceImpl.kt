@@ -2,6 +2,7 @@ package one.breece.track_rejoice.service.impl
 
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.commands.APBCommand
+import one.breece.track_rejoice.commands.APBResponse
 import one.breece.track_rejoice.domain.Pet
 import one.breece.track_rejoice.domain.SpeciesEnum
 import one.breece.track_rejoice.web.dto.PetResponse
@@ -21,7 +22,7 @@ class PetServiceImpl(
     private val geocodingService: GeocodingService
 ) : PetService {
     @Transactional
-    override fun createAPB(apbCommand: APBCommand): PetResponse {
+    override fun createAPB(apbCommand: APBCommand): APBResponse {
         val lastSeenLocation = geocodingService.geocode(apbCommand.address)!!
         val newPet = Pet(
             name = apbCommand.name!!,
@@ -33,7 +34,7 @@ class PetServiceImpl(
         newPet.addToTraceHistory(lastSeenLocation)
 
         val geofence = repository.save(newPet)
-        return petToPetResponseMapper.convert(geofence)!!
+        return APBResponse(geofence.id!!, apbCommand.name, apbCommand.breed, apbCommand.color, apbCommand.address, apbCommand.lastSeenDate!!, apbCommand.additionalInformation)
     }
 
     override fun deleteById(id: Long) {

@@ -21,11 +21,12 @@ class APBFormController(private val petService: PetService) {
     }
 
     @PostMapping("/form")
-    fun index(@Valid apbCommand: APBCommand, bindingResult: BindingResult): String {
+    fun index(@Valid apbCommand: APBCommand, bindingResult: BindingResult, model: Model): String {
         return if (bindingResult.hasErrors()) {
             "checkoutform"
         } else {
-            petService.createAPB(apbCommand)
+            val apb = petService.createAPB(apbCommand)
+            model.addAttribute("apbCommand", apb)
             "checkoutcomplete"
         }
     }

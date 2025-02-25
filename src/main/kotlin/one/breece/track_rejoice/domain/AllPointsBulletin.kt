@@ -2,6 +2,7 @@ package one.breece.track_rejoice.domain
 
 import jakarta.annotation.Nonnull
 import jakarta.persistence.*
+import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.TenantId
 import org.hibernate.annotations.UpdateTimestamp
@@ -27,7 +28,10 @@ abstract class AllPointsBulletin(
     @UpdateTimestamp val updatedAt: Date? = null,
     @TenantId
     var createdBy: Long? = null,
-    @Lob var extraInfo: String? = null
+    @Lob var extraInfo: String? = null,
+    @NotNull
+    @Column(columnDefinition = "boolean default false")
+    var enabled: Boolean = false
 ) {
     @Transient
     fun addToTraceHistory(location: Point) {

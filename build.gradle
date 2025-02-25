@@ -45,6 +45,7 @@ dependencies {
     implementation 'org.hibernate.orm:hibernate-spatial:6.6.7.Final'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
     implementation 'com.google.guava:guava:33.4.0-jre'
+    implementation 'com.paypal.sdk:paypal-server-sdk:0.6.0'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.springframework.modulith:spring-modulith-actuator'

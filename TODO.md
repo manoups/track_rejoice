@@ -10,3 +10,6 @@
 - [ ] limit number of submit attempts in registration form
 - [ ] resend token for validation
 - [ ] create dropdowns on forms
+- [ ] add "optional" text to optional fields
+- [ ] check if TODOs in the code can automatically pour in this file
+- [ ] add popup alert for announcement deletion

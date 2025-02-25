@@ -42,12 +42,13 @@ class SecurityConfig {
                 authorize("/js/**", permitAll)
                 authorize("/user/**", hasAuthority("ROLE_USER"))
                 authorize("login*" , permitAll)
+                authorize("example*", permitAll)
                 authorize("/register*", permitAll)
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
                 authorize("/emailError*", permitAll)
                 authorize("secured*", permitAll)
-                authorize(anyRequest, authenticated)
+                authorize(anyRequest, permitAll)
             }
             formLogin {
                 loginPage = "/login"
