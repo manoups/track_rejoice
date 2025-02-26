@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.service
 
+import one.breece.track_rejoice.commands.APBResponse
 import one.breece.track_rejoice.web.dto.PetResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -10,4 +11,5 @@ interface PetService : APBService {
     fun findById(petId: Long): Optional<PetResponse>
     fun findDistanceBetween(id1: Long, id2: Long): Double
     fun findAll(): List<PetResponse>
+    fun readById(id: Long): APBResponse?
 }

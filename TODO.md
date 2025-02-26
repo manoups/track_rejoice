@@ -13,3 +13,5 @@
 - [ ] add "optional" text to optional fields
 - [ ] check if TODOs in the code can automatically pour in this file
 - [ ] add popup alert for announcement deletion
+- [ ] add action "Resolved/Found"
+- [ ] add order complete screen

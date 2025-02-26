@@ -19,7 +19,8 @@ import java.util.*
 class PetServiceImpl(
     private val repository: PetRepository,
     private val petToPetResponseMapper: Converter<Pet, PetResponse>,
-    private val geocodingService: GeocodingService
+    private val geocodingService: GeocodingService,
+    private val petToAbpResponse: Converter<Pet, APBResponse>
 ) : PetService {
     @Transactional
     override fun createAPB(apbCommand: APBCommand): APBResponse {
@@ -41,6 +42,10 @@ class PetServiceImpl(
         repository.deleteById(id)
     }
 
+    override fun enableAnnouncement(announcementId: Long) {
+        repository.findById(announcementId).ifPresent{ it.enabled = true }
+    }
+
     override fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse> {
         return repository.findAllByLngLat(lon, lat, distanceInMeters, pageRequest).map { petToPetResponseMapper.convert(it)!! }
     }
@@ -53,5 +58,9 @@ class PetServiceImpl(
 
     override fun findAll(): List<PetResponse> {
         return repository.findAll().map { petToPetResponseMapper.convert(it)!! }
+    }
+
+    override fun readById(id: Long): APBResponse? {
+        return repository.findById(id).map { petToAbpResponse.convert(it) }.orElse(null)
     }
 }

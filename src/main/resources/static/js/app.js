@@ -23,7 +23,7 @@ window.paypal
                     body: JSON.stringify({
                         cart: [
                             {
-                                id: document.getElementById('helper').getAttribute('data-product'),
+                                productId: document.getElementById('helper').getAttribute('data-product'),
                                 quantity: 1,
                             },
                         ],
@@ -48,8 +48,9 @@ window.paypal
         },
 
         async onApprove(data, actions) {
+            console.log(JSON.parse(JSON.stringify(data)))
             try {
-                const response = await fetch(`/api/orders/${data.orderID}/capture`, {
+                const response = await fetch(`/api/orders/${data.orderID}/${document.getElementById('helper').getAttribute('data-product')}/capture`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
