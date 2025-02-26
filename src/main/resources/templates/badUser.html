@@ -13,7 +13,11 @@
     <div th:if="${expired}">
         <br/>
         <h1 th:utext="#{label.form.resendRegistrationToken}">resend</h1>
-        <button onclick="resendToken()">resend</button>
+        <form th:action="@{/register/resend-registration-token}" method="get">
+            <input th:value="${token}" name="token" hidden>
+            <input type="submit" th:value="#{action.resend.token}" value="resend">
+        </form>
+        <button th:remove="all" onclick="resendToken()">resend</button>
 
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -27,7 +31,7 @@
                     })
                         .fail(function (data) {
                             if (data.responseJSON.error.indexOf("MailError") > -1) {
-                                window.location.href = serverContext + "emailError.html";
+                                window.location.href = serverContext + "emailError";
                             } else {
                                 window.location.href = serverContext + "login?message=" + data.responseJSON.message;
                             }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.ModelAndView
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.io.UnsupportedEncodingException
 import java.util.*
 
@@ -30,7 +31,7 @@ class RegistrationController(
     var userService: UserService,
     private val tokenService: VerificationTokenService
 ) {
-    private  val LOGGER = LoggerFactory.getLogger(javaClass)
+    private val LOGGER = LoggerFactory.getLogger(javaClass)
 
     @RequestMapping("/login")
     fun login(
@@ -50,7 +51,7 @@ class RegistrationController(
     }
 
     @GetMapping("/emailError")
-    fun emailError():String = "emailError"
+    fun emailError(): String = "emailError"
 
     @GetMapping("/register-v3")
     fun showRegistrationFormV3(model: Model): String {
@@ -63,27 +64,31 @@ class RegistrationController(
     fun resendRegistrationTokenForm(
         @RequestParam("token") existingToken: String,
         request: HttpServletRequest,
-        model: Model
+        model: Model,
+        redirectAttributes: RedirectAttributes
     ): String {
         val locale = request.locale
         try {
             tokenService.resendRegistrationTokenForm(existingToken, request)
         } catch (e: MailAuthenticationException) {
             LOGGER.debug("MailAuthenticationException", e)
-            return "redirect:/emailError?lang=" + locale.language
+            redirectAttributes.addAttribute("lang", locale.language)
+            return "redirect:/emailError"
         } catch (e: Exception) {
             LOGGER.debug(e.localizedMessage, e)
-            model.addAttribute("message", e.localizedMessage)
-            return "redirect:/login?lang=" + locale.language
+            redirectAttributes.addAttribute("messageKey", e.localizedMessage)
+            redirectAttributes.addAttribute("lang", locale.language)
+            return "redirect:/login"
         }
-        model.addAttribute("message", messages.getMessage("message.resendToken", null, locale))
-        return "redirect:/login?lang=" + locale.language
+        redirectAttributes.addAttribute("messageKey", "message.resendToken")
+        redirectAttributes.addAttribute("lang", locale.language)
+        return "redirect:/login"
     }
 
     // NON-API
 
 
-    @GetMapping("/register/badUser")
+    @GetMapping("/register/bad-user")
     fun badUser(
         request: HttpServletRequest,
         model: ModelMap,
@@ -101,21 +106,6 @@ class RegistrationController(
         token.ifPresent { model.addAttribute("token", it) }
 
         return ModelAndView("badUser", model)
-    }
-
-    @GetMapping("/console")
-    fun console(
-        request: HttpServletRequest,
-        model: ModelMap,
-        @RequestParam("messageKey") messageKey: Optional<String>
-    ): ModelAndView {
-        val locale = request.locale
-        messageKey.ifPresent {
-            val message = messages.getMessage(it, null, locale)
-            model.addAttribute("message", message)
-        }
-
-        return ModelAndView("console", model)
     }
 
     @GetMapping("/register/confirm")
@@ -136,13 +126,13 @@ class RegistrationController(
             // }
             authWithoutPassword(user)
             model.addAttribute("messageKey", "message.accountVerified")
-            return ModelAndView("redirect:/console", model)
+            return ModelAndView("redirect:/", model)
         }
 
         model.addAttribute("messageKey", "auth.message.${result.name.lowercase()}")
         model.addAttribute("expired", TokenEnum.EXPIRED == result)
         model.addAttribute("token", token)
-        return ModelAndView("redirect:/register/badUser", model)
+        return ModelAndView("redirect:/register/bad-user", model)
     }
 
     @GetMapping("register/success")
