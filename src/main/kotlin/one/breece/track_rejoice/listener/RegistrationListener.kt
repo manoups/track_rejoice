@@ -42,7 +42,7 @@ class RegistrationListener(
     ): SimpleMailMessage {
         val recipientAddress: String = user.username
         val subject = "Registration Confirmation"
-        val confirmationUrl: String = event.appUrl + "/registrationConfirm?token=" + token
+        val confirmationUrl = "${event.appUrl}/register/confirm?token=${token}"
         val message = messages.getMessage(
             "message.regSuccLink",
             null,
@@ -51,9 +51,9 @@ class RegistrationListener(
         )
         val email = SimpleMailMessage()
         email.setTo(recipientAddress)
-        email.setSubject(subject)
-        email.setText("$message \r\n$confirmationUrl")
-        email.setFrom(env.getProperty("support.email"))
+        email.subject = subject
+        email.text = "$message \r\n$confirmationUrl"
+        email.from = env.getProperty("support.email")
         return email
     }
 }

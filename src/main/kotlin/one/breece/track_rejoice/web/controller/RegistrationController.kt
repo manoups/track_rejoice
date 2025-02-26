@@ -3,10 +3,12 @@ package one.breece.track_rejoice.web.controller
 import jakarta.servlet.http.HttpServletRequest
 import one.breece.track_rejoice.commands.LoginCommand
 import one.breece.track_rejoice.commands.UserCommand
-import one.breece.track_rejoice.repository.RoleRepository
 import one.breece.track_rejoice.service.UserService
+import one.breece.track_rejoice.service.VerificationTokenService
 import one.breece.track_rejoice.service.impl.TokenEnum
+import org.slf4j.LoggerFactory
 import org.springframework.context.MessageSource
+import org.springframework.mail.MailAuthenticationException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
@@ -26,8 +28,9 @@ import java.util.*
 class RegistrationController(
     var messages: MessageSource,
     var userService: UserService,
-    private val roleRepository: RoleRepository
+    private val tokenService: VerificationTokenService
 ) {
+    private  val LOGGER = LoggerFactory.getLogger(javaClass)
 
     @RequestMapping("/login")
     fun login(
@@ -46,6 +49,9 @@ class RegistrationController(
         return "login"
     }
 
+    @GetMapping("/emailError")
+    fun emailError():String = "emailError"
+
     @GetMapping("/register-v3")
     fun showRegistrationFormV3(model: Model): String {
         // create model object to store form data
@@ -53,7 +59,31 @@ class RegistrationController(
         return "register-v3"
     }
 
-    @GetMapping("/badUser")
+    @GetMapping("/register/resend-registration-token")
+    fun resendRegistrationTokenForm(
+        @RequestParam("token") existingToken: String,
+        request: HttpServletRequest,
+        model: Model
+    ): String {
+        val locale = request.locale
+        try {
+            tokenService.resendRegistrationTokenForm(existingToken, request)
+        } catch (e: MailAuthenticationException) {
+            LOGGER.debug("MailAuthenticationException", e)
+            return "redirect:/emailError?lang=" + locale.language
+        } catch (e: Exception) {
+            LOGGER.debug(e.localizedMessage, e)
+            model.addAttribute("message", e.localizedMessage)
+            return "redirect:/login?lang=" + locale.language
+        }
+        model.addAttribute("message", messages.getMessage("message.resendToken", null, locale))
+        return "redirect:/login?lang=" + locale.language
+    }
+
+    // NON-API
+
+
+    @GetMapping("/register/badUser")
     fun badUser(
         request: HttpServletRequest,
         model: ModelMap,
@@ -88,7 +118,7 @@ class RegistrationController(
         return ModelAndView("console", model)
     }
 
-    @GetMapping("/registrationConfirm")
+    @GetMapping("/register/confirm")
     @Throws(UnsupportedEncodingException::class)
     fun confirmRegistration(
         request: HttpServletRequest,
@@ -112,7 +142,12 @@ class RegistrationController(
         model.addAttribute("messageKey", "auth.message.${result.name.lowercase()}")
         model.addAttribute("expired", TokenEnum.EXPIRED == result)
         model.addAttribute("token", token)
-        return ModelAndView("redirect:/badUser", model)
+        return ModelAndView("redirect:/register/badUser", model)
+    }
+
+    @GetMapping("register/success")
+    fun registerSuccess(): String {
+        return "successRegister"
     }
 
     // ============== NON-API ============

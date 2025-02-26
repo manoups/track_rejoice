@@ -77,11 +77,12 @@ class UserServiceImpl(
         val user = verificationToken.user
         val cal = Calendar.getInstance()
         if ((verificationToken.expiryDate.time - cal.time.time) <= 0) {
-            tokenRepository.delete(verificationToken)
+//            Do not delete token here otherwise the user can end up with neither validation nor token in the DB
+//            tokenRepository.delete(verificationToken)
             return TokenEnum.EXPIRED
         }
         user.enabled = true
-        tokenRepository.delete(verificationToken);
+        tokenRepository.delete(verificationToken)
         repository.save(user)
         return TokenEnum.VALID
     }

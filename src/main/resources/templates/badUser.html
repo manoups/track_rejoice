@@ -22,7 +22,7 @@
 
                 function resendToken() {
                     var token = [[${token}]];
-                    $.get(serverContext + "user/resendRegistrationToken?token=" + token, function (data) {
+                    $.get(serverContext + "register/resend-registration-token?token=" + token, function (data) {
                         window.location.href = serverContext + "login?message=" + data.message;
                     })
                         .fail(function (data) {

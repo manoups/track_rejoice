@@ -1,6 +1,7 @@
 package one.breece.track_rejoice.domain
 
 import jakarta.persistence.*
+import jakarta.validation.constraints.NotBlank
 import java.util.*
 
 @Entity
@@ -8,6 +9,7 @@ class VerificationToken (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
+    @NotBlank
     var token: String? = null,
     @OneToOne(targetEntity = AppUser::class, fetch = FetchType.EAGER, optional =  false)
     @JoinColumn(nullable = false, name = "app_user_id", foreignKey = ForeignKey(name = "FK_VERIFY_USER"))
@@ -22,7 +24,7 @@ class VerificationToken (
         return Date(cal.time.time)
     }
 
-    fun updateToken(token: String?) {
+    fun updateToken(token: String) {
         this.token = token
         this.expiryDate = calculateExpiryDate(EXPIRATION)
     }
