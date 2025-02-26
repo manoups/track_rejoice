@@ -46,7 +46,7 @@ class SecurityConfig {
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
                 authorize("/emailError*", permitAll)
-                authorize("secured*", permitAll)
+                authorize("/api/v1/util/**", hasAuthority("ROLE_ADMIN"))
                 authorize(anyRequest, authenticated)
             }
             formLogin {

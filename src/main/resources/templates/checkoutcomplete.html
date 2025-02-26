@@ -41,7 +41,7 @@
                 <input type="text" disabled="disabled" class="form-control" th:value="${apbCommand.color}">
             </div>
         </div>
-
+        <form th:replace="~{fragments/address::address_disabled}"></form>
         <div class="form-group">
             <label for="lastSeenDate" class="col-sm-2 control-label" th:text="#{search.table.date}">Last Seen
                 Date:</label>
@@ -61,9 +61,13 @@
         </div>
     </form>
 </div>
-<div id="paypal-button-container"></div>
-<p id="result-message"></p>
-
+<div th:if="${apbCommand.enabled}">
+    <a class="btn btn-info" type="button" th:href="@{/}">Return to dashbord</a>
+</div>
+<div th:unless="${apbCommand.enabled}">
+    <div id="paypal-button-container"></div>
+    <p id="result-message"></p>
+</div>
 
 <!-- Initialize the JS-SDK -->
 <script

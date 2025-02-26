@@ -16,3 +16,4 @@
 - [ ] add action "Resolved/Found"
 - [ ] add order complete screen
 - [ ] make return address on app.js an env variable
+- [ ] replace Paypal with Mollie
