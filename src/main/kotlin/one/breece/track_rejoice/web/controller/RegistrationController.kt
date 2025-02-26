@@ -118,19 +118,18 @@ class RegistrationController(
         val locale = request.locale
         model.addAttribute("lang", locale.language)
         val result = userService.validateVerificationToken(token)
-        if (result == TokenEnum.VALID) {
-            val user = userService.loadUserByUsername(token)
+        if (result.first == TokenEnum.VALID) {
             // if (user.isUsing2FA()) {
             // model.addAttribute("qr", userService.generateQRUrl(user));
             // return "redirect:/qrcode.html?lang=" + locale.getLanguage();
             // }
-            authWithoutPassword(user)
+            authWithoutPassword(result.second!!)
             model.addAttribute("messageKey", "message.accountVerified")
             return ModelAndView("redirect:/", model)
         }
 
-        model.addAttribute("messageKey", "auth.message.${result.name.lowercase()}")
-        model.addAttribute("expired", TokenEnum.EXPIRED == result)
+        model.addAttribute("messageKey", "auth.message.${result.first.name.lowercase()}")
+        model.addAttribute("expired", TokenEnum.EXPIRED == result.first)
         model.addAttribute("token", token)
         return ModelAndView("redirect:/register/bad-user", model)
     }

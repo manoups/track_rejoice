@@ -66,25 +66,25 @@ class UserServiceImpl(
     }
 
     @Transactional
-    override fun validateVerificationToken(token: String): TokenEnum {
+    override fun validateVerificationToken(token: String): Pair<TokenEnum, UserDetails?> {
         val verificationTokenOptional = tokenRepository.findByToken(token)
         if (verificationTokenOptional.isEmpty)
-            return TokenEnum.INVALID
+            return Pair(TokenEnum.INVALID, null)
         return validateVerificationToken(verificationTokenOptional.get())
     }
 
-    private fun validateVerificationToken(verificationToken: VerificationToken): TokenEnum {
+    private fun validateVerificationToken(verificationToken: VerificationToken): Pair<TokenEnum, UserDetails?> {
         val user = verificationToken.user
         val cal = Calendar.getInstance()
         if ((verificationToken.expiryDate.time - cal.time.time) <= 0) {
 //            Do not delete token here otherwise the user can end up with neither validation nor token in the DB
 //            tokenRepository.delete(verificationToken)
-            return TokenEnum.EXPIRED
+            return Pair(TokenEnum.EXPIRED, null)
         }
         user.enabled = true
         tokenRepository.delete(verificationToken)
         repository.save(user)
-        return TokenEnum.VALID
+        return Pair(TokenEnum.VALID, user)
     }
 
     @Throws(UsernameNotFoundException::class)
