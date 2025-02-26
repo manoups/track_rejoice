@@ -8,6 +8,7 @@ import one.breece.track_rejoice.service.PetService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -73,6 +74,11 @@ class PayPalController(
         val ordersController = client.ordersController
         val apiResponse = ordersController.ordersCapture(ordersCaptureInput)
         return apiResponse.result
+    }
+
+    @GetMapping("/checkout/success")
+    fun checkoutSuccess(): String {
+        return "checkoutsuccess"
     }
 
 

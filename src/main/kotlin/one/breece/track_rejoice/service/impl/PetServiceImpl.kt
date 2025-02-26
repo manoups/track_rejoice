@@ -43,7 +43,10 @@ class PetServiceImpl(
     }
 
     override fun enableAnnouncement(announcementId: Long) {
-        repository.findById(announcementId).ifPresent{ it.enabled = true }
+        repository.findById(announcementId).ifPresent{
+            it.enabled = true
+            repository.save(it)
+        }
     }
 
     override fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse> {
