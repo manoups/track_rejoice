@@ -11,18 +11,17 @@ spring:
     password: root
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         jdbc:
           lob:
             non_contextual_creation: true
   flyway:
-    enabled: false
+    enabled: true
     url: ${spring.datasource.url}
     password: ${spring.datasource.password}
     user: ${spring.datasource.username}
-    schemas: migrations
     locations: classpath:db/migration/postgresql
   mail:
     host: smtp.gmail.com

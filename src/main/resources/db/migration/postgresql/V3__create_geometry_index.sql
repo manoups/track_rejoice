@@ -1,0 +1,1 @@
+CREATE INDEX pet_geometry_point_idx ON all_points_bulletin USING gist(last_seen_location);
