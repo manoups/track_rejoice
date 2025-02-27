@@ -91,7 +91,7 @@
             </div>
         </div>
         <div class="row">
-            <label for="additionalInformation" class="form-label" th:text="#{search.form.extra.info}">Extra
+            <label for="additionalInformation" th:required="optional" class="form-label" th:text="#{search.form.extra.info}">Extra
                 Info:</label>
             <textarea class="form-control" rows="3" th:class="${#fields.hasErrors('additionalInformation')} ?
             'form-control is-invalid':'form-control'" id="additionalInformation"

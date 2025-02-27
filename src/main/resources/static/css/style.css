@@ -34,6 +34,6 @@ body {
     overflow: hidden;
 }
 
-label:optional:after {
-    content: "(optional)";
+label:not(:has(+ input:required)):after {
+    content: ' (optional)';
 }
