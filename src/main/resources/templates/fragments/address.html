@@ -11,7 +11,7 @@
             <label for="address.street" class="form-label" th:text="#{search.form.street.name}">Street Name:</label>
             <input type="text" class="form-control" th:if="${#fields.hasErrors('name')} ?
             'form-control is-invalid':'form-control is-valid'" id="address.street" th:field="*{address.street}"
-                   th:disabled="${disabled}" required>
+                   th:disabled="${#strings.equals(action, 'publish')}" required>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('address.street')}">
                 <ul>
                     <li th:each="err : ${#fields.errors('address.street')}" th:text="${err}"/>
@@ -22,7 +22,7 @@
             <label for="street-number" class="form-label" th:text="#{search.form.street.number}">Street Number:</label>
             <input type="number" class="form-control" th:if="${#fields.hasErrors('name')} ?
             'form-control is-invalid':'form-control is-valid'" id="street-number" th:field="*{address.streetNumber}"
-                   th:disabled="${disabled}" required>
+                   th:disabled="${#strings.equals(action, 'publish')}" required>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('address.streetNumber')}">
                 <ul>
                     <li th:each="err : ${#fields.errors('address.streetNumber')}" th:text="${err}"/>
@@ -32,7 +32,8 @@
         <div class="col-md-4">
             <label for="zipCode" class="form-label" th:text="#{search.form.zip.code}">Zip Code:</label>
             <input type="text" class="form-control" th:if="${#fields.hasErrors('address.zipCode')} ?
-            'form-control is-invalid':'form-control is-valid'" th:disabled="${disabled}" id="zipCode" th:field="*{address.zipCode}" required>
+            'form-control is-invalid':'form-control is-valid'" th:disabled="${#strings.equals(action, 'publish')}"
+                   id="zipCode" th:field="*{address.zipCode}" required>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('address.zipCode')}">
                 <ul>
                     <li th:each="err : ${#fields.errors('address.street')}" th:text="${err}"/>
@@ -42,7 +43,9 @@
         <div class="col-md-8">
             <label for="address.place" class="form-label" th:text="#{search.form.place}">Place:</label>
             <input type="text" class="form-control" th:if="${#fields.hasErrors('address.place')} ?
-            'form-control is-invalid':'form-control is-valid'" th:disabled="${disabled}" id="address.place" th:field="*{address.place}" required>
+            'form-control is-invalid':'form-control is-valid'" th:disabled="${#strings.equals(action, 'publish')}"
+                   id="address.place"
+                   th:field="*{address.place}" required>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('address.zipCode')}">
                 <ul>
                     <li th:each="err : ${#fields.errors('address.place')}" th:text="${err}"/>
@@ -52,7 +55,9 @@
         <div class="col-md-12">
             <label for="address.country" class="form-label" th:text="#{search.form.country}">Country:</label>
             <input type="text" class="form-control" th:if="${#fields.hasErrors('address.country')} ?
-            'form-control is-invalid':'form-control is-valid'" th:disabled="${disabled}" id="address.country" th:field="*{address.country}"
+            'form-control is-invalid':'form-control is-valid'" th:disabled="${#strings.equals(action, 'publish')}"
+                   id="address.country"
+                   th:field="*{address.country}"
                    required>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('address.country')}">
                 <ul>

@@ -3,7 +3,6 @@ package one.breece.track_rejoice.web.controller
 import jakarta.validation.Valid
 import one.breece.track_rejoice.commands.APBCommand
 import one.breece.track_rejoice.service.PetService
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -19,12 +18,13 @@ class APBFormController(private val petService: PetService) {
     @GetMapping(value = ["","/"])
     fun checkoutForm(model: Model): String {
         model.addAttribute("APBCommand",  APBCommand())
-        model.addAttribute("disabled", false)
+        model.addAttribute("action", "create")
         return "checkoutform"
     }
 
     @PostMapping(value = ["","/"])
     fun index(@Valid apbCommand: APBCommand, bindingResult: BindingResult, model: Model): String {
+        model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
             "checkoutform"
         } else {
@@ -37,7 +37,9 @@ class APBFormController(private val petService: PetService) {
     fun created(@PathVariable id: Long, model: Model): String {
         val apb = petService.readById(id)
         model.addAttribute("APBCommand", apb)
-        model.addAttribute("disabled", true)
+        model.addAttribute("action", "publish")
+//        TODO: change label to 'paypal' for paid solution
+        model.addAttribute("payment", "freemium")
         return "checkoutform"
     }
 }

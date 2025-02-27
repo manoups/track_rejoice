@@ -53,6 +53,7 @@ class PetServiceImpl(
         }
     }
 
+    @Transactional
     override fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse> {
         return repository.findAllByLngLat(lon, lat, distanceInMeters, pageRequest).map { petToPetResponseMapper.convert(it)!! }
     }

@@ -30,7 +30,8 @@
                     <div class="col-md-4">
                         <label for="name" class="form-label" th:text="#{search.form.name}">Name:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('name')} ?
-            'form-control is-invalid':'form-control'" id="name" th:field="*{name}" required th:disabled="${disabled}"
+            'form-control is-invalid':'form-control'" id="name" th:field="*{name}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
                                aria-describedby="nameFeedback">
                         <div id="nameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
                             <ul>
@@ -41,7 +42,8 @@
                     <div class="col-md-4">
                         <label for="breed" class="form-label" th:text="#{search.form.breed}">Breed:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('breed')} ?
-            'form-control is-invalid':'form-control'" id="breed" th:field="*{breed}" required th:disabled="${disabled}"
+            'form-control is-invalid':'form-control'" id="breed" th:field="*{breed}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
                                aria-describedby="breedFeedback">
                         <div id="breedFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('breed')}">
                             <ul>
@@ -52,7 +54,8 @@
                     <div class="col-md-4">
                         <label for="color" class="form-label" th:text="#{search.form.color}">Color:</label>
                         <input type="text" class="form-control" th:if="${#fields.hasErrors('color')} ?
-            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback" th:disabled="${disabled}">
+            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback"
+                               th:disabled="${#strings.equals(action, 'publish')}">
                         <div id="colorFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('color')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('color')}" th:text="${err}"/>
@@ -65,7 +68,8 @@
                         <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
                             Number:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
-            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required th:disabled="${disabled}"
+            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
                                aria-describedby="phoneFeedback">
                         <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
                             <ul>
@@ -75,9 +79,10 @@
                     </div>
                     <div class="col-md-6">
                         <label for="lastSeenDate" class="form-label" th:text="#{search.table.date}">Last seen:</label>
-                        <input th:type="${disabled} ? 'text': 'datetime-local'" class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
-            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required th:disabled="${disabled}"
-                               aria-describedby="dateFeedback">
+                        <input th:type="${#strings.equals(action, 'publish')} ? 'text': 'datetime-local'"
+                               class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
+            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required
+                               th:disabled="${#strings.equals(action, 'publish')}" aria-describedby="dateFeedback">
                         <div id="dateFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('lastSeenDate')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}"/>
@@ -91,10 +96,12 @@
             </div>
         </div>
         <div class="row">
-            <label for="additionalInformation" th:required="optional" class="form-label" th:text="#{search.form.extra.info}">Extra
+            <label for="additionalInformation" th:required="optional" class="form-label"
+                   th:text="#{search.form.extra.info}">Extra
                 Info:</label>
             <textarea class="form-control" rows="3" th:class="${#fields.hasErrors('additionalInformation')} ?
-            'form-control is-invalid':'form-control'" id="additionalInformation" th:disabled="${disabled}"
+            'form-control is-invalid':'form-control'" id="additionalInformation"
+                      th:disabled="${#strings.equals(action, 'publish')}"
                       th:field="*{additionalInformation}" aria-describedby="extraFeedback">
 
             </textarea>
@@ -104,18 +111,20 @@
                 </ul>
             </div>
         </div>
-        <div class="row col-12">
-            <button type="submit" class="btn btn-primary" th:unless="${disabled}">Submit</button>
+        <div th:if="${#strings.equals(action, 'create')}">
+            <div th:replace="~{fragments/action::create}"></div>
         </div>
     </form>
-
+    <div th:if="${#strings.equals(action,'publish')}">
+        <div th:replace="${#strings.equals(payment, 'freemium')} ? ~{fragments/payment::freemium} : ~{fragments/payment::paypal}"></div>
+    </div>
     <form th:action="@{/geolocation}" method="get" name="lonLatForm">
         <input type="text" id="lat" name="lat" hidden>
         <input type="text" id="lon" name="lon" hidden>
     </form>
-    <script>
-        let disabled=[[${disabled}]]
-        if (!disabled && document.getElementById("address.street").value === ""
+    <script th:inline="javascript">
+        var actionVar = [[${action}]]
+        if (actionVar === 'create' && document.getElementById("address.street").value === ""
             && navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
                 document.getElementById('lat').value = position.coords.latitude;

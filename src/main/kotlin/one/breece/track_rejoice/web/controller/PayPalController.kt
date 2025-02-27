@@ -5,6 +5,7 @@ import com.paypal.sdk.PaypalServerSdkClient
 import com.paypal.sdk.exceptions.ApiException
 import com.paypal.sdk.models.*
 import one.breece.track_rejoice.service.PetService
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import java.io.IOException
 
 @Controller
+@ConditionalOnProperty(name = ["payments"], havingValue = "enabled")
 class PayPalController(
     private val objectMapper: ObjectMapper,
     private val client: PaypalServerSdkClient,
@@ -75,11 +77,5 @@ class PayPalController(
         val apiResponse = ordersController.ordersCapture(ordersCaptureInput)
         return apiResponse.result
     }
-
-    @GetMapping("/checkout/success")
-    fun checkoutSuccess(): String {
-        return "checkoutsuccess"
-    }
-
 
 }

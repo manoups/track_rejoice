@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="freemium" class="row col-12">
+    <a type="submit" class="btn btn-primary" th:onclick="onApprove()">Submit</a>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script th:inline="javascript">
+        let announcementId = [[${APBCommand.id}]]
+        var serverContext = [[@{/}]];
+
+            function onApprove(data, actions) {
+                fetch(`/api/orders/freemium/${announcementId}/capture`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then(
+                    window.location.href = 'http://localhost:8081/checkout/success'
+                );
+            };
+    </script>
+</div>
+
+<div th:fragment="paypal" class="row col-12">
+    <div th:if="${APBCommand.enabled}">
+        <a class="btn btn-info" type="button" th:href="@{/}">Return to dashbord</a>
+    </div>
+    <div th:unless="${APBCommand.enabled}">
+        <div id="paypal-button-container"></div>
+        <p id="result-message"></p>
+        <!-- Initialize the JS-SDK -->
+        <script
+                src="https://www.paypal.com/sdk/js?client-id=ARKXvgGgko6VP9WPaLba0QaaMGGu0WRDXOaw9qgt79YzRoBzH6NjyacWLzzRKZHpK61G8sjeWfwIne6u&buyer-country=US&currency=EUR&components=buttons&enable-funding=card&disable-funding=venmo,paylater"
+                data-sdk-integration-source="developer-studio"
+        ></script>
+        <script id="helper" src="/js/app.js" th:attr="data-product=${APBCommand.id}"></script>
+    </div>
+</div>
+</body>
+</html>

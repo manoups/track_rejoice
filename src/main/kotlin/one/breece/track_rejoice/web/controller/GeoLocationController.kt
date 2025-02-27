@@ -16,6 +16,7 @@ class GeoLocationController(private val geocodingService: GeocodingService) {
     fun geoLocation(@RequestParam lat: Double, @RequestParam lon: Double, model: Model): String {
         val reverseGeocode = geocodingService.reverseGeocode(lat, lon)
         model.addAttribute("APBCommand",  APBCommand(address = reverseGeocode?:AddressCommand()))
+        model.addAttribute("action", "create")
         return "checkoutform"
     }
 }
