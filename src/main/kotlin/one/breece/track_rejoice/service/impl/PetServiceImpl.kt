@@ -34,6 +34,7 @@ class PetServiceImpl(
         ).also {
             it.extraInfo = apbCommand.additionalInformation
             it.phoneNumber =  apbCommand.phoneNumber
+            it.humanReadableAddress = apbCommand.address
         }
         newPet.addToTraceHistory(lastSeenLocation)
 

@@ -19,6 +19,7 @@ class APBFormController(private val petService: PetService) {
     @GetMapping(value = ["","/"])
     fun checkoutForm(model: Model): String {
         model.addAttribute("APBCommand",  APBCommand())
+        model.addAttribute("disabled", false)
         return "checkoutform"
     }
 
@@ -35,7 +36,8 @@ class APBFormController(private val petService: PetService) {
     @GetMapping("/created/{id}")
     fun created(@PathVariable id: Long, model: Model): String {
         val apb = petService.readById(id)
-        model.addAttribute("apbCommand", apb)
-        return "checkoutcomplete"
+        model.addAttribute("APBCommand", apb)
+        model.addAttribute("disabled", true)
+        return "checkoutform"
     }
 }

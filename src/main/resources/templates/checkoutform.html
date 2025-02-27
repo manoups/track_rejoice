@@ -30,7 +30,7 @@
                     <div class="col-md-4">
                         <label for="name" class="form-label" th:text="#{search.form.name}">Name:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('name')} ?
-            'form-control is-invalid':'form-control'" id="name" th:field="*{name}" required
+            'form-control is-invalid':'form-control'" id="name" th:field="*{name}" required th:disabled="${disabled}"
                                aria-describedby="nameFeedback">
                         <div id="nameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
                             <ul>
@@ -41,7 +41,7 @@
                     <div class="col-md-4">
                         <label for="breed" class="form-label" th:text="#{search.form.breed}">Breed:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('breed')} ?
-            'form-control is-invalid':'form-control'" id="breed" th:field="*{breed}" required
+            'form-control is-invalid':'form-control'" id="breed" th:field="*{breed}" required th:disabled="${disabled}"
                                aria-describedby="breedFeedback">
                         <div id="breedFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('breed')}">
                             <ul>
@@ -52,7 +52,7 @@
                     <div class="col-md-4">
                         <label for="color" class="form-label" th:text="#{search.form.color}">Color:</label>
                         <input type="text" class="form-control" th:if="${#fields.hasErrors('color')} ?
-            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback">
+            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback" th:disabled="${disabled}">
                         <div id="colorFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('color')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('color')}" th:text="${err}"/>
@@ -65,7 +65,7 @@
                         <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
                             Number:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
-            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
+            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required th:disabled="${disabled}"
                                aria-describedby="phoneFeedback">
                         <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
                             <ul>
@@ -75,8 +75,8 @@
                     </div>
                     <div class="col-md-6">
                         <label for="lastSeenDate" class="form-label" th:text="#{search.table.date}">Last seen:</label>
-                        <input type="datetime-local" class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
-            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required
+                        <input th:type="${disabled} ? 'text': 'datetime-local'" class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
+            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required th:disabled="${disabled}"
                                aria-describedby="dateFeedback">
                         <div id="dateFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('lastSeenDate')}">
                             <ul>
@@ -94,7 +94,7 @@
             <label for="additionalInformation" th:required="optional" class="form-label" th:text="#{search.form.extra.info}">Extra
                 Info:</label>
             <textarea class="form-control" rows="3" th:class="${#fields.hasErrors('additionalInformation')} ?
-            'form-control is-invalid':'form-control'" id="additionalInformation"
+            'form-control is-invalid':'form-control'" id="additionalInformation" th:disabled="${disabled}"
                       th:field="*{additionalInformation}" aria-describedby="extraFeedback">
 
             </textarea>
@@ -105,86 +105,17 @@
             </div>
         </div>
         <div class="row col-12">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" th:unless="${disabled}">Submit</button>
         </div>
     </form>
 
-
-    <form th:remove="all" class="form-horizontal" th:object="${apbCommand}" th:action="@{/apb/form}" method="post"
-          name="mainForm">
-        <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
-            <p th:text="#{checkoutCommand.hasErrors}">Error Message</p>
-        </div>
-        <div class="form-group" th:class="${#fields.hasErrors('name')} ? 'form-group has-error' : 'form-group'">
-            <label class="col-sm-2 control-label" th:text="#{search.form.name}">Name:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{name}" th:errorclass="has-error" required/>
-                <div class="help-block" th:if="${#fields.hasErrors('name')}">
-                    <ul>
-                        <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="form-group" th:class="${#fields.hasErrors('breed')} ? 'form-group has-error' : 'form-group'">
-            <label class="col-sm-2 control-label" th:text="#{search.form.breed}">Breed:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{breed}" th:errorclass="has-error" required/>
-                <div class="help-block" th:if="${#fields.hasErrors('breed')}">
-                    <ul>
-                        <li th:each="err : ${#fields.errors('breed')}" th:text="${err}"/>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" th:text="#{search.form.color}">Color:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{color}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label" th:text="#{search.form.phoneNumber}">Phone Number:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{phoneNumber}">
-                <div class="help-block" th:if="${#fields.hasErrors('phoneNumber')}">
-                    <ul>
-                        <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <form th:replace="~{fragments/address::address}"></form>
-        <div class="form-group" th:class="${#fields.hasErrors('lastSeenDate')} ? 'form-group has-error' : 'form-group'">
-            <label for="lastSeenDate" class="col-sm-2 control-label" th:text="#{search.table.date}">Last Seen
-                Date:</label>
-            <div class="col-sm-10">
-                <input id="lastSeenDate" type="datetime-local" class="form-control" th:field="*{lastSeenDate}"
-                       th:errorclass="has-error"/>
-                <div class="help-block" th:if="${#fields.hasErrors('lastSeenDate')}">
-                    <ul>
-                        <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}"/>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="additionalInfo" class="col-sm-2 control-label" th:text="#{search.form.extra.info}">Additional
-                Info:</label>
-            <div class="col-sm-10">
-                <input id="additionalInfo" type="text" class="form-control" th:field="*{additionalInformation}">
-            </div>
-        </div>
-        <div class="row col-12">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
     <form th:action="@{/geolocation}" method="get" name="lonLatForm">
         <input type="text" id="lat" name="lat" hidden>
         <input type="text" id="lon" name="lon" hidden>
     </form>
     <script>
-        if (document.getElementById("address.street").value === ""
+        let disabled=[[${disabled}]]
+        if (!disabled && document.getElementById("address.street").value === ""
             && navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
                 document.getElementById('lat').value = position.coords.latitude;
