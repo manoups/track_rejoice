@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.ModelMap
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.ModelAndView
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.io.UnsupportedEncodingException
 import java.util.*
 
@@ -37,7 +37,7 @@ class RegistrationController(
     fun login(
         request: HttpServletRequest,
         model: Model,
-        @RequestParam("messageKey") messageKey: Optional<String>,
+        @RequestParam("message-key") messageKey: Optional<String>,
         @RequestParam("error") error: Optional<String>
     ): String {
         val locale: Locale = request.locale
@@ -64,25 +64,24 @@ class RegistrationController(
     fun resendRegistrationTokenForm(
         @RequestParam("token") existingToken: String,
         request: HttpServletRequest,
-        model: Model,
-        redirectAttributes: RedirectAttributes
-    ): String {
+        model: ModelMap
+    ): ModelAndView {
         val locale = request.locale
         try {
             tokenService.resendRegistrationTokenForm(existingToken, request)
         } catch (e: MailAuthenticationException) {
             LOGGER.debug("MailAuthenticationException", e)
-            redirectAttributes.addAttribute("lang", locale.language)
-            return "redirect:/emailError"
+            model.addAttribute("lang", locale.language)
+            return ModelAndView("redirect:/emailError", model)
         } catch (e: Exception) {
             LOGGER.debug(e.localizedMessage, e)
-            redirectAttributes.addAttribute("messageKey", e.localizedMessage)
-            redirectAttributes.addAttribute("lang", locale.language)
-            return "redirect:/login"
+            model.addAttribute("error", e.localizedMessage)
+            model.addAttribute("lang", locale.language)
+            return ModelAndView("redirect:/login", model)
         }
-        redirectAttributes.addAttribute("messageKey", "message.resendToken")
-        redirectAttributes.addAttribute("lang", locale.language)
-        return "redirect:/login"
+        model.addAttribute("message-key", "message.resendToken")
+        model.addAttribute("lang", locale.language)
+        return ModelAndView("redirect:/login", model)
     }
 
     // NON-API
@@ -92,14 +91,13 @@ class RegistrationController(
     fun badUser(
         request: HttpServletRequest,
         model: ModelMap,
-        @RequestParam("messageKey") messageKey: Optional<String>,
+        @RequestParam("message-key") messageKey: Optional<String>,
         @RequestParam("expired") expired: Optional<String>,
         @RequestParam("token") token: Optional<String>
     ): ModelAndView {
         val locale = request.locale
         messageKey.ifPresent {
-            val message = messages.getMessage(it, null, locale)
-            model.addAttribute("message", message)
+            model.addAttribute("message", messages.getMessage(it, null, locale))
         }
 
         expired.ifPresent { model.addAttribute("expired", it) }
@@ -124,11 +122,12 @@ class RegistrationController(
             // return "redirect:/qrcode.html?lang=" + locale.getLanguage();
             // }
             authWithoutPassword(result.second!!)
-            model.addAttribute("messageKey", "message.accountVerified")
+            request.getSession(true).setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext())
+            model.addAttribute("message-key", "message.accountVerified")
             return ModelAndView("redirect:/", model)
         }
 
-        model.addAttribute("messageKey", "auth.message.${result.first.name.lowercase()}")
+        model.addAttribute("message-key", "auth.message.${result.first.name.lowercase()}")
         model.addAttribute("expired", TokenEnum.EXPIRED == result.first)
         model.addAttribute("token", token)
         return ModelAndView("redirect:/register/bad-user", model)

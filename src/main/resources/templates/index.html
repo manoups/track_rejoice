@@ -56,7 +56,7 @@
 </div>
 <script th:inline="javascript">
     var mymap = L.map('mapid', {
-        minZoom: 3,
+        minZoom: 1,
         maxZoom: 20,
         attributionControl: false
     })
@@ -64,27 +64,18 @@
 
     const name = [[${firstName}]]
 
-    let lat = [[${lat}]]
-    let latitude = lat || 0;
+    let latitude = [[${lat}]] || 0;
     let longitude = [[${lon}]] || 0;
     let initZoom = [[${zoom}]] || 10;
-
+    let myLat = [[${myLat}]]
+    let myLon = [[${myLon}]]
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
 
-    if (!lat && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-            document.getElementById("lat").value = position.coords.latitude;
-            document.getElementById("lon").value = position.coords.longitude;
-            document.getElementById("zoom").value = 18;
-            document.coords.submit();
-            mymap.setView([latitude, longitude], initZoom);
-            L.marker([latitude, longitude]).addTo(mymap)
-                .bindPopup(name || "You");
-        })
-    } else {
-        mymap.setView([latitude, longitude], initZoom);
-        L.marker([latitude, longitude]).addTo(mymap)
+
+    mymap.setView([latitude, longitude], initZoom);
+    if (myLon && myLat) {
+        L.marker([myLat, myLon]).addTo(mymap)
             .bindPopup(name || "You");
     }
 
