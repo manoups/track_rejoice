@@ -37,21 +37,24 @@
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
     <div th:if="${message != null}" class="alert alert-info" th:utext="${message}">message</div>
-    <div id="mapid" style="width: 600px; height: 400px;"></div>
-    <form th:action="@{/search}" method="get" id="form" name="coords">
-        <input type="text" th:name="lat" id="lat" th:value="${lat}" hidden>
-        <input type="text" th:name="lon" id="lon" th:value="${lon}" hidden>
-        <input type="text" th:name="zoom" id="zoom" hidden>
-        <input th:remove="all" type="submit" value="Search">
-    </form>
-</div>
-<div class="container bg-white shadow-md p-5 form-layout text-center">
-
-    <div th:if="${#lists.isEmpty(pets)}">
-        <div th:replace="~{fragments/empty_table::empty_table}"></div>
-    </div>
-    <div th:unless="${#lists.isEmpty(pets)}">
-        <div th:replace="~{fragments/value_table::value_table}"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="mapid" style="width: 600px; height: 400px;"></div>
+            <form th:action="@{/search}" method="get" id="form" name="coords">
+                <input type="text" th:name="lat" id="lat" th:value="${lat}" hidden>
+                <input type="text" th:name="lon" id="lon" th:value="${lon}" hidden>
+                <input type="text" th:name="zoom" id="zoom" hidden>
+                <input th:remove="all" type="submit" value="Search">
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div th:if="${#lists.isEmpty(pets)}">
+                <div th:replace="~{fragments/empty_table::empty_table}"></div>
+            </div>
+            <div th:unless="${#lists.isEmpty(pets)}">
+                <div th:replace="~{fragments/value_table::value_table}"></div>
+            </div>
+        </div>
     </div>
 </div>
 <script th:inline="javascript">
