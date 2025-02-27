@@ -4,7 +4,6 @@ import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import one.breece.track_rejoice.service.LoginAttemptService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.WebAttributes
@@ -14,12 +13,11 @@ import org.springframework.web.servlet.LocaleResolver
 import java.io.IOException
 
 @Component("authenticationFailureHandler")
-class CustomAuthenticationFailureHandler(private val loginAttemptService: LoginAttemptService, private val localeResolver: LocaleResolver) : SimpleUrlAuthenticationFailureHandler() {
-    @Autowired
-    private val messages: MessageSource? = null
-
-    @Autowired
-    private val request: HttpServletRequest? = null
+class CustomAuthenticationFailureHandler(
+    private val loginAttemptService: LoginAttemptService,
+    private val localeResolver: LocaleResolver,
+    private val messages: MessageSource
+) : SimpleUrlAuthenticationFailureHandler() {
 
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationFailure(
@@ -33,7 +31,7 @@ class CustomAuthenticationFailureHandler(private val loginAttemptService: LoginA
 
         val locale = localeResolver.resolveLocale(request)
 
-        var errorMessage = messages!!.getMessage("message.badCredentials", null, locale)
+        var errorMessage = messages.getMessage("message.badCredentials", null, locale)
 
         if (loginAttemptService.isBlocked) {
             errorMessage = messages.getMessage("auth.message.blocked", null, locale)

@@ -32,9 +32,9 @@ class AppUser(
         ]
     )
     private val authorities: MutableSet<Role> = HashSet(),
-    val accountNonExpired: Boolean = false,
-    val accountNonLocked: Boolean = false,
-    val credentialsNonExpired: Boolean = false,
+    var accountNonExpired: Boolean = true,
+    var accountNonLocked: Boolean = true,
+    var credentialsNonExpired: Boolean = true,
     var enabled: Boolean = false,
     override val isUsing2FA: Boolean = false,
     @Enumerated(EnumType.STRING)
@@ -42,12 +42,12 @@ class AppUser(
 ) : AppUserDetails {
     override fun getAuthorities(): MutableSet<Role> {
         return authorities
-            /*.map {
-            object : GrantedAuthority {
-                override fun getAuthority(): String = it.authority
-                override fun toString() = it.authority
-            }
-        }.toMutableSet()*/
+        /*.map {
+        object : GrantedAuthority {
+            override fun getAuthority(): String = it.authority
+            override fun toString() = it.authority
+        }
+    }.toMutableSet()*/
     }
 
     override fun getPassword(): String {
@@ -63,4 +63,7 @@ class AppUser(
     }
 
     override fun isEnabled() = enabled
+
+    override fun isAccountNonExpired() = accountNonExpired
+    override fun isAccountNonLocked() = accountNonLocked
 }
