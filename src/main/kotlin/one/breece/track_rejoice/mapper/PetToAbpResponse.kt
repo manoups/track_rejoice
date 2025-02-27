@@ -14,9 +14,10 @@ class PetToAbpResponse : Converter<Pet, APBResponse> {
             source.name,
             source.breed,
             source.color,
+            source.phoneNumber,
             source.humanReadableAddress,
             source.lastSeenDate,
-            source.extraInformation
+            source.extraInfo
         )
     }
 }

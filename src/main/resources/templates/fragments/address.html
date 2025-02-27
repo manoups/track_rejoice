@@ -1,42 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div th:fragment="address">
-    <div class="form-group">
+    <div class="row g-3 needs-validation">
+        <div class="col-md-8">
+            <label for="address.street" class="form-label" th:text="#{search.form.street.name}">Street Name:</label>
+            <input type="text" class="form-control" th:if="${#fields.hasErrors('name')} ?
+            'form-control is-invalid':'form-control is-valid'" id="address.street" th:field="*{address.street}"
+                   required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('address.street')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('address.street')}" th:text="${err}"/>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="street-number" class="form-label" th:text="#{search.form.street.number}">Street Number:</label>
+            <input type="number" class="form-control" th:if="${#fields.hasErrors('name')} ?
+            'form-control is-invalid':'form-control is-valid'" id="street-number" th:field="*{address.streetNumber}"
+                   required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('address.streetNumber')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('address.streetNumber')}" th:text="${err}"/>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="zipCode" class="form-label" th:text="#{search.form.zip.code}">Zip Code:</label>
+            <input type="text" class="form-control" th:if="${#fields.hasErrors('address.zipCode')} ?
+            'form-control is-invalid':'form-control is-valid'" id="zipCode" th:field="*{address.zipCode}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('address.zipCode')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('address.street')}" th:text="${err}"/>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <label for="address.place" class="form-label" th:text="#{search.form.place}">Place:</label>
+            <input type="text" class="form-control" th:if="${#fields.hasErrors('address.place')} ?
+            'form-control is-invalid':'form-control is-valid'" id="address.place" th:field="*{address.place}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('address.zipCode')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('address.place')}" th:text="${err}"/>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="address.country" class="form-label" th:text="#{search.form.country}">Country:</label>
+            <input type="text" class="form-control" th:if="${#fields.hasErrors('address.country')} ?
+            'form-control is-invalid':'form-control is-valid'" id="address.country" th:field="*{address.country}"
+                   required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('address.country')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('address.country')}" th:text="${err}"/>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div th:remove="all" class="form-group">
         <label class="col-sm-2 control-label" th:text="#{search.form.street.name}">Street Name:</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" th:field="*{address.street}" required>
         </div>
     </div>
-    <div class="form-group">
+    <div th:remove="all" class="form-group">
         <label class="col-sm-2 control-label" th:text="#{search.form.street.number}">Street Number:</label>
         <div class="col-sm-10">
             <input type="number" class="form-control" th:field="*{address.streetNumber}" required>
         </div>
     </div>
-    <div class="form-group">
+    <div th:remove="all" class="form-group">
         <label class="col-sm-2 control-label" th:text="#{search.form.zip.code}">Zip Code:</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" th:field="*{address.zipCode}" required>
         </div>
     </div>
-    <div class="form-group">
+    <div th:remove="all" class="form-group">
         <label class="col-sm-2 control-label" th:text="#{search.form.place}">Place:</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" th:field="*{address.place}" required>
         </div>
     </div>
-    <div class="form-group">
+    <div th:remove="all" class="form-group">
         <label class="col-sm-2 control-label" th:text="#{search.form.country}">Country:</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" th:field="*{address.country}" required>
         </div>
     </div>
 </div>
+
 
 <div th:fragment="address_disabled">
     <div class="form-group">

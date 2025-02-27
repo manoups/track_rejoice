@@ -18,7 +18,7 @@ class APBFormController(private val petService: PetService) {
 
     @GetMapping(value = ["","/"])
     fun checkoutForm(model: Model): String {
-        model.addAttribute("apbCommand",  APBCommand())
+        model.addAttribute("APBCommand",  APBCommand())
         return "checkoutform"
     }
 

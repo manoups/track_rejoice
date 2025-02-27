@@ -15,14 +15,102 @@
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
 
-
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
     <h2>Checkout Form</h2>
-    <form class="form-horizontal" th:object="${apbCommand}" th:action="@{/apb/form}" method="post"
+    <form class="needs-validation" th:object="${APBCommand}" th:action="@{/apb/form}" method="post"
+          name="mainForm">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="name" class="form-label" th:text="#{search.form.name}">Name:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('name')} ?
+            'form-control is-invalid':'form-control'" id="name" th:field="*{name}" required
+                               aria-describedby="nameFeedback">
+                        <div id="nameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="breed" class="form-label" th:text="#{search.form.breed}">Breed:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('breed')} ?
+            'form-control is-invalid':'form-control'" id="breed" th:field="*{breed}" required
+                               aria-describedby="breedFeedback">
+                        <div id="breedFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('breed')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('breed')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="color" class="form-label" th:text="#{search.form.color}">Color:</label>
+                        <input type="text" class="form-control" th:if="${#fields.hasErrors('color')} ?
+            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback">
+                        <div id="colorFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('color')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('color')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
+                            Number:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
+            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
+                               aria-describedby="phoneFeedback">
+                        <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastSeenDate" class="form-label" th:text="#{search.table.date}">Last seen:</label>
+                        <input type="datetime-local" class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
+            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required
+                               aria-describedby="dateFeedback">
+                        <div id="dateFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('lastSeenDate')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <form th:replace="~{fragments/address::address}"></form>
+            </div>
+        </div>
+        <div class="row">
+            <label for="additionalInformation" class="form-label" th:text="#{search.form.extra.info}">Extra
+                Info:</label>
+            <textarea class="form-control" rows="3" th:class="${#fields.hasErrors('additionalInformation')} ?
+            'form-control is-invalid':'form-control'" id="additionalInformation"
+                      th:field="*{additionalInformation}" aria-describedby="extraFeedback">
+
+            </textarea>
+            <div id="extraFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('additionalInformation')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('additionalInformation')}" th:text="${err}"/>
+                </ul>
+            </div>
+        </div>
+        <div class="row col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+
+    <form th:remove="all" class="form-horizontal" th:object="${apbCommand}" th:action="@{/apb/form}" method="post"
           name="mainForm">
         <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
             <p th:text="#{checkoutCommand.hasErrors}">Error Message</p>
@@ -53,6 +141,17 @@
             <label class="col-sm-2 control-label" th:text="#{search.form.color}">Color:</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" th:field="*{color}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" th:text="#{search.form.phoneNumber}">Phone Number:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:field="*{phoneNumber}">
+                <div class="help-block" th:if="${#fields.hasErrors('phoneNumber')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
+                    </ul>
+                </div>
             </div>
         </div>
         <form th:replace="~{fragments/address::address}"></form>

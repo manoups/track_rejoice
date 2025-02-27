@@ -17,5 +17,4 @@ class Pet(
     val breed: String,
     val color: String? = null,
     val transponderCode: Long? = null,
-    var extraInformation: String? = null,
-):AllPointsBulletin(lastSeenLocation, extraInfo=extraInformation)
+):AllPointsBulletin(lastSeenLocation)

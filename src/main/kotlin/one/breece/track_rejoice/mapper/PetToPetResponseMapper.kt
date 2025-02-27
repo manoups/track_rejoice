@@ -14,8 +14,8 @@ class PetToPetResponseMapper: Converter<Pet, PetResponse> {
 //            lastSeenLocation = source.lastSeenLocation,
             lastSeenDate = source.lastSeenDate,
             longitude = source.lastSeenLocation.x,
-            latitude =  source.lastSeenLocation.y
-//            ,
+            latitude =  source.lastSeenLocation.y,
+            humanReadableAddress = source.humanReadableAddress
 //            traceHistory = source.traceHistory.map { mapper.convert(it) }
         )
     }

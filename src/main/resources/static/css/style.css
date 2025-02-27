@@ -33,3 +33,7 @@ body {
     border: 0;
     overflow: hidden;
 }
+
+label:optional:after {
+    content: "(optional)";
+}

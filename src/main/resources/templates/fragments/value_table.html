@@ -6,43 +6,48 @@
 </head>
 <body>
 <div th:fragment="value_table">
-  <table class="table table-striped">
-    <tr class="table-header">
-      <th>ID</th>
-      <th th:text="#{search.table.name}">Name</th>
-      <th th:text="#{search.table.location}">Last seen location</th>
-      <th th:text="#{search.table.date}">Last seen date</th>
-    </tr>
-    <tr th:each="pet: ${pets}">
-      <td th:text="${pet.id}">Pet ID</td>
-      <td th:text="${pet.name}">Pet Name</td>
-      <td th:text="${pet.longitude}">Last SeenLocation</td>
-      <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
-    </tr>
-  </table>
+    <table class="table table-striped">
+        <tr class="table-header">
+            <th>ID</th>
+            <th th:text="#{search.table.name}">Name</th>
+            <th th:text="#{search.table.location}">Last seen location</th>
+            <th th:text="#{search.table.date}">Last seen date</th>
+        </tr>
+        <tr th:each="pet: ${pets}">
+            <td th:text="${pet.id}">Pet ID</td>
+            <td th:text="${pet.name}">Pet Name</td>
+            <td th:replace="~{fragments/value_table::address}" th:text="${pet.humanReadableAddress}">Last SeenLocation</td>
+            <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
+        </tr>
+    </table>
 </div>
 
+    <td th:fragment="address">
+        <div th:text="${pet.humanReadableAddress.street}+' '+${pet.humanReadableAddress.streetNumber}"></div>
+        <div th:text="${pet.humanReadableAddress.zipCode}"></div>
+    </td>
+
 <div th:fragment="value_table_with_actions">
-  <table class="table table-striped">
-    <tr class="table-header">
-      <th>ID</th>
-      <th th:text="#{search.table.name}">Name</th>
-      <th th:text="#{search.table.location}">Last seen location</th>
-      <th th:text="#{search.table.date}">Last seen date</th>
-      <th th:text="#{search.table.actions}">Actions</th>
-    </tr>
-    <tr th:each="pet: ${pets}">
-      <td th:text="${pet.id}">Pet ID</td>
-      <td th:text="${pet.name}">Pet Name</td>
-      <td th:text="${pet.longitude}">Last SeenLocation</td>
-      <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
-      <td>
-        <form action="#" th:action="@{'/announcements/{id}'(id=${pet.id})}" th:method="delete" >
-          <button type="submit" id="submitButton" th:text="#{action.delete}">Delete</button>
-        </form>
-      </td>
-    </tr>
-  </table>
+    <table class="table table-striped">
+        <tr class="table-header">
+            <th>ID</th>
+            <th th:text="#{search.table.name}">Name</th>
+            <th th:text="#{search.table.location}">Last seen location</th>
+            <th th:text="#{search.table.date}">Last seen date</th>
+            <th th:text="#{search.table.actions}">Actions</th>
+        </tr>
+        <tr th:each="pet: ${pets}">
+            <td th:text="${pet.id}">Pet ID</td>
+            <td th:text="${pet.name}">Pet Name</td>
+            <td th:text="${pet.longitude}">Last SeenLocation</td>
+            <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
+            <td>
+                <form action="#" th:action="@{'/announcements/{id}'(id=${pet.id})}" th:method="delete">
+                    <button type="submit" id="submitButton" th:text="#{action.delete}">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

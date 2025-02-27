@@ -3,6 +3,7 @@ package one.breece.track_rejoice.domain
 import jakarta.annotation.Nonnull
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Pattern
 import one.breece.track_rejoice.commands.AddressCommand
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.JdbcTypeCode
@@ -23,6 +24,8 @@ abstract class AllPointsBulletin(
     val lastSeenLocation: Point,
     @JdbcTypeCode(SqlTypes.JSON)
     var humanReadableAddress: AddressCommand? = null,
+    @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
+    var phoneNumber: String? = null,
     @Nonnull
     val lastSeenDate: LocalDateTime = LocalDateTime.now(),
 

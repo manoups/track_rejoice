@@ -31,11 +31,14 @@ class PetServiceImpl(
             species = SpeciesEnum.DOG,
             breed = apbCommand.breed!!,
             color = apbCommand.color,
-        )
+        ).also {
+            it.extraInfo = apbCommand.additionalInformation
+            it.phoneNumber =  apbCommand.phoneNumber
+        }
         newPet.addToTraceHistory(lastSeenLocation)
 
         val geofence = repository.save(newPet)
-        return APBResponse(geofence.id!!, false, apbCommand.name, apbCommand.breed, apbCommand.color, apbCommand.address, apbCommand.lastSeenDate!!, apbCommand.additionalInformation)
+        return APBResponse(geofence.id!!, false, apbCommand.name, apbCommand.breed, apbCommand.color, apbCommand.phoneNumber, apbCommand.address, apbCommand.lastSeenDate!!, apbCommand.additionalInformation)
     }
 
     override fun deleteById(id: Long) {
