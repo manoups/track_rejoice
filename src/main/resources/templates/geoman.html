@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
     <div id="mapid" style="width: 600px; height: 400px;"></div>
     <form th:action="@{/search}" method="get" id="form" name="coords">
@@ -61,12 +62,17 @@
 
     let myLat = [[${myLat}]]
     let myLon = [[${myLon}]]
+    let latitude = [[${lat}]] || 0;
+    let longitude = [[${lon}]] || 0;
+    let initZoom = [[${zoom}]] || 10;
+    let init = [[${identify}]]
+    let name = [[${firstName}]]
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 
     map.setView([latitude, longitude], initZoom);
-    if (myLon && myLat) {
+    if (init) {
         L.marker([myLat, myLon]).addTo(map)
             .bindPopup(name || "You");
     }

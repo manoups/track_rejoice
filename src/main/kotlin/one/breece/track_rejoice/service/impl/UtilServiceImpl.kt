@@ -1,11 +1,13 @@
 package one.breece.track_rejoice.service.impl
 
+import one.breece.track_rejoice.domain.AppUser
 import one.breece.track_rejoice.repository.PetRepository
 import one.breece.track_rejoice.service.GeocodingService
 import one.breece.track_rejoice.service.UtilService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContext
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,5 +29,11 @@ class UtilServiceImpl(private val petRepository: PetRepository, private val geoc
         pet.humanReadableAddress = reverseGeocode
         petRepository.save(pet)
         return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+
+    override fun getName(context: SecurityContext): String? {
+        return if (context.authentication.principal is AppUser) {
+            (context.authentication.principal as AppUser).firstName
+        } else null
     }
 }

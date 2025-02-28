@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.web.controller
 
-import one.breece.track_rejoice.domain.AppUser
 import one.breece.track_rejoice.service.PetService
+import one.breece.track_rejoice.service.UtilService
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.annotation.CurrentSecurityContext
 import org.springframework.security.core.context.SecurityContext
@@ -13,7 +13,11 @@ import java.util.*
 
 
 @Controller
-class PetController(private val petService: PetService) {
+class PetController(
+    private val petService: PetService,
+    private val utilService: UtilService,
+    val utilServicegetName: UtilService
+) {
 
     /**
      * We need two sets of coordinates here:
@@ -39,15 +43,10 @@ class PetController(private val petService: PetService) {
         model.addAttribute("lat", lat)
         model.addAttribute("zoom", zoom)
         model.addAttribute("identify", identify)
-        model.addAttribute("firstName", getName(context))
+        model.addAttribute("firstName", utilServicegetName.getName(context))
         myLat.ifPresent { model.addAttribute("myLat", it) }
         myLon.ifPresent { model.addAttribute("myLon", it) }
         return "index"
     }
 
-    fun getName(context: SecurityContext): String? {
-        return if (context.authentication.principal is AppUser) {
-            (context.authentication.principal as AppUser).firstName
-        } else null
-    }
 }

@@ -35,7 +35,7 @@ class IndexController {
                 ModelAndView("redirect:/search", modelMap)
             }
             "create" -> {
-                ModelAndView("redirect:public/announcement/create", modelMap)
+                ModelAndView("redirect:/announcement/create", modelMap)
             }
 
             else -> {
