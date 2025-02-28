@@ -36,6 +36,7 @@
 <body>
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
+    <h2 th:text="'Welcome '+${firstName}">Welcome</h2>
     <div th:if="${message != null}" class="alert alert-info" th:utext="${message}">message</div>
     <div class="row">
         <div class="col-md-6">
@@ -72,12 +73,13 @@
     let initZoom = [[${zoom}]] || 10;
     let myLat = [[${myLat}]]
     let myLon = [[${myLon}]]
+    let init = [[${identify}]]
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
 
 
     mymap.setView([latitude, longitude], initZoom);
-    if (myLon && myLat) {
+    if (init) {
         L.marker([myLat, myLon]).addTo(mymap)
             .bindPopup(name || "You");
     }

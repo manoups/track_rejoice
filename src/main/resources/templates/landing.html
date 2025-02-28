@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Loading...</title>
 </head>
 <body>
-<form th:action="@{/search}" method="get" id="form" name="coords">
+<form th:action="@{/process}" method="post" id="form" name="coords">
     <input type="text" th:name="lat" id="lat" th:value="0.0" hidden>
     <input type="text" th:name="lon" id="lon" th:value="0.0" hidden>
     <input type="text" th:name="zoom" id="zoom" value="1" hidden>
-    <input type="submit" value="Search" hidden>
+    <input type="text" th:name="geoAvailable" id="geoAvailable" th:value="false" hidden>
+    <input type="text" th:name="target" th:value="${target}" hidden>
 </form>
 <script>
     navigator.permissions.query({
@@ -20,24 +21,13 @@
                 document.getElementById("lat").value = position.coords.latitude;
                 document.getElementById("lon").value = position.coords.longitude;
                 document.getElementById("zoom").value = 18;
+                document.getElementById("geoAvailable").value = "true"
                 document.coords.submit()
             })
         } else if (result.state == 'denied') {
             document.coords.submit()
         }
     })
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(position => {
-    //     document.getElementById("lat").value = position.coords.latitude;
-    //     document.getElementById("lon").value = position.coords.longitude;
-    //     document.getElementById("zoom").value = 18;
-    //     debugger
-    //     document.coords.submit();
-    //   })
-    // } else {
-    //   debugger
-    //   document.coords.submit();
-    // }
 </script>
 </body>
 </html>
