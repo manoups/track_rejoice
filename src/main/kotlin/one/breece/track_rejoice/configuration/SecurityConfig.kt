@@ -42,6 +42,8 @@ class SecurityConfig {
                 authorize("/js/**", permitAll)
                 authorize("/user/**", hasAuthority("ROLE_USER"))
                 authorize("login*" , permitAll)
+                authorize("/actuator*",  permitAll)
+                authorize("/actuator/**",  permitAll)
                 authorize("/register*", permitAll)
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
