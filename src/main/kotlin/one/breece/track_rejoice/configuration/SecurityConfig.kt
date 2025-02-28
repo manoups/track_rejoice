@@ -114,10 +114,8 @@ class SecurityConfig {
 
     @Bean
     fun roleHierarchy(): RoleHierarchy {
-        val roleHierarchy = RoleHierarchyImpl()
         val hierarchy = "ROLE_ADMIN > ROLE_STAFF \n ROLE_STAFF > ROLE_USER"
-        roleHierarchy.setHierarchy(hierarchy)
-        return roleHierarchy
+        return RoleHierarchyImpl.fromHierarchy(hierarchy)
     }
 
     @Bean
