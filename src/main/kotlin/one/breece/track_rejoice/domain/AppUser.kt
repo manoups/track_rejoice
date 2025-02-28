@@ -3,6 +3,7 @@ package one.breece.track_rejoice.domain
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
 import one.breece.track_rejoice.web.dto.AppUserDetails
 
 @Entity
@@ -20,6 +21,7 @@ class AppUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
+    @NotEmpty
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "users_roles",
@@ -40,27 +42,15 @@ class AppUser(
     @Enumerated(EnumType.STRING)
     val provider: Provider = Provider.LOCAL
 ) : AppUserDetails {
-    override fun getAuthorities(): MutableSet<Role> {
-        return authorities
-        /*.map {
-        object : GrantedAuthority {
-            override fun getAuthority(): String = it.authority
-            override fun toString() = it.authority
-        }
-    }.toMutableSet()*/
-    }
+    override fun getAuthorities(): MutableSet<Role> = authorities
 
-    override fun getPassword(): String {
-        return password
-    }
+    override fun getPassword(): String = password
 
     fun setPassword(newPassword: String) {
         password = newPassword
     }
 
-    override fun getUsername(): String {
-        return username
-    }
+    override fun getUsername(): String = username
 
     override fun isEnabled() = enabled
 

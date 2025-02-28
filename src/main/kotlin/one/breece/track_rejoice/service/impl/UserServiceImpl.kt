@@ -1,6 +1,5 @@
 package one.breece.track_rejoice.service.impl
 
-import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.commands.UserCommand
 import one.breece.track_rejoice.domain.AppUser
@@ -19,34 +18,34 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.jvm.optionals.getOrNull
 
 @Service
 class UserServiceImpl(
     private val repository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val entityManager: EntityManager,
     private val loginAttemptService: LoginAttemptService,
     private val tokenRepository: VerificationTokenRepository
 ) :
     UserService, UserDetailsService {
 
-        companion object {
-            const val ROLE_USER = "ROLE_USER"
-        }
+    companion object {
+        const val ROLE_USER = "ROLE_USER"
+    }
+
     @Transactional
     override fun saveUser(userCommand: UserCommand): AppUserDetails {
         if (emailExists(userCommand.email!!)) {
             throw UserAlreadyExistException("User exists already")
         }
-        val appUser = AppUser(passwordEncoder.encode(userCommand.password), userCommand.email, userCommand.firstName!!, userCommand.lastName!!)
+        val appUser = AppUser(
+            passwordEncoder.encode(userCommand.password),
+            userCommand.email,
+            userCommand.firstName!!,
+            userCommand.lastName!!
+        )
         val roleOptional = roleRepository.findByName(ROLE_USER)
-        entityManager.flush()
-        var role: Role? = roleOptional.getOrNull()
-        if (role == null) {
-            role = checkRoleExist(ROLE_USER)
-        }
+        val role: Role = roleOptional.orElseThrow { RuntimeException("Role $ROLE_USER not found in the DB") }
         appUser.authorities.add(role)
         return repository.save(appUser)
     }
@@ -122,11 +121,6 @@ class UserServiceImpl(
             repository.save(it)
         }
         return repository.findByUsername(user.username).orElse(null)
-    }
-
-    private fun checkRoleExist(roleName: String): Role {
-        val role = Role(name = roleName)
-        return roleRepository.saveAndFlush(role)
     }
 
     private fun emailExists(email: String): Boolean {
