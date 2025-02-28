@@ -27,9 +27,10 @@
         .wrapper{width:500px;margin-left:auto;margin-right:auto}
         label{padding-left:0 !important}
     </style>
+
 </head>
 <body>
-<div th:if="${message != null}" class="alert alert-info" th:utext="${message}">message</div>
+<div th:if="${message != null}" id="message-timer" class="alert alert-info" th:utext="${message}">message</div>
 
 
 <div th:if="${error != null}" class="alert alert-danger" th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
@@ -71,5 +72,5 @@
     </div>
 </div>
 </body>
-
+<script src="/js/login.js"></script>
 </html>
