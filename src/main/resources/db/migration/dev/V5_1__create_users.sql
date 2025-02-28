@@ -1,0 +1,1 @@
+INSERT INTO app_user(account_non_expired, account_non_locked, credentials_non_expired, enabled, first_name, is_using2fa, last_name, password, provider, username) VALUES ( true, true, true, true, 'Manos', false, 'Psanis', '$2a$11$TKizyi2yinCylUodvo/fV.QNpFNXcrqAMGep7m80BsMHi4.8S2iEK', 'LOCAL', 'user');
