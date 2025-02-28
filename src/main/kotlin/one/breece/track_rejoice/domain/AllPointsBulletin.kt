@@ -41,7 +41,7 @@ abstract class AllPointsBulletin(
 
     @TenantId
     var createdBy: Long? = null,
-    @Lob
+    @Column(columnDefinition =  "varchar(1024)")
     var extraInfo: String? = null,
 
     @NotNull
