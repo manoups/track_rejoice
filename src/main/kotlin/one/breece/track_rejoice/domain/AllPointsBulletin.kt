@@ -4,13 +4,10 @@ import jakarta.annotation.Nonnull
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
-import one.breece.track_rejoice.commands.AddressCommand
 import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.annotations.TenantId
 import org.hibernate.annotations.UpdateTimestamp
-import org.hibernate.type.SqlTypes
-import org.locationtech.jts.geom.Point
+import org.locationtech.jts.geom.Geometry
 import java.time.LocalDateTime
 import java.util.*
 
@@ -19,11 +16,7 @@ import java.util.*
 abstract class AllPointsBulletin(
 //    We should not store the trace as a polygon because we want to track timestamps
 //    @Column(name = "geometry_polygon", columnDefinition = "geometry(Polygon, 4326)", nullable = false)
-//    var geometryPolygon: Polygon,
-    @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
-    val lastSeenLocation: Point,
-    @JdbcTypeCode(SqlTypes.JSON)
-    var humanReadableAddress: AddressCommand? = null,
+//    var geometryPolygon: Polygon
     @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
     var phoneNumber: String? = null,
     @Nonnull
@@ -56,7 +49,7 @@ abstract class AllPointsBulletin(
     var enabled: Boolean = false
 ) {
     @Transient
-    fun addToTraceHistory(location: Point) {
+    fun addToTraceHistory(location: Geometry) {
         val trace = Trace(location = location, allPointsBulletin = this)
         traceHistory.add(trace)
     }

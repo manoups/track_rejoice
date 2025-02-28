@@ -18,3 +18,5 @@
 - [ ] make return address on app.js an env variable
 - [ ] replace Paypal with Mollie
 - [ ] use spring security tokens
+- [ ] create Hierarchy for final APB objects
+- [ ] separate finder and seeker roles in different services

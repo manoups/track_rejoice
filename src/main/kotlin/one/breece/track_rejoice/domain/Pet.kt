@@ -17,4 +17,4 @@ class Pet(
     val breed: String,
     val color: String? = null,
     val transponderCode: Long? = null,
-):AllPointsBulletin(lastSeenLocation)
+) : MobileItem(lastSeenLocation)
