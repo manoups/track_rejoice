@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title th:utext="#{label.pages.home.title}">Title</title>
     <script th:inline="javascript">
         function validate() {
@@ -24,16 +26,27 @@
 
     </script>
     <style type="text/css">
-        .wrapper{width:500px;margin-left:auto;margin-right:auto}
-        label{padding-left:0 !important}
+        .wrapper {
+            width: 500px;
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        label {
+            padding-left: 0 !important
+        }
     </style>
 
 </head>
 <body>
-<div th:if="${message != null}" id="message-timer" class="alert alert-info" th:utext="${message}">message</div>
+<p th:if="${message != null}" id="message-timer" class="alert alert-info">
+    <i class="fa fa-check" aria-hidden="true"></i> &nbsp;
+    <span th:utext="${message}">message</span>
+</p>
 
 
-<div th:if="${error != null}" class="alert alert-danger" th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
+<div th:if="${error != null}" class="alert alert-danger" th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error
+</div>
 
 <div class="container">
     <div class="row wrapper">
@@ -45,28 +58,32 @@
         <form name='f' th:action="@{/login}" method='POST'>
             <span id="welcometext">&nbsp;</span>
 
-            <br /><br />
+            <br/><br/>
             <label class="col-sm-4" th:utext="#{label.form.loginEmail}">Email</label>
             <span class="col-sm-8"><input class="form-control" type='text' name='username' value=''/></span>
 
             <br/><br/>
             <label class="col-sm-4" th:utext="#{label.form.loginPass}">password</label>
-            <span class="col-sm-8"><input class="form-control" type='password' name='password' /></span>
+            <span class="col-sm-8"><input class="form-control" type='password' name='password'/></span>
 
             <br/><br/>
-            <label class="col-sm-4" th:remove="all" th:utext="#{label.form.login2fa}">Google Authenticator Verification Code</label>
-            <span class="col-sm-8" th:remove="all"><input class="form-control" type='text' name='code' /></span>
+            <label class="col-sm-4" th:remove="all" th:utext="#{label.form.login2fa}">Google Authenticator Verification
+                Code</label>
+            <span class="col-sm-8" th:remove="all"><input class="form-control" type='text' name='code'/></span>
 
             <br/><br/>
-            <input class="btn btn-primary" name="submit" type="submit" th:value="#{label.form.submit}" />
+            <input class="btn btn-primary" name="submit" type="submit" th:value="#{label.form.submit}"/>
 
         </form>
-        <br/> <span th:remove="all" >Current Locale :  <span th:utext="${#locale}"></span><br/><br/></span>
-        <a class="btn btn-default" th:remove="all" th:href="@{/register}" th:utext="#{label.form.loginSignUp}">signup</a>
+        <br/> <span th:remove="all">Current Locale :  <span th:utext="${#locale}"></span><br/><br/></span>
+        <a class="btn btn-default" th:remove="all" th:href="@{/register}"
+           th:utext="#{label.form.loginSignUp}">signup</a>
         <br/>
-        <a class="btn btn-default" th:remove="all" th:href="@{/registrationCaptcha.html}" th:utext="#{label.form.loginSignUpCaptcha}">captcha signup</a>
+        <a class="btn btn-default" th:remove="all" th:href="@{/registrationCaptcha.html}"
+           th:utext="#{label.form.loginSignUpCaptcha}">captcha signup</a>
         <br/><br/>
-        <a class="btn btn-default" th:href="@{/register-v3}" th:utext="#{label.form.loginSignUpReCaptchaV3}">recaptcha v3 signup</a>
+        <a class="btn btn-default" th:href="@{/register-v3}" th:utext="#{label.form.loginSignUpReCaptchaV3}">recaptcha
+            v3 signup</a>
         <br/><br/>
         <a class="btn btn-default" th:href="@{/forgetPassword.html}" th:utext="#{message.resetPassword}">reset</a>
     </div>
