@@ -133,11 +133,6 @@ class RegistrationController(
         return ModelAndView("redirect:/register/bad-user", model)
     }
 
-    @GetMapping("register/success")
-    fun registerSuccess(): String {
-        return "successRegister"
-    }
-
     // ============== NON-API ============
     fun authWithoutPassword(user: UserDetails) {
         val authentication: Authentication = UsernamePasswordAuthenticationToken(user, null, user.authorities)

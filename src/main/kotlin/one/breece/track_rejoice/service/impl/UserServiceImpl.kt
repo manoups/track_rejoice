@@ -54,6 +54,10 @@ class UserServiceImpl(
         return repository.findByUsername(email)
     }
 
+    override fun findByEmail(email: String): Optional<AppUser> {
+        return repository.getByUsername(email)
+    }
+
     override fun findAllUsers(): List<AppUserDetails> {
         return repository.findAllUsers()
     }

@@ -23,13 +23,6 @@ class RegistrationCaptchaController(private val userService: UserService,
 ) {
     private val LOGGER = LoggerFactory.getLogger(javaClass)
 
- /*   @GetMapping("/form")
-    fun showRegistrationFormV3(model: Model): String {
-        // create model object to store form data
-        model.addAttribute("user", UserCommand())
-        return "register-v3"
-    }*/
-
     @PostMapping("/v3")
     fun captchaV3RegisterUserAccount(
         userCommand: @Valid UserCommand,
@@ -45,12 +38,7 @@ class RegistrationCaptchaController(private val userService: UserService,
         LOGGER.debug("Registering user account with information: {}", userCommand)
 
         val registered: AppUserDetails = userService.saveUser(userCommand)
-        eventPublisher.publishEvent(OnRegistrationCompleteEvent(registered, request.locale, getAppUrl(request)))
+        eventPublisher.publishEvent(OnRegistrationCompleteEvent(registered, request))
         return GenericResponse("success")
-    }
-
-
-    private fun getAppUrl(request: HttpServletRequest): String {
-        return "http://" + request.serverName + ":" + request.serverPort + request.contextPath
     }
 }

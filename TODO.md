@@ -1,6 +1,6 @@
 - [x] read location from browser to initialize search screen
 - [ ] add search options for results
-- [ ] link Paypal to creating adds
+- [x] link Paypal to creating adds
 - [ ] use HATEOAS for user registration
 - [x] add tenantId to APBs
 - [ ] add password reset functionality

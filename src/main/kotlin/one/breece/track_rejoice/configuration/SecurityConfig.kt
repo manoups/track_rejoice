@@ -2,6 +2,7 @@ package one.breece.track_rejoice.configuration
 
 import one.breece.track_rejoice.repository.UserRepository
 import one.breece.track_rejoice.security.CustomRememberMeServices
+import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.access.expression.SecurityExpressionHandler
@@ -30,7 +31,7 @@ class SecurityConfig {
     @Bean
     fun filterChain(
         http: HttpSecurity,
-        customAuthenticationFailureHandler: AuthenticationFailureHandler
+        customAuthenticationFailureHandler: AuthenticationFailureHandler, requestMatcherProvider: RequestMatcherProvider
     ): SecurityFilterChain {
         http {
             csrf {  disable() }
@@ -48,6 +49,8 @@ class SecurityConfig {
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
                 authorize("/emailError*", permitAll)
+                authorize("/forgetPassword*", permitAll)
+                authorize("/successRegister*", permitAll)
                 authorize("/api/v1/util/**", hasAuthority("ROLE_ADMIN"))
                 authorize(anyRequest, authenticated)
             }
