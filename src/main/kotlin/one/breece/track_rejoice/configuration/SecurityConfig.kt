@@ -61,13 +61,6 @@ class SecurityConfig {
                 defaultSuccessUrl("/", true)
                 authenticationFailureHandler = customAuthenticationFailureHandler
             }
-            sessionManagement {
-                invalidSessionUrl = "/invalidSession.html"
-                sessionConcurrency {
-                    maximumSessions = 1
-                    sessionRegistry = sessionRegistry()
-                }
-            }
             logout {
                 clearAuthentication = true
                 invalidateHttpSession = true

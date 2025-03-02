@@ -3,12 +3,44 @@ body {
     overflow-x: hidden;
 }
 
+.p-5 {
+    padding: 3rem !important;
+}
 
-.login-form, .logout-form, .default-form {
-    max-width: 400px;
-    padding: 0 15px 15px 15px;
-    margin: 0 auto 2rem auto;
-    box-sizing: border-box;
+label:not(:has(+ input:required)):after {
+    content: ' (optional)';
+}
+
+/*
+ * Copyright 2002-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* General layout */
+body {
+    font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #eee;
+    margin: 0;
+    line-height: 1.5;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 2rem;
 }
 
 .content {
@@ -20,20 +52,13 @@ body {
     box-sizing: border-box;
 }
 
-.p-5 {
-    padding: 3rem !important;
-}
 
-.screenreader {
-    position: absolute;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    width: 1px;
-    padding: 0;
-    border: 0;
-    overflow: hidden;
-}
-
-label:not(:has(+ input:required)):after {
-    content: ' (optional)';
+/* Login / logout layouts */
+.login-form,
+.logout-form,
+.default-form {
+    max-width: 340px;
+    padding: 0 15px 15px 15px;
+    margin: 0 auto 2rem auto;
+    box-sizing: border-box;
 }
