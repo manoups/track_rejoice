@@ -31,7 +31,8 @@ class SecurityConfig {
     @Bean
     fun filterChain(
         http: HttpSecurity,
-        customAuthenticationFailureHandler: AuthenticationFailureHandler, requestMatcherProvider: RequestMatcherProvider
+        customAuthenticationFailureHandler: AuthenticationFailureHandler,
+        requestMatcherProvider: RequestMatcherProvider
     ): SecurityFilterChain {
         http {
             csrf {  disable() }
@@ -42,14 +43,14 @@ class SecurityConfig {
                 authorize("/css/**", permitAll)
                 authorize("/js/**", permitAll)
                 authorize("/user/**", hasAuthority("ROLE_USER"))
-                authorize("login*" , permitAll)
+                authorize("/login*" , permitAll)
+                authorize("/password-*", permitAll)
                 authorize("/actuator*",  permitAll)
                 authorize("/actuator/**",  permitAll)
                 authorize("/register*", permitAll)
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
                 authorize("/emailError*", permitAll)
-                authorize("/forgetPassword*", permitAll)
                 authorize("/successRegister*", permitAll)
                 authorize("/api/v1/util/**", hasAuthority("ROLE_ADMIN"))
                 authorize(anyRequest, authenticated)
@@ -59,6 +60,13 @@ class SecurityConfig {
                 failureUrl = "/login?error=true"
                 defaultSuccessUrl("/", true)
                 authenticationFailureHandler = customAuthenticationFailureHandler
+            }
+            sessionManagement {
+                invalidSessionUrl = "/invalidSession.html"
+                sessionConcurrency {
+                    maximumSessions = 1
+                    sessionRegistry = sessionRegistry()
+                }
             }
             logout {
                 clearAuthentication = true

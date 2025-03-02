@@ -40,7 +40,7 @@ class UserServiceImpl(
         }
         val appUser = AppUser(
             passwordEncoder.encode(userCommand.password),
-            userCommand.email,
+            userCommand.email.trim().lowercase(),
             userCommand.firstName!!,
             userCommand.lastName!!
         )
@@ -95,7 +95,7 @@ class UserServiceImpl(
         if (loginAttemptService.isBlocked) {
             throw UsernameNotFoundException("blocked")
         }
-        return repository.findByUsername(email).orElseThrow { UsernameNotFoundException("User not found: $email") }
+        return repository.findByUsername(email.trim().lowercase()).orElseThrow { UsernameNotFoundException("User not found: $email") }
     }
 
     override fun createUser(user: UserDetails?) {

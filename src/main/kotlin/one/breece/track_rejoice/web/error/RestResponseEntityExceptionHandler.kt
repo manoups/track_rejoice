@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 
 @RestControllerAdvice
 class RestResponseEntityExceptionHandler(private val messages: MessageSource) : ResponseEntityExceptionHandler() {
@@ -41,32 +42,32 @@ class RestResponseEntityExceptionHandler(private val messages: MessageSource) : 
         return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
     }
 
-    /*@ExceptionHandler(InvalidOldPasswordException::class)
-    fun handleInvalidOldPassword(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
-        logger.error("400 Status Code", ex)
-        val bodyOfResponse: GenericResponse = GenericResponse(
-            messages!!.getMessage("message.invalidOldPassword", null, request.locale),
-            "InvalidOldPassword"
-        )
-        return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
-    }
+    /* @ExceptionHandler(InvalidOldPasswordException::class)
+     fun handleInvalidOldPassword(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
+         logger.error("400 Status Code", ex)
+         val bodyOfResponse: GenericResponse = GenericResponse(
+             messages.getMessage("message.invalidOldPassword", null, request.locale),
+             "InvalidOldPassword"
+         )
+         return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
+     }*/
 
     @ExceptionHandler(ReCaptchaInvalidException::class)
     fun handleReCaptchaInvalid(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
         logger.error("400 Status Code", ex)
         val bodyOfResponse: GenericResponse =
-            GenericResponse(messages!!.getMessage("message.invalidReCaptcha", null, request.locale), "InvalidReCaptcha")
+            GenericResponse(messages.getMessage("message.invalidReCaptcha", null, request.locale), "InvalidReCaptcha")
         return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.BAD_REQUEST, request)
     }
 
     // 404
-    @ExceptionHandler(UserNotFoundException::class)
+    @ExceptionHandler(UsernameNotFoundException::class)
     fun handleUserNotFound(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
         logger.error("404 Status Code", ex)
-        val bodyOfResponse: GenericResponse =
-            GenericResponse(messages!!.getMessage("message.userNotFound", null, request.locale), "UserNotFound")
+        val bodyOfResponse =
+            GenericResponse("message.userNotFound", "UserNotFound")
         return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.NOT_FOUND, request)
-    }*/
+    }
 
     // 409
     @ExceptionHandler(value = [UserAlreadyExistException::class])

@@ -3,6 +3,7 @@ package one.breece.track_rejoice.web.controller
 import jakarta.servlet.http.HttpServletRequest
 import one.breece.track_rejoice.commands.LoginCommand
 import one.breece.track_rejoice.commands.UserCommand
+import one.breece.track_rejoice.service.PasswordResetTokenService
 import one.breece.track_rejoice.service.UserService
 import one.breece.track_rejoice.service.VerificationTokenService
 import one.breece.track_rejoice.service.impl.TokenEnum
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.ModelAndView
 import java.io.UnsupportedEncodingException
@@ -29,11 +29,12 @@ import java.util.*
 class RegistrationController(
     var messages: MessageSource,
     var userService: UserService,
-    private val tokenService: VerificationTokenService
+    private val tokenService: VerificationTokenService,
+    private val passwordResetTokenService: PasswordResetTokenService
 ) {
     private val LOGGER = LoggerFactory.getLogger(javaClass)
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
     fun login(
         request: HttpServletRequest,
         model: Model,
@@ -43,7 +44,7 @@ class RegistrationController(
         val locale: Locale = request.locale
         model.addAttribute("lang", locale.language)
         messageKey.ifPresent {
-            model.addAttribute("message", messages.getMessage(it, null, locale))
+            model.addAttribute("message", messages.getMessage(it, null,null, locale))
         }
         error.ifPresent { model.addAttribute("error", it) }
         model.addAttribute("loginCommand", LoginCommand())
@@ -132,6 +133,36 @@ class RegistrationController(
         model.addAttribute("token", token)
         return ModelAndView("redirect:/register/bad-user", model)
     }
+
+    @GetMapping("/password-change")
+    fun showChangePasswordPage(model: ModelMap, @RequestParam("token") token: String): ModelAndView {
+        val result = passwordResetTokenService.validatePasswordResetToken(token)
+
+        if (result != TokenEnum.VALID) {
+            val messageKey = "auth.message.${result.toString().lowercase()}"
+            model.addAttribute("messageKey", messageKey)
+            return ModelAndView("redirect:/login", model)
+        } else {
+            model.addAttribute("token", token)
+            return ModelAndView("redirect:/password-update")
+        }
+    }
+
+    @GetMapping("/password-update")
+    fun updatePassword(
+        request: HttpServletRequest,
+        model: ModelMap,
+        @RequestParam("messageKey") messageKey: Optional<String?>
+    ): ModelAndView {
+        val locale = request.locale
+        model.addAttribute("lang", locale.language)
+        messageKey.ifPresent {
+            model.addAttribute("message", messages.getMessage(it, null, locale))
+        }
+        return ModelAndView("password-update", model)
+    }
+
+
 
     // ============== NON-API ============
     fun authWithoutPassword(user: UserDetails) {

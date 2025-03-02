@@ -4,9 +4,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import java.util.*
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "token_type")
+@MappedSuperclass
 class ParentToken (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,6 +22,10 @@ class ParentToken (
         cal.timeInMillis = Date().time
         cal.add(Calendar.MINUTE, expiryTimeInMinutes)
         return Date(cal.time.time)
+    }
+
+    fun updateExpiryDate() {
+        expiryDate = calculateExpiryDate(EXPIRATION)
     }
 
     fun updateToken(token: String) {

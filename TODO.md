@@ -11,7 +11,7 @@
 - [ ] resend token for validation
 - [ ] create dropdowns on forms
 - [ ] add "optional" text to optional fields
-- [ ] check if TODOs in the code can automatically pour in this file
+- [x] check if TODOs in the code can automatically pour in this file
 - [ ] add popup alert for announcement deletion
 - [ ] add action "Resolved/Found"
 - [ ] add order complete screen
@@ -20,3 +20,5 @@
 - [ ] use spring security tokens
 - [ ] create Hierarchy for final APB objects
 - [ ] separate finder and seeker roles in different services
+- [ ] update passay version and validation rules
+- [ ] add form validation on RegistrationRestController::savePassword()

@@ -1,3 +1,5 @@
+CREATE SEQUENCE IF NOT EXISTS password_reset_token_seq START WITH 1 INCREMENT BY 50;
+
 CREATE SEQUENCE IF NOT EXISTS verification_token_seq START WITH 1 INCREMENT BY 50;
 
 CREATE TABLE all_points_bulletin
@@ -36,6 +38,15 @@ CREATE TABLE means_of_transportation
     last_seen_location     GEOMETRY(Point, 4326) NOT NULL,
     human_readable_address JSONB,
     CONSTRAINT pk_meansoftransportation PRIMARY KEY (id)
+);
+
+CREATE TABLE password_reset_token
+(
+    id          BIGINT NOT NULL,
+    token       VARCHAR(255),
+    app_user_id BIGINT NOT NULL,
+    expiry_date TIMESTAMP WITHOUT TIME ZONE,
+    CONSTRAINT pk_passwordresettoken PRIMARY KEY (id)
 );
 
 CREATE TABLE pet
@@ -87,6 +98,9 @@ CREATE TABLE verification_token
 ALTER TABLE app_user
     ADD CONSTRAINT uc_appuser_username UNIQUE (username);
 
+ALTER TABLE password_reset_token
+    ADD CONSTRAINT uc_passwordresettoken_app_user UNIQUE (app_user_id);
+
 ALTER TABLE role
     ADD CONSTRAINT uc_role_name UNIQUE (name);
 
@@ -104,6 +118,9 @@ ALTER TABLE trace
 
 ALTER TABLE verification_token
     ADD CONSTRAINT FK_VERIFY_USER FOREIGN KEY (app_user_id) REFERENCES app_user (id);
+
+ALTER TABLE password_reset_token
+    ADD CONSTRAINT FK_VERIFY_USERywxdzN FOREIGN KEY (app_user_id) REFERENCES app_user (id);
 
 ALTER TABLE users_roles
     ADD CONSTRAINT fk_userol_on_app_user FOREIGN KEY (user_id) REFERENCES app_user (id);

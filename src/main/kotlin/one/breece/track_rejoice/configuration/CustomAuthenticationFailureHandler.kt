@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.servlet.LocaleResolver
 import java.io.IOException
 
-@Component("authenticationFailureHandler")
+@Component
 class CustomAuthenticationFailureHandler(
     private val loginAttemptService: LoginAttemptService,
     private val localeResolver: LocaleResolver,

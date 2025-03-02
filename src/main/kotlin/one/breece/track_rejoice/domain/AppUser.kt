@@ -50,7 +50,7 @@ class AppUser(
         password = newPassword
     }
 
-    override fun getUsername(): String = username
+    override fun getUsername(): String = username.trim().lowercase()
 
     override fun isEnabled() = enabled
 

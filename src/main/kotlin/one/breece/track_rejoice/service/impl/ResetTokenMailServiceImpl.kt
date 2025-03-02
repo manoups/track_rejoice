@@ -25,7 +25,7 @@ class ResetTokenMailServiceImpl(
         token: String,
         user: UserDetails
     ): SimpleMailMessage {
-        val url = "$contextPath/user/changePassword?token=$token"
+        val url = "$contextPath/password-change?token=$token"
         val message = messages.getMessage("message.resetPassword", null, locale)
         return service.constructEmail("Reset Password", "$message \r\n$url", user.username)
     }

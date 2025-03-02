@@ -38,7 +38,8 @@ class SpringMvcConfiguration : WebMvcConfigurer {
 //    }
 
     override fun addViewControllers(registry: ViewControllerRegistry) {
-        registry.addViewController("/forgetPassword.html")
+        registry.addViewController("/password-forget.html")
         registry.addViewController("/successRegister.html")
+        registry.addViewController("/errorRegister.html")
     }
 }
