@@ -6,13 +6,11 @@
 
     <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div th:fragment="navbar">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
 
         <a class="navbar-brand main-heading">
 
@@ -51,27 +49,24 @@
 
                 <li class="nav-item">
 
-                    <a class="btn btn-secondary navbar-btn" type="button" href="/apb/form">Post Announcement</a>
+                    <a class="btn btn-secondary navbar-btn" type="button" href="/announcements">My Announcements</a>
 
                 </li>
-
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Post Announcement
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/apb/form">Pet</a></li>
+                        <li><a class="dropdown-item" href="#">Bike/ Scooter</a></li>
+                        <li><a class="dropdown-item" href="#">Item</a></li>
+                    </ul>
+                </li>
 
                 <li class="nav-item">
 
-                    <a class="btn btn-secondary navbar-btn" type="button" href="/announcements">Announcement
-                        management</a>
-
-                </li>
-                <li class="nav-item">
-
-                    <a class="btn btn-secondary navbar-btn" type="button" href="/?target=create">Shortcut</a>
-
-                </li>
-
-                <li class="nav-item">
-
-                    <a class="btn btn-secondary navbar-btn" type="button" href="/account">Account
-                        management</a>
+                    <a class="btn btn-secondary navbar-btn" type="button" href="/account">My Account</a>
 
                 </li>
 
