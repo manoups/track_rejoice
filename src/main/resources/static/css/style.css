@@ -19,6 +19,11 @@ label:not(:has(+ input:required)):after {
     display: block;
     margin: 0 auto;
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* remove the gap so it doesn't close */
+}
 /*
  * Copyright 2002-2024 the original author or authors.
  *
