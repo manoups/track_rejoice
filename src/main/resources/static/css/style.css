@@ -11,6 +11,14 @@ label:not(:has(+ input:required)):after {
     content: ' (optional)';
 }
 
+.modal-title {
+    margin: auto;
+}
+
+#submitButton {
+    display: block;
+    margin: 0 auto;
+}
 /*
  * Copyright 2002-2024 the original author or authors.
  *

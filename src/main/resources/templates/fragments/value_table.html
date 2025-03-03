@@ -14,16 +14,18 @@
         </tr>
         <tr th:each="pet: ${pets}">
             <td th:text="${pet.name}">Pet Name</td>
-            <td th:replace="~{fragments/value_table::address}" th:text="${pet.humanReadableAddress}">Last SeenLocation</td>
+            <td th:replace="~{fragments/value_table::address}" th:text="${pet.humanReadableAddress}">Last SeenLocation
+            </td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
         </tr>
     </table>
 </div>
 
-    <td th:fragment="address">
-        <div th:if="${pet.humanReadableAddress}" th:text="${pet.humanReadableAddress.street}+' '+${pet.humanReadableAddress.streetNumber}"></div>
-        <div th:if="${pet.humanReadableAddress}" th:text="${pet.humanReadableAddress.zipCode}"></div>
-    </td>
+<td th:fragment="address">
+    <div th:if="${pet.humanReadableAddress}"
+         th:text="${pet.humanReadableAddress.street}+' '+${pet.humanReadableAddress.streetNumber}"></div>
+    <div th:if="${pet.humanReadableAddress}" th:text="${pet.humanReadableAddress.zipCode}"></div>
+</td>
 
 <div th:fragment="value_table_with_actions">
     <table class="table table-striped">
@@ -35,13 +37,17 @@
         </tr>
         <tr th:each="pet: ${pets}">
             <td th:text="${pet.name}">Pet Name</td>
-            <td th:replace="~{fragments/value_table::address}" th:text="${pet.humanReadableAddress}">Last SeenLocation</td>
+            <td th:replace="~{fragments/value_table::address}" th:text="${pet.humanReadableAddress}">Last SeenLocation
+            </td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
-                <form action="#" th:action="@{'/announcements/{id}'(id=${pet.id})}" th:method="delete">
-                    <button type="submit" id="submitButton" th:text="#{action.delete}">Delete</button>
-                </form>
+                <!--<a data-toggle="modal" data-target="#modal-warning"
+                   th:attr="data-target='#modal-warning'+${pet.id }"><span
+                        class="glyphicon glyphicon-trash"></span></a>-->
+                <button class="btn btn-danger" data-bs-toggle="modal" th:attr="data-bs-target='#modal-warning'+${pet.id }">Delete
+                </button>
             </td>
+            <th:block th:replace="~{fragments/delete-warning::modal('modal-warning'+${pet.id})}">modal</th:block>
         </tr>
     </table>
 </div>
