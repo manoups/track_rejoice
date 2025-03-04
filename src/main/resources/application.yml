@@ -4,6 +4,10 @@ server:
     whitelabel:
       enabled: false
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
   thymeleaf:
     cache: false
   application:
@@ -62,3 +66,7 @@ hibernate:
   dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
 #  tenant_identifier_resolver: one.breece.track_rejoice.configuration.TenantIdentifierResolver
 
+aws:
+  region: eu-west-3
+  s3:
+    bucket: trackrejoice-image-qa

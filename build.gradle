@@ -1,9 +1,9 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.9.25'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
-    id 'org.springframework.boot' version '3.4.2'
+    id 'org.jetbrains.kotlin.jvm' version '2.1.20-RC'
+    id 'org.jetbrains.kotlin.plugin.spring' version '2.1.20-RC'
+    id 'org.springframework.boot' version '3.4.3'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+    id 'org.jetbrains.kotlin.plugin.jpa' version '2.1.20-RC'
 }
 
 group = 'one.breece'
@@ -47,6 +47,11 @@ dependencies {
     implementation 'com.google.guava:guava:33.4.0-jre'
     implementation 'com.paypal.sdk:paypal-server-sdk:0.6.0'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
+    implementation("aws.sdk.kotlin:s3:1.0.0") {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation 'org.passay:passay:1.0'
     runtimeOnly 'org.flywaydb:flyway-database-postgresql:11.3.3'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

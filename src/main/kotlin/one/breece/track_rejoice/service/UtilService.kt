@@ -7,4 +7,5 @@ interface UtilService {
 
     fun addHumanReadableAddress(id: Long): ResponseEntity<String>
     fun getName(context: SecurityContext): String?
+    fun getUsername(context: SecurityContext): String?
 }
