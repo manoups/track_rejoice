@@ -15,6 +15,8 @@ class Pet(
     val species: SpeciesEnum,
     @NotNull
     val breed: String,
+    @Enumerated(EnumType.STRING)
+    val sex: PetSexEnum,
     val color: String? = null,
     val transponderCode: Long? = null,
 ) : MobileItem(lastSeenLocation)

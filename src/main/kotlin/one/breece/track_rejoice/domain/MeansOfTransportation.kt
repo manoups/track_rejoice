@@ -5,5 +5,6 @@ import one.breece.track_rejoice.commands.AddressCommand
 import org.locationtech.jts.geom.Point
 
 @Entity
-class MeansOfTransportation(lastSeenLocation: Point, humanReadableAddress: AddressCommand? = null) :
+class MeansOfTransportation(val color: String, val brand: String, val model: String,
+    lastSeenLocation: Point, humanReadableAddress: AddressCommand? = null) :
     MobileItem(lastSeenLocation, humanReadableAddress)

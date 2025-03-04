@@ -19,7 +19,7 @@
                th:utext="'This action will irrevocably delete the announcement. Proceed?'">Text</p>
             <br>
             <form action="#" th:action="@{'/announcements/{id}'(id=${pet.id})}" th:method="delete">
-                <button class="btn btn-danger" type="submit" id="submitButton" th:text="#{action.delete}">Delete
+                <button class="btn btn-danger submitButton" type="submit" th:text="#{action.delete}">Delete
                 </button>
             </form>
             <br>

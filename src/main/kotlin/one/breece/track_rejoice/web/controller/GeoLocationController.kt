@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.web.controller
 
-import one.breece.track_rejoice.commands.APBCommand
+import one.breece.track_rejoice.commands.PetAnnouncementCommand
 import one.breece.track_rejoice.commands.AddressCommand
 import one.breece.track_rejoice.service.GeocodingService
 import org.springframework.stereotype.Controller
@@ -15,8 +15,8 @@ class GeoLocationController(private val geocodingService: GeocodingService) {
     @RequestMapping
     fun geoLocation(@RequestParam lat: Double, @RequestParam lon: Double, model: Model): String {
         val reverseGeocode = geocodingService.reverseGeocode(lat, lon)
-        model.addAttribute("APBCommand",  APBCommand(address = reverseGeocode?:AddressCommand()))
+        model.addAttribute("petAnnouncementCommand",  PetAnnouncementCommand(address = reverseGeocode?:AddressCommand()))
         model.addAttribute("action", "create")
-        return "checkoutform"
+        return "petsearchform"
     }
 }

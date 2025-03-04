@@ -9,7 +9,7 @@
     <a type="submit" class="btn btn-primary" th:onclick="onApprove()">Submit</a>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script th:inline="javascript">
-        let announcementId = [[${APBCommand.id}]]
+        let announcementId = [[${petAnnouncementCommand.id}]]
         var serverContext = [[@{/}]];
 
             function onApprove(data, actions) {
@@ -26,10 +26,10 @@
 </div>
 
 <div th:fragment="paypal" class="row col-12">
-    <div th:if="${APBCommand.enabled}">
+    <div th:if="${petAnnouncementCommand.enabled}">
         <a class="btn btn-info" type="button" th:href="@{/}">Return to dashbord</a>
     </div>
-    <div th:unless="${APBCommand.enabled}">
+    <div th:unless="${petAnnouncementCommand.enabled}">
         <div id="paypal-button-container"></div>
         <p id="result-message"></p>
         <!-- Initialize the JS-SDK -->
@@ -37,7 +37,7 @@
                 src="https://www.paypal.com/sdk/js?client-id=ARKXvgGgko6VP9WPaLba0QaaMGGu0WRDXOaw9qgt79YzRoBzH6NjyacWLzzRKZHpK61G8sjeWfwIne6u&buyer-country=US&currency=EUR&components=buttons&enable-funding=card&disable-funding=venmo,paylater"
                 data-sdk-integration-source="developer-studio"
         ></script>
-        <script id="helper" src="/js/app.js" th:attr="data-product=${APBCommand.id}"></script>
+        <script id="helper" src="/js/app.js" th:attr="data-product=${petAnnouncementCommand.id}"></script>
     </div>
 </div>
 </body>

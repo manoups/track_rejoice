@@ -1,8 +1,10 @@
 package one.breece.track_rejoice.web.controller
 
 import jakarta.validation.Valid
-import one.breece.track_rejoice.commands.APBCommand
+import one.breece.track_rejoice.commands.PetAnnouncementCommand
 import one.breece.track_rejoice.service.PetService
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.Resource
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -15,20 +17,24 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/apb/form")
 class APBFormController(private val petService: PetService) {
 
+    @Value("classpath:static/text/dogs.txt")
+    lateinit var resourceFile: Resource
+
     @GetMapping(value = ["","/"])
     fun checkoutForm(model: Model): String {
-        model.addAttribute("APBCommand",  APBCommand())
+        model.addAttribute("petAnnouncementCommand",  PetAnnouncementCommand())
+        model.addAttribute("dogs", resourceFile)
         model.addAttribute("action", "create")
-        return "checkoutform"
+        return "petsearchform"
     }
 
     @PostMapping(value = ["","/"])
-    fun index(@Valid apbCommand: APBCommand, bindingResult: BindingResult, model: Model): String {
+    fun index(@Valid petAnnouncementCommand: PetAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
         model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
-            "checkoutform"
+            "petsearchform"
         } else {
-            val apb = petService.createAPB(apbCommand)
+            val apb = petService.createAPB(petAnnouncementCommand)
             "redirect:/apb/form/created/${apb.id}"
         }
     }
@@ -36,10 +42,10 @@ class APBFormController(private val petService: PetService) {
     @GetMapping("/created/{id}")
     fun created(@PathVariable id: Long, model: Model): String {
         val apb = petService.readById(id)
-        model.addAttribute("APBCommand", apb)
+        model.addAttribute("petAnnouncementCommand", apb)
         model.addAttribute("action", "publish")
 //        TODO: change label to 'paypal' for paid solution
         model.addAttribute("payment", "freemium")
-        return "checkoutform"
+        return "petsearchform"
     }
 }

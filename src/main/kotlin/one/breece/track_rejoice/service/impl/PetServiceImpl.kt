@@ -1,9 +1,10 @@
 package one.breece.track_rejoice.service.impl
 
 import jakarta.transaction.Transactional
-import one.breece.track_rejoice.commands.APBCommand
+import one.breece.track_rejoice.commands.PetAnnouncementCommand
 import one.breece.track_rejoice.commands.APBResponse
 import one.breece.track_rejoice.domain.Pet
+import one.breece.track_rejoice.domain.PetSexEnum
 import one.breece.track_rejoice.domain.SpeciesEnum
 import one.breece.track_rejoice.web.dto.PetResponse
 import one.breece.track_rejoice.repository.PetRepository
@@ -23,23 +24,24 @@ class PetServiceImpl(
     private val petToAbpResponse: Converter<Pet, APBResponse>
 ) : PetService {
     @Transactional
-    override fun createAPB(apbCommand: APBCommand): APBResponse {
-        val lastSeenLocation = geocodingService.geocode(apbCommand.address)!!
+    override fun createAPB(petAnnouncementCommand: PetAnnouncementCommand): APBResponse {
+        val lastSeenLocation = geocodingService.geocode(petAnnouncementCommand.address)!!
         val newPet = Pet(
-            name = apbCommand.name!!,
+            name = petAnnouncementCommand.name!!,
             lastSeenLocation = lastSeenLocation,
             species = SpeciesEnum.DOG,
-            breed = apbCommand.breed!!,
-            color = apbCommand.color,
+            breed = petAnnouncementCommand.breed!!,
+            sex = PetSexEnum.valueOf(petAnnouncementCommand.sex!!),
+            color = petAnnouncementCommand.color,
         ).also {
-            it.extraInfo = apbCommand.additionalInformation
-            it.phoneNumber =  apbCommand.phoneNumber
-            it.humanReadableAddress = apbCommand.address
+            it.extraInfo = petAnnouncementCommand.additionalInformation
+            it.phoneNumber =  petAnnouncementCommand.phoneNumber
+            it.humanReadableAddress = petAnnouncementCommand.address
         }
         newPet.addToTraceHistory(lastSeenLocation)
 
         val geofence = repository.save(newPet)
-        return APBResponse(geofence.id!!, false, apbCommand.name, apbCommand.breed, apbCommand.color, apbCommand.phoneNumber, apbCommand.address, apbCommand.lastSeenDate!!, apbCommand.additionalInformation)
+        return APBResponse(geofence.id!!, false, petAnnouncementCommand.name, petAnnouncementCommand.breed, petAnnouncementCommand.color, petAnnouncementCommand.phoneNumber, petAnnouncementCommand.address, petAnnouncementCommand.lastSeenDate!!, petAnnouncementCommand.additionalInformation)
     }
 
     override fun deleteById(id: Long) {

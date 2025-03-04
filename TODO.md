@@ -22,3 +22,4 @@
 - [ ] separate finder and seeker roles in different services
 - [ ] update passay version and validation rules
 - [ ] add form validation on RegistrationRestController::savePassword()
+- [ ] replace leaflet with Google Maps API to get (reverse) Geocoding searchbar

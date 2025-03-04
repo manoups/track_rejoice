@@ -7,15 +7,26 @@ body {
     padding: 3rem !important;
 }
 
-label:not(:has(+ input:required)):after {
+label:not(:has(+ input:required)):not(:has(+ select:required)):after {
     content: ' (optional)';
+}
+
+
+select:required:invalid {
+    color: gray;
+}
+option[value=""][disabled] {
+    display: none;
+}
+option {
+    color: black;
 }
 
 .modal-title {
     margin: auto;
 }
 
-#submitButton {
+.submitButton {
     display: block;
     margin: 0 auto;
 }
