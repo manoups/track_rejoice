@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 
 data class PetAnnouncementCommand(
+    @field:NotBlank val species: String? = null,
     @field:NotBlank @field:Size(min = 2, max = 50) val name: String? = null,
     @field:NotBlank @field:Size(min = 3, max = 50) val breed: String? = null,
     val color: String? = null,

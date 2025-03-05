@@ -11,6 +11,7 @@ class PetToAbpResponse : Converter<Pet, APBResponse> {
     override fun convert(source: Pet): APBResponse? {
         return APBResponse(
             source.id!!,
+            source.species.toString(),
             source.enabled,
             source.name,
             source.breed,

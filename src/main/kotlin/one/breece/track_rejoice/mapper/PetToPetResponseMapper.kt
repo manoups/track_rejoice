@@ -11,6 +11,7 @@ class PetToPetResponseMapper: Converter<Pet, PetResponse> {
         return PetResponse(
             id = source.id!!,
             name = source.name,
+            species = source.species.toString(),
 //            lastSeenLocation = source.lastSeenLocation,
             lastSeenDate = source.lastSeenDate,
             longitude = source.lastSeenLocation.x,

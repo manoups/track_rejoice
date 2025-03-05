@@ -9,10 +9,12 @@
     <table class="table table-striped">
         <tr class="table-header">
             <th th:text="#{search.table.name}">Name</th>
+            <th th:text="#{search.table.species}">Species</th>
             <th th:text="#{search.table.date}">Last seen date</th>
         </tr>
         <tr th:each="pet: ${pets}">
             <td th:text="${pet.name}">Pet Name</td>
+            <td th:text="${#strings.capitalize(#strings.toLowerCase(pet.species))}">Species</td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
         </tr>
     </table>
@@ -28,11 +30,13 @@
     <table class="table table-striped">
         <tr class="table-header">
             <th th:text="#{search.table.name}">Name</th>
+            <th th:text="#{search.table.species}">Species</th>
             <th th:text="#{search.table.date}">Last seen date</th>
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="pet: ${pets}">
             <td th:text="${pet.name}">Pet Name</td>
+            <td th:text="${pet.species}">Species</td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
                 <!--<a data-toggle="modal" data-target="#modal-warning"

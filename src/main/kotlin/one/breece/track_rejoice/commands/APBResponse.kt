@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class APBResponse(
     val id: Long,
+    val species: String,
     val enabled: Boolean,
     val name: String,
     val breed: String,

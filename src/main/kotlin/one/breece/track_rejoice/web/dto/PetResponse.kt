@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 data class PetResponse(
     val id: Long,
     val name: String,
+    val species: String,
     val longitude: Double,
     val latitude: Double,
     val lastSeenDate: LocalDateTime,

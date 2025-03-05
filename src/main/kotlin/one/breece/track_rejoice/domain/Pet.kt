@@ -10,11 +10,14 @@ import org.locationtech.jts.geom.Point
 class Pet(
     @NotNull
     val name: String,
+    @NotNull
     lastSeenLocation: Point,
+    @NotNull
     @Enumerated(EnumType.STRING)
     val species: SpeciesEnum,
     @NotNull
     val breed: String,
+    @NotNull
     @Enumerated(EnumType.STRING)
     val sex: PetSexEnum,
     val color: String? = null,

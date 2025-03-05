@@ -32,7 +32,7 @@ class PetServiceImpl(
         val newPet = Pet(
             name = petAnnouncementCommand.name!!,
             lastSeenLocation = makePoint(petAnnouncementCommand.lon!!, petAnnouncementCommand.lat!!),
-            species = SpeciesEnum.DOG,
+            species = SpeciesEnum.valueOf(petAnnouncementCommand.species!!.uppercase()),
             breed = petAnnouncementCommand.breed!!,
             sex = PetSexEnum.valueOf(petAnnouncementCommand.sex!!.uppercase()),
             color = petAnnouncementCommand.color,
@@ -44,7 +44,7 @@ class PetServiceImpl(
 //        newPet.addToTraceHistory(lastSeenLocation)
 
         val geofence = repository.save(newPet)
-        return APBResponse(geofence.id!!, false, petAnnouncementCommand.name, petAnnouncementCommand.breed, petAnnouncementCommand.color, petAnnouncementCommand.phoneNumber, petAnnouncementCommand.address, petAnnouncementCommand.lastSeenDate!!, petAnnouncementCommand.additionalInformation)
+        return APBResponse(geofence.id!!, geofence.species.toString(), false, petAnnouncementCommand.name, petAnnouncementCommand.breed, petAnnouncementCommand.color, petAnnouncementCommand.phoneNumber, petAnnouncementCommand.address, petAnnouncementCommand.lastSeenDate!!, petAnnouncementCommand.additionalInformation)
     }
 
     private fun makePoint(lon: Double, lat: Double) : Point {
