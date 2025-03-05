@@ -1,6 +1,5 @@
 package one.breece.track_rejoice.commands
 
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 data class UserPositionCommand (
@@ -10,7 +9,5 @@ data class UserPositionCommand (
     val lat: Double? = null,
     @field:NotNull
     val zoom: Int? = null,
-    @field:NotBlank
-    val target: String? = null,
     @field:NotNull
     val geoAvailable: Boolean? = null)

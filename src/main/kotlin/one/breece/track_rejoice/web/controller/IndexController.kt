@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView
 
 @Controller
 class IndexController {
-    @GetMapping(value = ["","/"])
+    @GetMapping(value = ["/index","/index/"])
     fun search(@RequestParam(defaultValue = "search") target: String, model: Model): String {
         model.addAttribute("locationCommand", UserPositionCommand())
         model.addAttribute("target", target)
@@ -30,17 +30,6 @@ class IndexController {
         modelMap.addAttribute("myLat", position.lat)
         modelMap.addAttribute("zoom", position.zoom)
         modelMap.addAttribute("identify", position.geoAvailable)
-        return when (position.target) {
-            "search" -> {
-                ModelAndView("redirect:/search", modelMap)
-            }
-            "create" -> {
-                ModelAndView("redirect:/announcement/create", modelMap)
-            }
-
-            else -> {
-                throw IllegalArgumentException("Unknown target ${position.target}")
-            }
-        }
+        return ModelAndView("redirect:/search", modelMap)
     }
 }

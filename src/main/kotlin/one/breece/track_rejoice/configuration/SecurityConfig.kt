@@ -50,6 +50,9 @@ class SecurityConfig {
                 authorize("/register*", permitAll)
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
+                authorize("/index*", permitAll)
+                authorize("/process*", permitAll)
+                authorize("/search*", permitAll)
                 authorize("/emailError*", permitAll)
                 authorize("/successRegister*", permitAll)
                 authorize("/api/v1/util/**", hasAuthority("ROLE_ADMIN"))
@@ -58,7 +61,7 @@ class SecurityConfig {
             formLogin {
                 loginPage = "/login"
                 failureUrl = "/login?error=true"
-                defaultSuccessUrl("/", true)
+                defaultSuccessUrl("/index", true)
                 authenticationFailureHandler = customAuthenticationFailureHandler
             }
             logout {
