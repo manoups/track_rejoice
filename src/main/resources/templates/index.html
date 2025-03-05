@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Track Rejoice</title>
@@ -34,7 +34,10 @@
 
 </head>
 <body>
-<div th:replace="~{fragments/navbar::navbar}"></div>
+
+<div sec:authorize="isAuthenticated()">
+    <div th:replace="~{fragments/navbar::navbar}"></div>
+</div>
 <div class="container">
     <h2 th:if="${firstName} ne null" th:text="'Welcome '+${firstName}">Welcome</h2>
     <p class="alert alert-info"><i class="fa fa-info" aria-hidden="true"></i> &nbsp;
@@ -52,11 +55,17 @@
             </form>
         </div>
         <div class="col-md-6">
-            <div th:if="${#lists.isEmpty(pets)}">
-                <div th:replace="~{fragments/empty_table::empty_table}"></div>
+            <div class="row">
+                <div th:if="${#lists.isEmpty(pets)}">
+                    <div th:replace="~{fragments/empty_table::empty_table}"></div>
+                </div>
+                <div th:unless="${#lists.isEmpty(pets)}">
+                    <div th:replace="~{fragments/value_table::value_table}"></div>
+                </div>
             </div>
-            <div th:unless="${#lists.isEmpty(pets)}">
-                <div th:replace="~{fragments/value_table::value_table}"></div>
+            <div class="text-center" sec:authorize="!isAuthenticated()">
+                <p>Log in/ Sign up to discover more actions!</p>
+                <a class="btn btn-info" th:href="@{/login}">Log in</a>
             </div>
         </div>
     </div>
@@ -64,7 +73,7 @@
 <script th:inline="javascript">
     var mymap = L.map('mapid', {
         minZoom: 1,
-        maxZoom: 20,
+        maxZoom: 18,
         attributionControl: false
     })
     const data = [[${pets}]];

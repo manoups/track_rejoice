@@ -67,8 +67,8 @@ class SecurityConfig {
             logout {
                 clearAuthentication = true
                 invalidateHttpSession = true
-                logoutSuccessUrl = "/login?message-key=logout.message"
-                deleteCookies("remove")
+                logoutSuccessUrl = "/index?message-key=logout.message"
+                deleteCookies("remove", "JSESSIONID")
             }
         }
         return http.build()
