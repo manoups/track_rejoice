@@ -21,15 +21,13 @@
 <div th:fragment="empty_table_with_actions">
     <table class="table table-striped">
         <tr class="table-header">
-            <th>ID</th>
             <th th:text="#{search.table.name}">Name</th>
-            <th th:text="#{search.table.location}">Last seen location</th>
             <th th:text="#{search.table.date}">Last seen date</th>
             <th th:text="#{search.table.actions}">Actions</th>
 
         </tr>
         <tr>
-            <td colspan="5">No results</td>
+            <td colspan="3">No results</td>
         </tr>
     </table>
 </div>

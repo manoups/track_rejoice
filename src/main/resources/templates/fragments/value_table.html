@@ -28,14 +28,11 @@
     <table class="table table-striped">
         <tr class="table-header">
             <th th:text="#{search.table.name}">Name</th>
-            <th th:text="#{search.table.location}">Last seen location</th>
             <th th:text="#{search.table.date}">Last seen date</th>
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="pet: ${pets}">
             <td th:text="${pet.name}">Pet Name</td>
-            <td th:replace="~{fragments/value_table::address}" th:text="${pet.humanReadableAddress}">Last SeenLocation
-            </td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
                 <!--<a data-toggle="modal" data-target="#modal-warning"
