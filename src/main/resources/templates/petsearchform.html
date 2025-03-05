@@ -34,7 +34,7 @@
 <div class="container">
     <h2>Pet Search Form</h2>
     <form class="needs-validation" th:object="${petAnnouncementCommand}" th:action="@{/apb/form}" method="post"
-          name="mainForm">
+          name="mainForm" id="mainForm">
 
         <div class="row">
             <div class="col-md-6">
@@ -67,7 +67,7 @@
                 <div class="row">
                     <div class="col-md-6 dropdown">
                         <label for="sex" class="form-label" th:text="#{search.table.sex}">Sex:</label>
-                        <select name="sex"
+                        <select th:unless="${#strings.equals(action, 'publish')}" name="sex"
                                 class="form-select"
                                 th:class="${#fields.hasErrors('sex')} ?'form-select is-invalid':'form-select'"
                                 th:field="*{sex}" id="sex" required
@@ -76,6 +76,8 @@
                             <option value="male" th:utext="#{pet.sex.male}"></option>
                             <option value="female" th:utext="#{pet.sex.female}"></option>
                         </select>
+                        <input type="text" th:if="${#strings.equals(action, 'publish')}" th:field="*{sex}" th:class="${#fields.hasErrors('breed')} ?
+            'form-control is-invalid':'form-control'" disabled>
                         <div id="sexFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('sex')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('sex')}" th:text="${err}"/>
@@ -146,7 +148,7 @@
                 <div class="container">
                     <div class="row">
                         <p><span th:utext="#{search.mobile.text}"></span>
-                            <span th:utext="#{search.mobile.pet.name.placeholder}" id="displayMessage"></span></p>
+                            <span th:utext="${#strings.equals(action, 'publish')} ? ${petAnnouncementCommand.name} : #{search.mobile.pet.name.placeholder}" id="displayMessage"></span></p>
                     </div>
                     <div id="mapid" style="width: 600px; height: 400px;"></div>
                 </div>
@@ -161,12 +163,10 @@
             <div th:replace="~{fragments/action::create}"></div>
         </div>
         <div th:if="${#strings.equals(action,'publish')}">
-            <div th:replace="${#strings.equals(payment, 'freemium')} ? ~{fragments/payment::freemium} : ~{fragments/payment::paypal}"></div>
+            <div th:replace="~{fragments/payment::paypal}"></div>
         </div>
-    </form>
-    <form th:action="@{/geolocation}" method="get" name="lonLatForm">
-        <input type="text" id="lat" name="lat" hidden>
-        <input type="text" id="lon" name="lon" hidden>
+        <input type="text" id="lat" th:field="*{lat}" hidden>
+        <input type="text" id="lon" th:field="*{lon}" hidden>
     </form>
     <script th:inline="javascript">
 
@@ -180,6 +180,7 @@
             attributionControl: false
         })
 
+        let action = [[${action}]]
         /*var markersGroup = L.layerGroup();
         map.addLayer(markersGroup);
         const MARKERS_MAX=1
@@ -196,49 +197,47 @@
             markersGroup.clearLayers();
         });*/
         // Ask for current location and navigate to that area
-        map.locate({setView: true, maxZoom: 18});
-
+        if ('create' == action) {
+            map.locate({setView: true, maxZoom: 18});
+        }
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        // limitMarkersToCount
-        // L.PM.setOptIn(true);
 
 
-        map.pm.addControls({
-            position: 'topleft',
-            drawCircleMarker: false,
-            rotateMode: false,
-            drawMarker: true,
-            drawPolyline: false,
-            drawRectangle: false,
-            drawPolygon: false,
-            drawCircle: false,
-            drawText: false,
-            editMode: false,
-            dragMode: false,
-            cutPolygon: false,
-            removalMode: true
-        });
-
-        let myLat = [[${myLat}]]
-        let myLon = [[${myLon}]]
-        let latitude = [[${lat}]] || 0;
-        let longitude = [[${lon}]] || 0;
-        let initZoom = [[${zoom}]] || 10;
-        let init = [[${identify}]]
-        let name = [[${firstName}]]
+        if ('create' == action) {
+            map.pm.addControls({
+                position: 'topleft',
+                drawCircleMarker: false,
+                rotateMode: false,
+                drawMarker: true,
+                drawPolyline: false,
+                drawRectangle: false,
+                drawPolygon: false,
+                drawCircle: false,
+                drawText: false,
+                editMode: false,
+                dragMode: false,
+                cutPolygon: false,
+                removalMode: true
+            });
+        }
 
 
-        map.setView([latitude, longitude], initZoom);
-        if (init) {
-            L.marker([myLat, myLon]).addTo(map)
-                .bindPopup(name || "You");
+        let latitude = [[${petAnnouncementCommand.lat}]] || 0;
+        let longitude = [[${petAnnouncementCommand.lon}]] || 0;
+        let name = document.getElementById('name').value
+
+
+        map.setView([latitude, longitude], 18);
+        if ('publish' == action) {
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup(name).openPopup();
         }
 
         map.on("pm:create", (e) => {
             // if (!workingLayer) return
-            console.log(e)
-            console.log(e.layer._latlng)
+            document.getElementById('lat').value = e.layer._latlng.lat;
+            document.getElementById('lon').value = e.layer._latlng.lng;
             map.pm.disableDraw();
             map.pm.Toolbar.setButtonDisabled(e.shape, true)
         });
@@ -248,14 +247,14 @@
             map.pm.Toolbar.setButtonDisabled('Marker', false)
         });
 
-        map.on('draw:edited', function (e) {
+        /*map.on('draw:edited', function (e) {
             var layers = e.layers;
             layers.eachLayer(function (layer) {
                 if (layer instanceof L.Marker) {
                     console.log("In here!!!!")
                 }
             });
-        });
+        });*/
         /*var actionVar = [[${action}]]
         if (actionVar === 'create' && document.getElementById("address.street").value === ""
             && navigator.geolocation) {

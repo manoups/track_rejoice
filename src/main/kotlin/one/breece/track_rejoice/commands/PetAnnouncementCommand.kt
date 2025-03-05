@@ -18,4 +18,6 @@ data class PetAnnouncementCommand(
     @field:NotNull @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     val lastSeenDate: LocalDateTime? = null,
     @Size(max = 500) val additionalInformation: String? = null,
+    @field:NotNull val lat: Double? = null,
+    @field:NotNull val lon: Double? = null
 )

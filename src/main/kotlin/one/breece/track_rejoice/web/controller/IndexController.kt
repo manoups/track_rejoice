@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView
 
 @Controller
 class IndexController {
-    @GetMapping(value = ["/index","/index/"])
+    @GetMapping(value = ["","/","/index","/index/"])
     fun search(@RequestParam(defaultValue = "search") target: String, model: Model): String {
         model.addAttribute("locationCommand", UserPositionCommand())
         model.addAttribute("target", target)

@@ -10,6 +10,9 @@ import one.breece.track_rejoice.web.dto.PetResponse
 import one.breece.track_rejoice.repository.PetRepository
 import one.breece.track_rejoice.service.GeocodingService
 import one.breece.track_rejoice.service.PetService
+import org.locationtech.jts.geom.GeometryFactory
+import org.locationtech.jts.geom.Point
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -25,23 +28,29 @@ class PetServiceImpl(
 ) : PetService {
     @Transactional
     override fun createAPB(petAnnouncementCommand: PetAnnouncementCommand): APBResponse {
-        val lastSeenLocation = geocodingService.geocode(petAnnouncementCommand.address)!!
+//        val lastSeenLocation = geocodingService.geocode(petAnnouncementCommand.address)!!
         val newPet = Pet(
             name = petAnnouncementCommand.name!!,
-            lastSeenLocation = lastSeenLocation,
+            lastSeenLocation = makePoint(petAnnouncementCommand.lon!!, petAnnouncementCommand.lat!!),
             species = SpeciesEnum.DOG,
             breed = petAnnouncementCommand.breed!!,
-            sex = PetSexEnum.valueOf(petAnnouncementCommand.sex!!),
+            sex = PetSexEnum.valueOf(petAnnouncementCommand.sex!!.uppercase()),
             color = petAnnouncementCommand.color,
         ).also {
             it.extraInfo = petAnnouncementCommand.additionalInformation
             it.phoneNumber =  petAnnouncementCommand.phoneNumber
             it.humanReadableAddress = petAnnouncementCommand.address
         }
-        newPet.addToTraceHistory(lastSeenLocation)
+//        newPet.addToTraceHistory(lastSeenLocation)
 
         val geofence = repository.save(newPet)
         return APBResponse(geofence.id!!, false, petAnnouncementCommand.name, petAnnouncementCommand.breed, petAnnouncementCommand.color, petAnnouncementCommand.phoneNumber, petAnnouncementCommand.address, petAnnouncementCommand.lastSeenDate!!, petAnnouncementCommand.additionalInformation)
+    }
+
+    private fun makePoint(lon: Double, lat: Double) : Point {
+        val gf = GeometryFactory()
+        val sf = PackedCoordinateSequenceFactory()
+        return gf.createPoint(sf.create(doubleArrayOf(lon, lat), 2))
     }
 
     override fun deleteById(id: Long) {

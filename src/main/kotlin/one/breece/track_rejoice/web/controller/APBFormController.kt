@@ -44,8 +44,6 @@ class APBFormController(private val petService: PetService) {
         val apb = petService.readById(id)
         model.addAttribute("petAnnouncementCommand", apb)
         model.addAttribute("action", "publish")
-//        TODO: change label to 'paypal' for paid solution
-        model.addAttribute("payment", "freemium")
         return "petsearchform"
     }
 }
