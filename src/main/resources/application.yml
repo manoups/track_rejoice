@@ -14,7 +14,7 @@ spring:
     name: track_rejoice
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         jdbc:

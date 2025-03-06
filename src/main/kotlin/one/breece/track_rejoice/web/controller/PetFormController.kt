@@ -35,7 +35,7 @@ class PetFormController(private val petService: PetService) {
             "petsearchform"
         } else {
             val apb = petService.createAPB(petAnnouncementCommand)
-            "redirect:/apb/form/created/${apb.id}"
+            "redirect:/apb/form/pet/created/${apb.id}"
         }
     }
 

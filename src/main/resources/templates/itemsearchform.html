@@ -40,21 +40,22 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="ownerName" class="form-label" th:text="#{search.form.owner.name}">Name:</label>
-                        <input type="text" class="form-control" th:class="${#fields.hasErrors('ownerName')} ?
-            'form-control is-invalid':'form-control'" id="ownerName" th:field="*{ownerName}" required
+                        <label for="shortDescription" class="form-label" th:text="#{search.form.short.description}">Name:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('shortDescription')} ?
+            'form-control is-invalid':'form-control'" id="shortDescription" th:field="*{shortDescription}" required
                                th:disabled="${#strings.equals(action, 'publish')}"
-                               aria-describedby="ownerNameFeedback">
-                        <div id="ownerNameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('ownerName')}">
+                               aria-describedby="shortDescriptionFeedback">
+                        <div id="shortDescriptionFeedback" class="invalid-feedback"
+                             th:if="${#fields.hasErrors('shortDescription')}">
                             <ul>
-                                <li th:each="err : ${#fields.errors('ownerName')}" th:text="${err}"/>
+                                <li th:each="err : ${#fields.errors('shortDescription')}" th:text="${err}"/>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
                             Number:</label>
-                        <input type="text" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
+                        <input type="tel" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
             'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
                                th:disabled="${#strings.equals(action, 'publish')}"
                                aria-describedby="phoneFeedback">
@@ -115,7 +116,7 @@
                 <div class="container">
                     <div class="row">
                         <p><span th:utext="#{search.mobile.text}"></span>
-                            <span th:utext="${#strings.equals(action, 'publish')} ? ${itemAnnouncementCommand.name} : #{search.mobile.pet.name.placeholder}"
+                            <span th:utext="${#strings.equals(action, 'publish')} ? ${itemAnnouncementCommand.shortDescription} : #{search.mobile.pet.name.placeholder}"
                                   id="displayMessage"></span></p>
                     </div>
                     <div id="mapid" style="width: 600px; height: 400px;"></div>
@@ -125,19 +126,12 @@
                 </div>
             </div>
         </div>
-        <input type="text" id="lat" th:field="*{lat}" hidden aria-describedby="latFeedback">
+        <input type="text" id="latlngs" th:field="*{latlngs}" hidden aria-describedby="latFeedback">
 
         <div id="latFeedback"
-             th:if="${#fields.hasErrors('lat')}">
+             th:if="${#fields.hasErrors('latlngs')}">
             <ul>
-                <li th:each="err : ${#fields.errors('lat')}" th:text="${err}"/>
-            </ul>
-        </div>
-        <input type="text" id="lon" th:field="*{lon}" hidden aria-describedby="lonFeedback">
-        <div id="lonFeedback"
-             th:if="${#fields.hasErrors('lon')}">
-            <ul>
-                <li th:each="err : ${#fields.errors('lon')}" th:text="${err}"/>
+                <li th:each="err : ${#fields.errors('latlngs')}" th:text="${err}"/>
             </ul>
         </div>
         <br>
@@ -146,7 +140,7 @@
             <div th:replace="~{fragments/action::create}"></div>
         </div>
         <div th:if="${#strings.equals(action,'publish')}">
-            <div th:replace="~{fragments/payment::paypal}"></div>
+            <div th:replace="~{fragments/payment::paypal(${itemAnnouncementCommand.id})}"></div>
         </div>
 
     </form>
@@ -205,28 +199,33 @@
         }
 
 
-        let latitude = [[${itemAnnouncementCommand.lat}]] || 0;
-        let longitude = [[${itemAnnouncementCommand.lon}]] || 0;
-        let name = document.getElementById('name').value
+        let latitude = 0;
+        let longitude = 0;
+        // let name = document.getElementById('name').value
 
 
-        map.setView([latitude, longitude], 18);
         if ('publish' == action) {
-            L.marker([latitude, longitude]).addTo(map)
-                .bindPopup(name).openPopup();
+            var latlngs = [[${itemAnnouncementCommand.latlngs}]];
+
+            var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+            map.setView([latlngs[0][0], latlngs[0][1]], 18);
         }
 
         map.on("pm:create", (e) => {
             // if (!workingLayer) return
-            document.getElementById('lat').value = e.layer._latlng.lat;
-            document.getElementById('lon').value = e.layer._latlng.lng;
+            console.log(e)
+            e.layer._latlngs.forEach(latlng => {
+                console.log(latlng.lat);
+                console.log(latlng.lng);
+            });
+            document.getElementById('latlngs').value = JSON.stringify(e.layer._latlngs)
             // map.pm.disableDraw();
             map.pm.Toolbar.setButtonDisabled(e.shape, true)
         });
 
         map.on("pm:remove", _ => {
             map.pm.disableGlobalRemovalMode()
-            map.pm.Toolbar.setButtonDisabled('Marker', false)
+            map.pm.Toolbar.setButtonDisabled('Line', false)
         });
 
         /*map.on('draw:edited', function (e) {

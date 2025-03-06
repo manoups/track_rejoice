@@ -2,7 +2,7 @@ package one.breece.track_rejoice.commands
 
 import java.time.LocalDateTime
 
-data class APBResponse(
+data class PetResponseCommand(
     val id: Long,
     val species: String,
     val enabled: Boolean,

@@ -4,12 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.paypal.sdk.PaypalServerSdkClient
 import com.paypal.sdk.exceptions.ApiException
 import com.paypal.sdk.models.*
-import one.breece.track_rejoice.service.PetService
+import one.breece.track_rejoice.service.BoloService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -20,7 +19,7 @@ import java.io.IOException
 class PayPalController(
     private val objectMapper: ObjectMapper,
     private val client: PaypalServerSdkClient,
-    private val petService: PetService
+    private val boloService: BoloService
 ) {
     @PostMapping("/api/orders")
     fun createOrder(@RequestBody request: Map<String, Any>): ResponseEntity<Order> {
@@ -58,7 +57,7 @@ class PayPalController(
     @PostMapping("/api/orders/{orderID}/{announcementId}/capture")
     fun captureOrder(@PathVariable orderID: String, @PathVariable announcementId: Long): ResponseEntity<Order> {
         try {
-            petService.enableAnnouncement(announcementId)
+            boloService.enableAnnouncement(announcementId)
             val response = captureOrders(orderID);
             return ResponseEntity(response, HttpStatus.OK)
         } catch (e: Exception) {

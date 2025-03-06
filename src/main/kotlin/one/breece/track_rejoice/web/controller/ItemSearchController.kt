@@ -29,7 +29,7 @@ class ItemSearchController(private val itemService: ItemService) {
             "itemsearchform"
         } else {
             val apb = itemService.createAPB(itemAnnouncementCommand)
-            "redirect:/apb/form/created/${apb.id}"
+            "redirect:/apb/form/item/created/${apb.id}"
         }
     }
 

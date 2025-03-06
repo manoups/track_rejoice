@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.web.controller
 
-import one.breece.track_rejoice.service.PetService
+import one.breece.track_rejoice.service.BoloService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping
 
 @Controller
 @ConditionalOnProperty(name = ["payments"], havingValue = "disabled", matchIfMissing = true)
-class FreemiumController(private val petService: PetService) {
+class FreemiumController(private val boloService: BoloService) {
     @PostMapping("/api/orders/{orderID}/{announcementId}/capture")
     fun captureOrders(@PathVariable announcementId: Long, @PathVariable orderID: String): ResponseEntity<String> {
-        petService.enableAnnouncement(announcementId)
+        boloService.enableAnnouncement(announcementId)
         return ResponseEntity("OK", HttpStatus.OK)
     }
 

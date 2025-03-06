@@ -1,15 +1,15 @@
 package one.breece.track_rejoice.mapper
 
-import one.breece.track_rejoice.commands.APBResponse
+import one.breece.track_rejoice.commands.PetResponseCommand
 import one.breece.track_rejoice.domain.Pet
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class PetToAbpResponse : Converter<Pet, APBResponse> {
+class PetToAbpResponse : Converter<Pet, PetResponseCommand> {
 
-    override fun convert(source: Pet): APBResponse? {
-        return APBResponse(
+    override fun convert(source: Pet): PetResponseCommand? {
+        return PetResponseCommand(
             source.id!!,
             source.species.toString(),
             source.enabled,

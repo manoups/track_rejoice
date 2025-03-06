@@ -25,7 +25,7 @@
     </script>
 </div>
 
-<div th:fragment="paypal" class="row col-12">
+<div th:fragment="paypal(id)" class="row col-12" th:id="${id}">
     <a th:remove="all" class="btn btn-info" type="button" th:href="@{/}">Return to dashbord</a>
     <div id="paypal-button-container"></div>
     <p id="result-message"></p>
@@ -34,7 +34,7 @@
             src="https://www.paypal.com/sdk/js?client-id=ARKXvgGgko6VP9WPaLba0QaaMGGu0WRDXOaw9qgt79YzRoBzH6NjyacWLzzRKZHpK61G8sjeWfwIne6u&buyer-country=US&currency=EUR&components=buttons&enable-funding=card&disable-funding=venmo,paylater"
             data-sdk-integration-source="developer-studio"
     ></script>
-    <script id="helper" src="/js/app.js" th:attr="data-product=${petAnnouncementCommand.id}"></script>
+    <script id="helper" src="/js/app.js" th:attr="data-product=${id}"></script>
 </div>
 </body>
 </html>

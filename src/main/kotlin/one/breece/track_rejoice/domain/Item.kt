@@ -6,6 +6,8 @@ import org.locationtech.jts.geom.MultiPoint
 
 @Entity
 class Item(
+    val shortDescription: String? = null,
+    val color: String? = null,
     @NotNull
     lastSeenLocation: MultiPoint,
 ):ImmobileItem(lastSeenLocation)
