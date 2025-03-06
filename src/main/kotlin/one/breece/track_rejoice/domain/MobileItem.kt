@@ -12,4 +12,4 @@ abstract class MobileItem(
     @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
     val lastSeenLocation: Point,
     @JdbcTypeCode(SqlTypes.JSON)
-    var humanReadableAddress: AddressCommand? = null) : AllPointsBulletin()
+    var humanReadableAddress: AddressCommand? = null) : BeOnTheLookOut()

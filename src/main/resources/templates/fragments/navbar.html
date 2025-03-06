@@ -47,21 +47,21 @@
                 </li>
 
 
-                <li class="nav-item">
+                <li th:remove="all" class="nav-item">
 
                     <a class="nav-link" href="/apb/form">Create Announcement</a>
 
                 </li>
 
-                <li class="nav-item dropdown" th:remove="all">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         Lost
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/apb/form">Pet</a></li>
-                        <li><a class="dropdown-item" href="/?target=create">Bike/ Scooter</a></li>
-                        <li><a class="dropdown-item" href="/?target=create">Item</a></li>
+                        <li><a class="dropdown-item" href="/apb/form/pet">Pet</a></li>
+                        <li th:remove="all"><a class="dropdown-item" href="/?target=create">Bike/ Scooter</a></li>
+                        <li><a class="dropdown-item" href="/apb/form/item">Item</a></li>
                     </ul>
                 </li>
 

@@ -12,13 +12,13 @@ interface PetRepository : CrudRepository<Pet, Long> {
     @Query(
         """
             SELECT *
-            FROM pet p join   all_points_bulletin l ON p.id=l.id
+            FROM pet p join be_on_the_look_out l ON p.id=l.id
             WHERE l.enabled AND ST_DWithin(p.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters)
         """,
         nativeQuery = true,
         countQuery = """
             SELECT count(distinct p.id)
-            FROM   pet p join   all_points_bulletin l ON p.id=l.id
+            FROM   pet p join be_on_the_look_out l ON p.id=l.id
             WHERE l.enabled AND ST_DWithin(p.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters)
         """,
     )

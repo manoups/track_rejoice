@@ -7,4 +7,4 @@ import org.locationtech.jts.geom.Point
 @Entity
 class MeansOfTransportation(val color: String, val brand: String, val model: String,
     lastSeenLocation: Point, humanReadableAddress: AddressCommand? = null) :
-    MobileItem(lastSeenLocation, humanReadableAddress)
+    MobileItem(lastSeenLocation, humanReadableAddress= humanReadableAddress)

@@ -1,10 +1,8 @@
 package one.breece.track_rejoice.web.controller
 
 import jakarta.validation.Valid
-import one.breece.track_rejoice.commands.PetAnnouncementCommand
-import one.breece.track_rejoice.service.PetService
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
+import one.breece.track_rejoice.commands.ItemAnnouncementCommand
+import one.breece.track_rejoice.service.ItemService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -14,36 +12,32 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
-@RequestMapping("/apb/form")
-class APBFormController(private val petService: PetService) {
-
-    @Value("classpath:static/text/dogs.txt")
-    lateinit var resourceFile: Resource
-
+@RequestMapping("/apb/form/item")
+class ItemSearchController(private val itemService: ItemService) {
     @GetMapping(value = ["","/"])
     fun checkoutForm(model: Model): String {
-        model.addAttribute("petAnnouncementCommand",  PetAnnouncementCommand())
-        model.addAttribute("dogs", resourceFile)
+        model.addAttribute("itemAnnouncementCommand",  ItemAnnouncementCommand())
+//        model.addAttribute("dogs", resourceFile)
         model.addAttribute("action", "create")
-        return "petsearchform"
+        return "itemsearchform"
     }
 
     @PostMapping(value = ["","/"])
-    fun index(@Valid petAnnouncementCommand: PetAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
+    fun index(@Valid itemAnnouncementCommand: ItemAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
         model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
-            "petsearchform"
+            "itemsearchform"
         } else {
-            val apb = petService.createAPB(petAnnouncementCommand)
+            val apb = itemService.createAPB(itemAnnouncementCommand)
             "redirect:/apb/form/created/${apb.id}"
         }
     }
 
     @GetMapping("/created/{id}")
     fun created(@PathVariable id: Long, model: Model): String {
-        val apb = petService.readById(id)
-        model.addAttribute("petAnnouncementCommand", apb)
+        val apb = itemService.readById(id)
+        model.addAttribute("itemAnnouncementCommand", apb)
         model.addAttribute("action", "publish")
-        return "petsearchform"
+        return "itemsearchform"
     }
 }

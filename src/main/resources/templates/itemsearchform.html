@@ -32,22 +32,22 @@
 <body>
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
-    <h2>Pet Search Form</h2>
-    <form class="needs-validation" th:object="${petAnnouncementCommand}" th:action="@{/apb/form/pet}" method="post"
+    <h2 th:utext="#{item.search.form}">Item Search Form</h2>
+    <form class="needs-validation" th:object="${itemAnnouncementCommand}" th:action="@{/apb/form/item}" method="post"
           name="mainForm" id="mainForm">
 
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="name" class="form-label" th:text="#{search.form.name}">Name:</label>
-                        <input type="text" class="form-control" th:class="${#fields.hasErrors('name')} ?
-            'form-control is-invalid':'form-control'" id="name" th:field="*{name}" required
+                        <label for="ownerName" class="form-label" th:text="#{search.form.owner.name}">Name:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('ownerName')} ?
+            'form-control is-invalid':'form-control'" id="ownerName" th:field="*{ownerName}" required
                                th:disabled="${#strings.equals(action, 'publish')}"
-                               aria-describedby="nameFeedback">
-                        <div id="nameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                               aria-describedby="ownerNameFeedback">
+                        <div id="ownerNameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('ownerName')}">
                             <ul>
-                                <li th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
+                                <li th:each="err : ${#fields.errors('ownerName')}" th:text="${err}"/>
                             </ul>
                         </div>
                     </div>
@@ -61,59 +61,6 @@
                         <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 dropdown">
-                        <label for="species" class="form-label" th:text="#{search.table.species}">Species:</label>
-                        <select th:unless="${#strings.equals(action, 'publish')}" name="species"
-                                class="form-select"
-                                th:class="${#fields.hasErrors('species')} ?'form-select is-invalid':'form-select'"
-                                th:field="*{species}" id="species" required
-                                th:disabled="${#strings.equals(action, 'publish')}" aria-describedby="speciesFeedback">
-                            <option value="" selected hidden>Species</option>
-                            <option value="cat" th:utext="#{pet.species.cat}"></option>
-                            <option value="dog" th:utext="#{pet.species.dog}"></option>
-                        </select>
-                        <input type="text" th:if="${#strings.equals(action, 'publish')}" th:field="*{species}"
-                               th:class="${#fields.hasErrors('species')} ?
-            'form-control is-invalid':'form-control'" disabled>
-                        <div id="speciesFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('species')}">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('species')}" th:text="${err}"/>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-4 dropdown">
-                        <label for="sex" class="form-label" th:text="#{search.table.sex}">Sex:</label>
-                        <select th:unless="${#strings.equals(action, 'publish')}" name="sex"
-                                class="form-select"
-                                th:class="${#fields.hasErrors('sex')} ?'form-select is-invalid':'form-select'"
-                                th:field="*{sex}" id="sex" required
-                                th:disabled="${#strings.equals(action, 'publish')}" aria-describedby="sexFeedback">
-                            <option value="" selected hidden>Pet Sex</option>
-                            <option value="male" th:utext="#{pet.sex.male}"></option>
-                            <option value="female" th:utext="#{pet.sex.female}"></option>
-                        </select>
-                        <input type="text" th:if="${#strings.equals(action, 'publish')}" th:field="*{sex}" th:class="${#fields.hasErrors('sex')} ?
-            'form-control is-invalid':'form-control'" disabled>
-                        <div id="sexFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('sex')}">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('sex')}" th:text="${err}"/>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="breed" class="form-label" th:text="#{search.form.breed}">Breed:</label>
-                        <input type="text" class="form-control" th:class="${#fields.hasErrors('breed')} ?
-            'form-control is-invalid':'form-control'" id="breed" th:field="*{breed}" required
-                               th:disabled="${#strings.equals(action, 'publish')}"
-                               aria-describedby="breedFeedback">
-                        <div id="breedFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('breed')}">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('breed')}" th:text="${err}"/>
                             </ul>
                         </div>
                     </div>
@@ -168,7 +115,7 @@
                 <div class="container">
                     <div class="row">
                         <p><span th:utext="#{search.mobile.text}"></span>
-                            <span th:utext="${#strings.equals(action, 'publish')} ? ${petAnnouncementCommand.name} : #{search.mobile.pet.name.placeholder}"
+                            <span th:utext="${#strings.equals(action, 'publish')} ? ${itemAnnouncementCommand.name} : #{search.mobile.pet.name.placeholder}"
                                   id="displayMessage"></span></p>
                     </div>
                     <div id="mapid" style="width: 600px; height: 400px;"></div>
@@ -205,10 +152,10 @@
     </form>
     <script th:inline="javascript">
 
-        document.getElementById("name").addEventListener("change", _ =>
-            document.getElementById("displayMessage").textContent =
-                document.getElementsByName("mainForm")[0].querySelector('#name').value
-        )
+        // document.getElementById("name").addEventListener("change", _ =>
+        //     document.getElementById("displayMessage").textContent =
+        //         document.getElementsByName("mainForm")[0].querySelector('#name').value
+        // )
         var map = L.map('mapid', {
             minZoom: 1,
             maxZoom: 18,
@@ -244,8 +191,8 @@
                 position: 'topleft',
                 drawCircleMarker: false,
                 rotateMode: false,
-                drawMarker: true,
-                drawPolyline: false,
+                drawMarker: false,
+                drawPolyline: true,
                 drawRectangle: false,
                 drawPolygon: false,
                 drawCircle: false,
@@ -258,8 +205,8 @@
         }
 
 
-        let latitude = [[${petAnnouncementCommand.lat}]] || 0;
-        let longitude = [[${petAnnouncementCommand.lon}]] || 0;
+        let latitude = [[${itemAnnouncementCommand.lat}]] || 0;
+        let longitude = [[${itemAnnouncementCommand.lon}]] || 0;
         let name = document.getElementById('name').value
 
 
@@ -273,7 +220,7 @@
             // if (!workingLayer) return
             document.getElementById('lat').value = e.layer._latlng.lat;
             document.getElementById('lon').value = e.layer._latlng.lng;
-            map.pm.disableDraw();
+            // map.pm.disableDraw();
             map.pm.Toolbar.setButtonDisabled(e.shape, true)
         });
 
@@ -290,15 +237,6 @@
                 }
             });
         });*/
-        /*var actionVar = [[${action}]]
-        if (actionVar === 'create' && document.getElementById("address.street").value === ""
-            && navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                document.getElementById('lat').value = position.coords.latitude;
-                document.getElementById('lon').value = position.coords.longitude;
-                document.lonLatForm.submit();
-            });
-        }*/
     </script>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

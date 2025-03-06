@@ -4,16 +4,12 @@ import jakarta.annotation.Nonnull
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.TenantId
-import org.hibernate.annotations.UpdateTimestamp
 import org.locationtech.jts.geom.Geometry
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-abstract class AllPointsBulletin(
+abstract class BeOnTheLookOut(
 //    We should not store the trace as a polygon because we want to track timestamps
 //    @Column(name = "geometry_polygon", columnDefinition = "geometry(Polygon, 4326)", nullable = false)
 //    var geometryPolygon: Polygon
@@ -26,31 +22,20 @@ abstract class AllPointsBulletin(
         fetch = FetchType.LAZY,
         cascade = [CascadeType.ALL],
         orphanRemoval = true,
-        mappedBy = "allPointsBulletin"
+        mappedBy = "beOnTheLookOut"
     )
     val traceHistory: MutableSet<Trace> = HashSet(),
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-    @Version
-    val version: Short = 0,
-    @CreationTimestamp
-    val createdAt: Date? = null,
-    @UpdateTimestamp
-    val updatedAt: Date? = null,
 
-    @TenantId
-    var createdBy: Long? = null,
     @Column(columnDefinition =  "varchar(1024)")
     var extraInfo: String? = null,
 
     @NotNull
     @Column(columnDefinition = "boolean default false")
     var enabled: Boolean = false
-) {
+):BoilerPlate() {
     @Transient
     fun addToTraceHistory(location: Geometry) {
-        val trace = Trace(location = location, allPointsBulletin = this)
+        val trace = Trace(location = location, beOnTheLookOut = this)
         traceHistory.add(trace)
     }
 }
