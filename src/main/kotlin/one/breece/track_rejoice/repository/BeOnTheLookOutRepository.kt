@@ -38,16 +38,20 @@ interface BeOnTheLookOutRepository:CrudRepository<BeOnTheLookOut, Long> {
             select bolo.id
             FROM be_on_the_look_out bolo left outer join pet p ON p.id=bolo.id
             left outer join item it ON it.id=bolo.id
+            left outer join means_of_transportation mot ON mot.id=bolo.id
             WHERE bolo.enabled AND (ST_DWithin(p.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters) OR
-            ST_DWithin(it.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters))
+            ST_DWithin(it.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters) OR 
+             ST_DWithin(mot.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters))
         """,
         nativeQuery = true,
         countQuery = """
             SELECT count(distinct bolo.id)
            FROM be_on_the_look_out bolo left outer join pet p ON p.id=bolo.id
             left outer join item it ON it.id=bolo.id
+            left outer join means_of_transportation mot ON mot.id=bolo.id
             WHERE bolo.enabled AND (ST_DWithin(p.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters) OR
-            ST_DWithin(it.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters))
+            ST_DWithin(it.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters) OR 
+             ST_DWithin(mot.last_seen_location, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326), :distanceInMeters))
         """,
     )
     fun findIdsByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageable: Pageable): Page<Long>

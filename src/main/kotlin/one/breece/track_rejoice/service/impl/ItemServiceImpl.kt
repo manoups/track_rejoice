@@ -20,13 +20,25 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
     override fun createAPB(announcementCommand: ItemAnnouncementCommand): ItemResponseCommand {
         val multipoint: List<LatLng> =
             objectMapper.readValue(announcementCommand.latlngs!!, object : TypeReference<List<LatLng>>() {})
-        val geofence = Item(announcementCommand.shortDescription!!, announcementCommand.color,makeMultiPoint(multipoint))
-            .also {
-                it.phoneNumber = announcementCommand.phoneNumber; it.extraInfo =
-                announcementCommand.additionalInformation
-            }
-            .let { repository.save(it) }
-        return ItemResponseCommand(geofence.id!!, announcementCommand.shortDescription, announcementCommand.color, announcementCommand.phoneNumber, announcementCommand.lastSeenDate!!, announcementCommand.additionalInformation,
+        val geofence =
+            Item(
+                announcementCommand.shortDescription!!,
+                announcementCommand.color,
+                announcementCommand.phoneNumber!!,
+                makeMultiPoint(multipoint)
+            )
+                .also {
+                    it.lastSeenDate = announcementCommand.lastSeenDate!!
+                    it.extraInfo = announcementCommand.additionalInformation
+                }
+                .let { repository.save(it) }
+        return ItemResponseCommand(
+            geofence.id!!,
+            announcementCommand.shortDescription,
+            announcementCommand.color,
+            announcementCommand.phoneNumber,
+            announcementCommand.lastSeenDate!!,
+            announcementCommand.additionalInformation,
             multipoint.map { doubleArrayOf(it.lng, it.lat) })
     }
 
@@ -50,7 +62,8 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
         repository.findById(id).let { optional ->
             return if (optional.isPresent) {
                 val item = optional.get()
-                 ItemResponseCommand(item.id!!, item.shortDescription, item.phoneNumber, item.color, item.lastSeenDate, item.extraInfo,
+                ItemResponseCommand(
+                    item.id!!, item.shortDescription, item.phoneNumber, item.color, item.lastSeenDate, item.extraInfo,
                     item.lastSeenLocation.coordinates.map { doubleArrayOf(it.y, it.x) })
             } else {
                 null

@@ -8,6 +8,7 @@ import org.locationtech.jts.geom.MultiPoint
 class Item(
     val shortDescription: String,
     val color: String? = null,
+    phoneNumber: String,
     @NotNull
     lastSeenLocation: MultiPoint,
-):ImmobileItem(lastSeenLocation)
+    ):ImmobileItem(phoneNumber, lastSeenLocation)

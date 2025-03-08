@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout</title>
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"
+    />
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/lux/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.js"></script>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div th:replace="~{fragments/navbar::navbar}"></div>
+<div class="container">
+    <h2>Pet Search Form</h2>
+    <form class="needs-validation" th:object="${meansOfTransportationAnnouncementCommand}"
+          th:action="@{/apb/form/transport}" method="post"
+          name="mainForm" id="mainForm">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label for="maker" class="form-label"
+                               th:text="#{search.form.transportation.maker}">Maker:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('maker')} ?
+            'form-control is-invalid':'form-control'" id="maker" th:field="*{maker}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
+                               aria-describedby="makerFeedback">
+                        <div id="makerFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('maker')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('maker')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="model" class="form-label"
+                               th:text="#{search.form.transportation.model}">Model:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('model')} ?
+            'form-control is-invalid':'form-control'" id="model" th:field="*{model}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
+                               aria-describedby="modelFeedback">
+                        <div id="modelFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('model')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('model')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="year" class="form-label" th:text="#{search.form.transportation.year}">Year:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('year')} ?
+            'form-control is-invalid':'form-control'" id="year" th:field="*{year}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
+                               aria-describedby="yearFeedback">
+                        <div id="yearFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('year')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('year')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="color" class="form-label"
+                               th:text="#{search.form.transportation.color}">Color:</label>
+                        <input type="text" class="form-control" th:class="${#fields.hasErrors('color')} ?
+            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
+                               aria-describedby="colorFeedback">
+                        <div id="colorFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('color')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('color')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                <div class="col-md-4">
+                    <label for="plate" class="form-label" th:text="#{search.form.transportation.plate}">Plate:</label>
+                    <input type="text" class="form-control" th:class="${#fields.hasErrors('plate')} ?
+            'form-control is-invalid':'form-control'" id="plate" th:field="*{plate}"
+                           th:disabled="${#strings.equals(action, 'publish')}"
+                           aria-describedby="plateFeedback">
+                    <div id="plateFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('plate')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('plate')}" th:text="${err}"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="lastSeenDate" class="form-label" th:text="#{search.table.date}">Last
+                        seen:</label>
+                    <input th:type="${#strings.equals(action, 'publish')} ? 'text': 'datetime-local'"
+                           class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
+            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required
+                           th:disabled="${#strings.equals(action, 'publish')}" aria-describedby="dateFeedback">
+                    <div id="dateFeedback" class="invalid-feedback"
+                         th:if="${#fields.hasErrors('lastSeenDate')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}"/>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
+                        Number:</label>
+                    <input type="tel" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
+            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
+                           th:disabled="${#strings.equals(action, 'publish')}"
+                           aria-describedby="phoneFeedback">
+                    <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="additionalInformation" th:required="optional" class="form-label"
+                           th:text="#{search.form.extra.info}">Extra
+                        Info:</label>
+                    <textarea class="form-control" rows="6" th:class="${#fields.hasErrors('additionalInformation')} ?
+            'form-control is-invalid':'form-control'" id="additionalInformation"
+                              th:disabled="${#strings.equals(action, 'publish')}"
+                              th:field="*{additionalInformation}" aria-describedby="extraFeedback">
+                        </textarea>
+                    <div id="extraFeedback" class="invalid-feedback"
+                         th:if="${#fields.hasErrors('additionalInformation')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('additionalInformation')}" th:text="${err}"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container">
+                <div class="row">
+                    <p><span th:utext="#{search.mobile.text}"></span>
+                        <span th:utext="${#strings.equals(action, 'publish')} ? ${meansOfTransportationAnnouncementCommand.maker} : #{search.mobile.transportation.placeholder}"
+                              id="displayMessage"></span></p>
+                </div>
+                <div id="mapid" style="width: 600px; height: 400px;"></div>
+            </div>
+            <div th:remove="all" class="col-md-4">
+                <form th:replace="~{fragments/address::address}"></form>
+            </div>
+        </div>
+</div>
+<input type="text" id="lat" th:field="*{lat}" hidden aria-describedby="latFeedback">
+
+<div id="latFeedback"
+     th:if="${#fields.hasErrors('lat')}">
+    <ul>
+        <li th:each="err : ${#fields.errors('lat')}" th:text="${err}"/>
+    </ul>
+</div>
+<input type="text" id="lon" th:field="*{lon}" hidden aria-describedby="lonFeedback">
+<div id="lonFeedback"
+     th:if="${#fields.hasErrors('lon')}">
+    <ul>
+        <li th:each="err : ${#fields.errors('lon')}" th:text="${err}"/>
+    </ul>
+</div>
+<br>
+<br>
+<div th:if="${#strings.equals(action, 'create')}">
+    <div th:replace="~{fragments/action::create}"></div>
+</div>
+<div th:if="${#strings.equals(action,'publish')}">
+    <div th:replace="~{fragments/payment::paypal(${meansOfTransportationAnnouncementCommand.id})}"></div>
+</div>
+
+</form>
+<script th:inline="javascript">
+
+    var map = L.map('mapid', {
+        minZoom: 1,
+        maxZoom: 18,
+        attributionControl: false
+    })
+
+    let action = [[${action}]]
+    /*var markersGroup = L.layerGroup();
+    map.addLayer(markersGroup);
+    const MARKERS_MAX=1
+    map.on('click', function(e) {
+        // get the count of currently displayed markers
+        var markersCount = markersGroup.getLayers().length;
+
+        if (markersCount < MARKERS_MAX) {
+            var marker = L.marker(e.latlng).addTo(markersGroup);
+            return;
+        }
+
+        // remove the markers when MARKERS_MAX is reached
+        markersGroup.clearLayers();
+    });*/
+    // Ask for current location and navigate to that area
+    if ('create' == action) {
+        map.locate({setView: true, maxZoom: 18});
+    }
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+
+    if ('create' == action) {
+        map.pm.addControls({
+            position: 'topleft',
+            drawCircleMarker: false,
+            rotateMode: false,
+            drawMarker: true,
+            drawPolyline: false,
+            drawRectangle: false,
+            drawPolygon: false,
+            drawCircle: false,
+            drawText: false,
+            editMode: false,
+            dragMode: false,
+            cutPolygon: false,
+            removalMode: true
+        });
+    }
+
+
+    let latitude = [[${meansOfTransportationAnnouncementCommand.lat}]] || 0;
+    let longitude = [[${meansOfTransportationAnnouncementCommand.lon}]] || 0;
+
+
+    map.setView([latitude, longitude], 18);
+    if ('publish' == action) {
+        L.marker([latitude, longitude]).addTo(map)
+            .openPopup();
+    }
+
+    map.on("pm:create", (e) => {
+        // if (!workingLayer) return
+        document.getElementById('lat').value = e.layer._latlng.lat;
+        document.getElementById('lon').value = e.layer._latlng.lng;
+        map.pm.disableDraw();
+        map.pm.Toolbar.setButtonDisabled(e.shape, true)
+    });
+
+    map.on("pm:remove", _ => {
+        map.pm.disableGlobalRemovalMode()
+        map.pm.Toolbar.setButtonDisabled('Marker', false)
+    });
+
+    /*map.on('draw:edited', function (e) {
+        var layers = e.layers;
+        layers.eachLayer(function (layer) {
+            if (layer instanceof L.Marker) {
+                console.log("In here!!!!")
+            }
+        });
+    });*/
+    /*var actionVar = [[${action}]]
+    if (actionVar === 'create' && document.getElementById("address.street").value === ""
+        && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            document.getElementById('lat').value = position.coords.latitude;
+            document.getElementById('lon').value = position.coords.longitude;
+            document.lonLatForm.submit();
+        });
+    }*/
+</script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<!--<script src="/js/map.js"></script>-->
+</body>
+</html>

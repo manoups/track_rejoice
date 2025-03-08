@@ -10,8 +10,8 @@ import org.locationtech.jts.geom.Point
 class Pet(
     @NotNull
     val name: String,
-    @NotNull
     lastSeenLocation: Point,
+    phoneNumber: String,
     @NotNull
     @Enumerated(EnumType.STRING)
     val species: SpeciesEnum,
@@ -22,4 +22,4 @@ class Pet(
     val sex: PetSexEnum,
     val color: String? = null,
     val transponderCode: Long? = null,
-) : MobileItem(lastSeenLocation)
+) : MobileItem(phoneNumber, lastSeenLocation)

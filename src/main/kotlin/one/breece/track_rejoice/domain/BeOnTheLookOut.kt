@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.locationtech.jts.geom.Geometry
 import java.time.LocalDateTime
+import java.util.UUID
+import kotlin.uuid.Uuid
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -14,9 +16,9 @@ abstract class BeOnTheLookOut(
 //    @Column(name = "geometry_polygon", columnDefinition = "geometry(Polygon, 4326)", nullable = false)
 //    var geometryPolygon: Polygon
     @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
-    var phoneNumber: String? = null,
+    var phoneNumber: String,
     @Nonnull
-    val lastSeenDate: LocalDateTime = LocalDateTime.now(),
+    var lastSeenDate: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(
         fetch = FetchType.LAZY,
@@ -28,7 +30,8 @@ abstract class BeOnTheLookOut(
 
     @Column(columnDefinition =  "varchar(1024)")
     var extraInfo: String? = null,
-
+//    @Column(unique = true, nullable=false, updatable = false)
+//    val sku: UUID = UUID.randomUUID(),
     @NotNull
     @Column(columnDefinition = "boolean default false")
     var enabled: Boolean = false

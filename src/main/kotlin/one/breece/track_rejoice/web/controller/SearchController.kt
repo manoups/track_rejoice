@@ -13,7 +13,7 @@ import java.util.*
 
 
 @Controller
-class PetController(
+class SearchController(
     private val boloService: BoloService,
     private val utilService: UtilService,
 ) {
@@ -37,7 +37,7 @@ class PetController(
         pageable: Pageable,
         model: Model
     ): String {
-        val content = boloService.findAllByLngLat(lon, lat, 0.1 / (zoom/2.0), pageable).content
+        val content = boloService.findAllByLngLat(lon, lat, 0.1 / (zoom/1.5), pageable).content
         model.addAttribute("pets", content)
         model.addAttribute("lon", lon)
         model.addAttribute("lat", lat)

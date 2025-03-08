@@ -23,3 +23,5 @@
 - [ ] update passay version and validation rules
 - [ ] add form validation on RegistrationRestController::savePassword()
 - [ ] replace leaflet with Google Maps API to get (reverse) Geocoding searchbar
+- [ ] use CQRS to give read-all access
+- [ ] secure payment callback API

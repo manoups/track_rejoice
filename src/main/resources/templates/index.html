@@ -98,13 +98,13 @@
 
     for (var i = 0; i < data.length; i++) {
         if (data[i].geometryType == 'Marker') {
-            if (data[i].lastSeenLocation.size != 1) {
+            if (data[i].lastSeenLocation.length != 1) {
                 console.error("Expected size 1, found " + data[i].lastSeenLocation.size)
             }
             L.marker([data[i].lastSeenLocation[0][1], data[i].lastSeenLocation[0][0]]).addTo(mymap)
                 .bindPopup(data[i].name || data[i].type);
         } else if (data[i].geometryType == 'MultiPoint') {
-            if (data[i].lastSeenLocation.size < 2) {
+            if (data[i].lastSeenLocation.length < 2) {
                 console.error("Expected size > 1, found " + data[i].lastSeenLocation.size)
             }
             L.polyline(data[i].lastSeenLocation, {color: 'red'}).addTo(mymap)

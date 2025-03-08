@@ -9,7 +9,8 @@ import org.locationtech.jts.geom.Point
 
 @MappedSuperclass
 abstract class MobileItem(
+    phoneNumber: String,
     @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
     val lastSeenLocation: Point,
     @JdbcTypeCode(SqlTypes.JSON)
-    var humanReadableAddress: AddressCommand? = null) : BeOnTheLookOut()
+    var humanReadableAddress: AddressCommand? = null) : BeOnTheLookOut(phoneNumber)
