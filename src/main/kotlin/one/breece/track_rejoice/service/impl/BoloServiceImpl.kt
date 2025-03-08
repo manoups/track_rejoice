@@ -40,9 +40,9 @@ class BoloServiceImpl(
         pageable: Pageable
     ): Page<BeOnTheLookOutProj> {
         val page = repository.findIdsByLngLat(lon, lat, distanceInMeters, pageable)
-        val pets = petRepository.findAllByIdAnonymous(page.content)
-        val items = itemRepository.findAllByIdAnonymous(page.content)
-        val bicycles = bicycleRepository.findAllByIdAnonymous(page.content)
+        val pets = petRepository.findAllById(page.content)
+        val items = itemRepository.findAllById(page.content)
+        val bicycles = bicycleRepository.findAllById(page.content)
         val petProj = pets.map { petToProjRepository.convert(it) }
         val itemProj = items.map { itemToProjRepository.convert(it) }
         val transportationProj = bicycles.map { bicycleToProjRepository.convert(it) }

@@ -30,12 +30,4 @@ interface PetRepository : CrudRepository<Pet, Long> {
         """, nativeQuery = true
     )
     fun findDistanceBetween(id1: Long, id2: Long): Double
-
-    @Query(
-        """
-            select * from pet p join be_on_the_look_out bolo ON p.id=bolo.id where p.id in (:ids)
-        """,
-        nativeQuery = true
-    )
-    fun findAllByIdAnonymous(ids: Collection<Long>): List<Pet>
 }
