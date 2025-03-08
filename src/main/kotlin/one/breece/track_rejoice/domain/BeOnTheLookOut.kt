@@ -6,8 +6,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.locationtech.jts.geom.Geometry
 import java.time.LocalDateTime
-import java.util.UUID
-import kotlin.uuid.Uuid
+import java.util.*
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -30,8 +29,8 @@ abstract class BeOnTheLookOut(
 
     @Column(columnDefinition =  "varchar(1024)")
     var extraInfo: String? = null,
-//    @Column(unique = true, nullable=false, updatable = false)
-//    val sku: UUID = UUID.randomUUID(),
+    @Column(unique = true, nullable=false, updatable = false)
+    val sku: UUID = UUID.randomUUID(),
     @NotNull
     @Column(columnDefinition = "boolean default false")
     var enabled: Boolean = false
