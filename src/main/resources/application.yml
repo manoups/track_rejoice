@@ -17,7 +17,6 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           lob:
             non_contextual_creation: true
@@ -63,8 +62,6 @@ spring:
 support:
   email: emmanouil.psanis@gmail.com
 
-hibernate:
-  dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
 #  tenant_identifier_resolver: one.breece.track_rejoice.configuration.TenantIdentifierResolver
 
 aws:

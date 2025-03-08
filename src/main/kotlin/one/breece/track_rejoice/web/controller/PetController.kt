@@ -16,7 +16,6 @@ import java.util.*
 class PetController(
     private val boloService: BoloService,
     private val utilService: UtilService,
-    val utilServicegetName: UtilService
 ) {
 
     /**
@@ -44,7 +43,7 @@ class PetController(
         model.addAttribute("lat", lat)
         model.addAttribute("zoom", zoom)
         model.addAttribute("identify", identify)
-        model.addAttribute("firstName", utilServicegetName.getName(context))
+        model.addAttribute("firstName", utilService.getName(context))
         myLat.ifPresent { model.addAttribute("myLat", it) }
         myLon.ifPresent { model.addAttribute("myLon", it) }
         return "index"

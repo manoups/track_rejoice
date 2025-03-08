@@ -37,5 +37,5 @@ interface PetRepository : CrudRepository<Pet, Long> {
         """,
         nativeQuery = true
     )
-    fun findAllByIdAnonymous(ids: List<Long>): List<Pet>
+    fun findAllByIdAnonymous(ids: Collection<Long>): List<Pet>
 }

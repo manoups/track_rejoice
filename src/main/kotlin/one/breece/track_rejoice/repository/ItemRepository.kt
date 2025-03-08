@@ -13,6 +13,6 @@ interface ItemRepository : CrudRepository<Item, Long> {
         """,
         nativeQuery = true
     )
-    fun findAllByIdAnonymous(ids: List<Long>): List<Item>
+    fun findAllByIdAnonymous(ids: Collection<Long>): List<Item>
 
 }
