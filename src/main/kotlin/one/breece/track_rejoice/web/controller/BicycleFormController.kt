@@ -1,8 +1,8 @@
 package one.breece.track_rejoice.web.controller
 
 import jakarta.validation.Valid
-import one.breece.track_rejoice.commands.MeansOfTransportationAnnouncementCommand
-import one.breece.track_rejoice.service.TransportationService
+import one.breece.track_rejoice.commands.BicycleAnnouncementCommand
+import one.breece.track_rejoice.service.BicycleService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/apb/form/transport")
-class TransportationFormController(private val transportationService: TransportationService) {
+class BicycleFormController(private val transportationService: BicycleService) {
     @GetMapping(value = ["","/"])
     fun checkoutForm(model: Model): String {
-        model.addAttribute("meansOfTransportationAnnouncementCommand",  MeansOfTransportationAnnouncementCommand())
+        model.addAttribute("bicycleAnnouncementCommand",  BicycleAnnouncementCommand())
 //        model.addAttribute("dogs", resourceFile)
         model.addAttribute("action", "create")
         return "meansoftransportsearchform"
     }
 
     @PostMapping(value = ["","/"])
-    fun index(@Valid meansOfTransportationAnnouncementCommand: MeansOfTransportationAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
+    fun index(@Valid bicycleAnnouncementCommand: BicycleAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
         model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
             "meansoftransportsearchform"
         } else {
-            val apb = transportationService.createAPB(meansOfTransportationAnnouncementCommand)
+            val apb = transportationService.createAPB(bicycleAnnouncementCommand)
             "redirect:/apb/form/transport/created/${apb.id}"
         }
     }
@@ -36,7 +36,7 @@ class TransportationFormController(private val transportationService: Transporta
     @GetMapping("/created/{id}")
     fun created(@PathVariable id: Long, model: Model): String {
         val apb = transportationService.readById(id)
-        model.addAttribute("meansOfTransportationAnnouncementCommand", apb)
+        model.addAttribute("bicycleAnnouncementCommand", apb)
         model.addAttribute("action", "publish")
         return "meansoftransportsearchform"
     }

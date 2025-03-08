@@ -1,8 +1,0 @@
-package one.breece.track_rejoice.service
-
-import one.breece.track_rejoice.commands.MeansOfTransportationAnnouncementCommand
-import one.breece.track_rejoice.commands.MeansOfTransportationResponseCommand
-
-interface TransportationService: APBService<MeansOfTransportationAnnouncementCommand, MeansOfTransportationResponseCommand> {
-
-}

@@ -33,7 +33,7 @@
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
     <h2>Pet Search Form</h2>
-    <form class="needs-validation" th:object="${meansOfTransportationAnnouncementCommand}"
+    <form class="needs-validation" th:object="${bicycleAnnouncementCommand}"
           th:action="@{/apb/form/transport}" method="post"
           name="mainForm" id="mainForm">
 
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="year" class="form-label" th:text="#{search.form.transportation.year}">Year:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('year')} ?
             'form-control is-invalid':'form-control'" id="year" th:field="*{year}" required
@@ -81,7 +81,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="color" class="form-label"
                                th:text="#{search.form.transportation.color}">Color:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('color')} ?
@@ -94,18 +94,6 @@
                             </ul>
                         </div>
                     </div>
-                <div class="col-md-4">
-                    <label for="plate" class="form-label" th:text="#{search.form.transportation.plate}">Plate:</label>
-                    <input type="text" class="form-control" th:class="${#fields.hasErrors('plate')} ?
-            'form-control is-invalid':'form-control'" id="plate" th:field="*{plate}"
-                           th:disabled="${#strings.equals(action, 'publish')}"
-                           aria-describedby="plateFeedback">
-                    <div id="plateFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('plate')}">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('plate')}" th:text="${err}"/>
-                        </ul>
-                    </div>
-                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -159,7 +147,7 @@
             <div class="container">
                 <div class="row">
                     <p><span th:utext="#{search.mobile.text}"></span>
-                        <span th:utext="${#strings.equals(action, 'publish')} ? ${meansOfTransportationAnnouncementCommand.maker} : #{search.mobile.transportation.placeholder}"
+                        <span th:utext="${#strings.equals(action, 'publish')} ? ${bicycleAnnouncementCommand.maker} : #{search.mobile.transportation.placeholder}"
                               id="displayMessage"></span></p>
                 </div>
                 <div id="mapid" style="width: 600px; height: 400px;"></div>
@@ -190,7 +178,7 @@
     <div th:replace="~{fragments/action::create}"></div>
 </div>
 <div th:if="${#strings.equals(action,'publish')}">
-    <div th:replace="~{fragments/payment::paypal(${meansOfTransportationAnnouncementCommand.id})}"></div>
+    <div th:replace="~{fragments/payment::paypal(${bicycleAnnouncementCommand.id})}"></div>
 </div>
 
 </form>
@@ -245,8 +233,8 @@
     }
 
 
-    let latitude = [[${meansOfTransportationAnnouncementCommand.lat}]] || 0;
-    let longitude = [[${meansOfTransportationAnnouncementCommand.lon}]] || 0;
+    let latitude = [[${bicycleAnnouncementCommand.lat}]] || 0;
+    let longitude = [[${bicycleAnnouncementCommand.lon}]] || 0;
 
 
     map.setView([latitude, longitude], 18);
