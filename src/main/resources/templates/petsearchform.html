@@ -199,7 +199,7 @@
             <div th:replace="~{fragments/action::create}"></div>
         </div>
         <div th:if="${#strings.equals(action,'publish')}">
-            <div th:replace="~{fragments/payment::paypal}"></div>
+            <div th:replace="~{fragments/payment::paypal(${petAnnouncementCommand.id})}"></div>
         </div>
 
     </form>

@@ -20,10 +20,10 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
     override fun createAPB(announcementCommand: ItemAnnouncementCommand): ItemResponseCommand {
         val multipoint: List<LatLng> =
             objectMapper.readValue(announcementCommand.latlngs!!, object : TypeReference<List<LatLng>>() {})
-        val geofence = Item(announcementCommand.shortDescription, announcementCommand.color,makeMultiPoint(multipoint))
+        val geofence = Item(announcementCommand.shortDescription!!, announcementCommand.color,makeMultiPoint(multipoint))
             .also {
                 it.phoneNumber = announcementCommand.phoneNumber; it.extraInfo =
-                announcementCommand.additionalInformation;
+                announcementCommand.additionalInformation
             }
             .let { repository.save(it) }
         return ItemResponseCommand(geofence.id!!, announcementCommand.shortDescription, announcementCommand.color, announcementCommand.phoneNumber, announcementCommand.lastSeenDate!!, announcementCommand.additionalInformation,

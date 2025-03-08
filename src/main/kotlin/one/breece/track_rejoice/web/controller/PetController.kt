@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.web.controller
 
-import one.breece.track_rejoice.service.PetService
+import one.breece.track_rejoice.service.BoloService
 import one.breece.track_rejoice.service.UtilService
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.annotation.CurrentSecurityContext
@@ -14,7 +14,7 @@ import java.util.*
 
 @Controller
 class PetController(
-    private val petService: PetService,
+    private val boloService: BoloService,
     private val utilService: UtilService,
     val utilServicegetName: UtilService
 ) {
@@ -38,7 +38,8 @@ class PetController(
         pageable: Pageable,
         model: Model
     ): String {
-        model.addAttribute("pets", petService.findAllByLngLat(lon, lat, distanceInMeters, pageable).content)
+        val content = boloService.findAllByLngLat(lon, lat, 0.1 / (zoom/2.0), pageable).content
+        model.addAttribute("pets", content)
         model.addAttribute("lon", lon)
         model.addAttribute("lat", lat)
         model.addAttribute("zoom", zoom)

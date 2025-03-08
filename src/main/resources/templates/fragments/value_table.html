@@ -8,13 +8,15 @@
 <div th:fragment="value_table">
     <table class="table table-striped">
         <tr class="table-header">
+            <th th:text="#{search.table.description}">Description</th>
             <th th:text="#{search.table.name}">Name</th>
-            <th th:text="#{search.table.species}">Species</th>
+            <th th:text="#{search.table.color}">Color</th>
             <th th:text="#{search.table.date}">Last seen date</th>
         </tr>
         <tr th:each="pet: ${pets}">
-            <td th:text="${pet.name}">Pet Name</td>
-            <td th:text="${#strings.capitalize(#strings.toLowerCase(pet.species))}">Species</td>
+            <td th:text="${#strings.capitalize(#strings.toLowerCase(pet.type))}">Description</td>
+            <td th:text="${#strings.isEmpty(pet.name) ? 'N/A' : pet.name}">Name</td>
+            <td th:text="${#strings.isEmpty(pet.color) ? 'N/A' : #strings.capitalize(#strings.toLowerCase(pet.color))}">Name</td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
         </tr>
     </table>
@@ -29,14 +31,14 @@
 <div th:fragment="value_table_with_actions">
     <table class="table table-striped">
         <tr class="table-header">
+            <th th:text="#{search.table.description}">Description</th>
             <th th:text="#{search.table.name}">Name</th>
-            <th th:text="#{search.table.species}">Species</th>
             <th th:text="#{search.table.date}">Last seen date</th>
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="pet: ${pets}">
-            <td th:text="${pet.name}">Pet Name</td>
-            <td th:text="${pet.species}">Species</td>
+            <td th:text="${pet.type}">Description</td>
+            <td th:text="${#strings.isEmpty(pet.name) ? 'N/A' : pet.name}">Name</td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
                 <!--<a data-toggle="modal" data-target="#modal-warning"
