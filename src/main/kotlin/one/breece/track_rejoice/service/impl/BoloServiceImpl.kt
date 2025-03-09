@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.service.impl
 
+import one.breece.track_rejoice.domain.BeOnTheLookOut
 import one.breece.track_rejoice.domain.Item
 import one.breece.track_rejoice.domain.Bicycle
 import one.breece.track_rejoice.domain.Pet
@@ -9,11 +10,13 @@ import one.breece.track_rejoice.repository.PetRepository
 import one.breece.track_rejoice.repository.BicycleRepository
 import one.breece.track_rejoice.repository.projections.BeOnTheLookOutProj
 import one.breece.track_rejoice.service.BoloService
+import one.breece.track_rejoice.web.dto.BoloResponse
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class BoloServiceImpl(
@@ -47,5 +50,16 @@ class BoloServiceImpl(
         val itemProj = items.map { itemToProjRepository.convert(it) }
         val transportationProj = bicycles.map { bicycleToProjRepository.convert(it) }
         return PageImpl(petProj + itemProj + transportationProj, pageable, page.totalElements)
+    }
+
+    override fun findAll(pageable: Pageable): Page<BeOnTheLookOut> {
+        return repository.findAll(pageable)
+
+    }
+
+    override fun deleteBySku(sku: UUID) {
+        repository.finBySku(sku).ifPresent {
+            repository.delete(it)
+        }
     }
 }

@@ -37,10 +37,10 @@
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container bg-white shadow-md p-5 form-layout text-center">
 
-  <div th:if="${#lists.isEmpty(pets)}">
+  <div th:if="${#lists.isEmpty(bolos)}">
     <div th:replace="~{fragments/empty_table::empty_table_with_actions}"></div>
   </div>
-  <div th:unless="${#lists.isEmpty(pets)}">
+  <div th:unless="${#lists.isEmpty(bolos)}">
     <div th:replace="~{fragments/value_table::value_table_with_actions}"></div>
   </div>
 </div>

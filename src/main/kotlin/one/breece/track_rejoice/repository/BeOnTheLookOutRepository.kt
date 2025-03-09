@@ -4,12 +4,14 @@ import jakarta.persistence.Tuple
 import one.breece.track_rejoice.domain.BeOnTheLookOut
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
-interface BeOnTheLookOutRepository:CrudRepository<BeOnTheLookOut, Long> {
+interface BeOnTheLookOutRepository:JpaRepository<BeOnTheLookOut, Long> {
     @Query(
         """
             
@@ -55,5 +57,7 @@ interface BeOnTheLookOutRepository:CrudRepository<BeOnTheLookOut, Long> {
         """,
     )
     fun findIdsByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageable: Pageable): Page<Long>
+
+    fun finBySku(sku: UUID): Optional<BeOnTheLookOut>
 
 }
