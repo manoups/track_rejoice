@@ -49,7 +49,7 @@
             <div id="mapid" style="width: 600px; height: 400px;"></div>
             <form th:action="@{/search}" method="get" id="form" name="coords">
                 <input type="text" th:name="lat" id="lat" th:value="${lat}" hidden>
-                <input type="text" th:name="lon" id="lon" th:value="${lon}" hidden>
+                <input type="text" th:name="lng" id="lng" th:value="${lng}" hidden>
                 <input type="text" th:name="zoom" id="zoom" hidden>
                 <input th:remove="all" type="submit" value="Search">
             </form>
@@ -81,10 +81,10 @@
     const name = [[${firstName}]]
 
     let latitude = [[${lat}]] || 0;
-    let longitude = [[${lon}]] || 0;
+    let longitude = [[${lng}]] || 0;
     let initZoom = [[${zoom}]] || 10;
     let myLat = [[${myLat}]]
-    let myLon = [[${myLon}]]
+    let myLng = [[${myLng}]]
     let init = [[${identify}]]
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
@@ -92,7 +92,7 @@
 
     mymap.setView([latitude, longitude], initZoom);
     if (init) {
-        L.marker([myLat, myLon]).addTo(mymap)
+        L.marker([myLat, myLng]).addTo(mymap)
             .bindPopup(name || "You");
     }
 
@@ -131,7 +131,7 @@
         // location = '/search?lng=' + x + '&lat=' + y + '&distance=1'
         // (param1 = 'value1', param2 = 'value2');
         document.getElementById('lat').value = lat;
-        document.getElementById('lon').value = lng;
+        document.getElementById('lng').value = lng;
         document.coords.submit();
         // You can use these coordinates for further actions, like displaying a popup
     });

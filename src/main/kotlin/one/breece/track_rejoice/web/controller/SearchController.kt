@@ -27,9 +27,9 @@ class SearchController(
     @RequestMapping("/search")
     fun searchQuery(
         @CurrentSecurityContext context: SecurityContext,
-        @RequestParam(defaultValue = "0.0") lon: Double,
+        @RequestParam(defaultValue = "0.0") lng: Double,
         @RequestParam(defaultValue = "0.0") lat: Double,
-        @RequestParam myLon: Optional<Double>,
+        @RequestParam myLng: Optional<Double>,
         @RequestParam myLat: Optional<Double>,
         @RequestParam(name = "distance", defaultValue = "0.01") distanceInMeters: Double,
         @RequestParam(name = "zoom", defaultValue = "7") zoom: Int,
@@ -37,15 +37,15 @@ class SearchController(
         pageable: Pageable,
         model: Model
     ): String {
-        val content = boloService.findAllByLngLat(lon, lat, 0.1 / (zoom/1.5), pageable).content
+        val content = boloService.findAllByLngLat(lng, lat, 0.1 / (zoom/1.5), pageable).content
         model.addAttribute("pets", content)
-        model.addAttribute("lon", lon)
+        model.addAttribute("lng", lng)
         model.addAttribute("lat", lat)
         model.addAttribute("zoom", zoom)
         model.addAttribute("identify", identify)
         model.addAttribute("firstName", utilService.getName(context))
         myLat.ifPresent { model.addAttribute("myLat", it) }
-        myLon.ifPresent { model.addAttribute("myLon", it) }
+        myLng.ifPresent { model.addAttribute("myLng", it) }
         return "index"
     }
 

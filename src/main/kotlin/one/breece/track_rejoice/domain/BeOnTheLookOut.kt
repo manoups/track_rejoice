@@ -26,7 +26,8 @@ abstract class BeOnTheLookOut(
         mappedBy = "beOnTheLookOut"
     )
     val traceHistory: MutableSet<Trace> = HashSet(),
-
+    @Column(columnDefinition = "geometry(Geometry, 4326)", nullable = false)
+    open val lastSeenLocation: Geometry,
     @Column(columnDefinition =  "varchar(1024)")
     var extraInfo: String? = null,
     @Column(unique = true, nullable=false, updatable = false)

@@ -20,9 +20,6 @@ import java.util.*
 @Service
 class BoloServiceImpl(
     private val repository: BeOnTheLookOutRepository,
-    private val petRepository: PetRepository,
-    private val itemRepository: ItemRepository,
-    private val bicycleRepository: BicycleRepository,
     private val petToProjRepository: Converter<Pet, BeOnTheLookOutProj>,
     private val itemToProjRepository: Converter<Item, BeOnTheLookOutProj>,
     private val bicycleToProjRepository: Converter<Bicycle, BeOnTheLookOutProj>
@@ -34,21 +31,24 @@ class BoloServiceImpl(
         }
     }
 
-
     override fun findAllByLngLat(
-        lon: Double,
+        lng: Double,
         lat: Double,
         distanceInMeters: Double,
         pageable: Pageable
     ): Page<BeOnTheLookOutProj> {
-        val page = repository.findIdsByLngLat(lon, lat, distanceInMeters, pageable)
-        val pets = petRepository.findAllById(page.content)
-        val items = itemRepository.findAllById(page.content)
-        val bicycles = bicycleRepository.findAllById(page.content)
-        val petProj = pets.map { petToProjRepository.convert(it) }
-        val itemProj = items.map { itemToProjRepository.convert(it) }
-        val transportationProj = bicycles.map { bicycleToProjRepository.convert(it) }
-        return PageImpl(petProj + itemProj + transportationProj, pageable, page.totalElements)
+        val point = GeometryUtil.parseLocation(lng, lat)
+        val bolos = repository.findIdsByLngLat(point, distanceInMeters, pageable)
+//        TODO: Delegate to factory pattern
+        val responsePayload = bolos.content.map {
+            when(it) {
+                is Pet -> petToProjRepository.convert(it)
+                is Item -> itemToProjRepository.convert(it)
+                is Bicycle -> bicycleToProjRepository.convert(it)
+                else -> throw IllegalArgumentException("Unknown type")
+            }
+        }
+        return PageImpl(responsePayload, pageable, bolos.totalElements)
     }
 
     override fun findAll(pageable: Pageable): Page<BeOnTheLookOut> {

@@ -17,6 +17,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        dialect: one.breece.track_rejoice.configuration.CustomPostgreSQLDialect
         jdbc:
           lob:
             non_contextual_creation: true
