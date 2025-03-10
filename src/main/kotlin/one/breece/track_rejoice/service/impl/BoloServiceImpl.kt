@@ -10,7 +10,6 @@ import one.breece.track_rejoice.repository.PetRepository
 import one.breece.track_rejoice.repository.BicycleRepository
 import one.breece.track_rejoice.repository.projections.BeOnTheLookOutProj
 import one.breece.track_rejoice.service.BoloService
-import one.breece.track_rejoice.web.dto.BoloResponse
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -58,7 +57,7 @@ class BoloServiceImpl(
     }
 
     override fun deleteBySku(sku: UUID) {
-        repository.finBySku(sku).ifPresent {
+        repository.findBySku(sku).ifPresent {
             repository.delete(it)
         }
     }
