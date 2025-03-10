@@ -19,7 +19,6 @@ import java.util.*
 class PetServiceImpl(
     private val repository: PetRepository,
     private val petToPetResponseMapper: Converter<Pet, PetResponse>,
-    private val mobileUtilService: MobileUtilService,
     private val petToAbpResponse: Converter<Pet, PetResponseCommand>
 ) : PetService {
     @Transactional
@@ -27,7 +26,7 @@ class PetServiceImpl(
 //        val lastSeenLocation = geocodingService.geocode(petAnnouncementCommand.address)!!
         val newPet = Pet(
             name = announcementCommand.name!!,
-            lastSeenLocation = mobileUtilService.makePoint(announcementCommand.lon!!, announcementCommand.lat!!),
+            lastSeenLocation = GeometryUtil.parseLocation(announcementCommand.lon!!, announcementCommand.lat!!),
             species = SpeciesEnum.valueOf(announcementCommand.species!!.uppercase()),
             breed = announcementCommand.breed!!,
             sex = PetSexEnum.valueOf(announcementCommand.sex!!.uppercase()),

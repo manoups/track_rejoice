@@ -5,9 +5,7 @@ import one.breece.track_rejoice.service.GeocodingService
 import one.breece.track_rejoice.web.dto.AddressDTO
 import one.breece.track_rejoice.web.dto.CoordinateDTO
 import one.breece.track_rejoice.web.dto.GeocodingCoDTO
-import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
-import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service
@@ -55,9 +53,7 @@ class GeocodeMapsCoImpl(private val geocodingCoDtoToAddressCommandMapper: Conver
         if (coordinatesFromAddress.isEmpty()) {
             return null
         }
-        val gf = GeometryFactory()
-        val sf = PackedCoordinateSequenceFactory()
-        return gf.createPoint(sf.create(doubleArrayOf(coordinatesFromAddress[0].lon, coordinatesFromAddress[0].lat), 2))
+        return GeometryUtil.parseLocation(coordinatesFromAddress[0].lon, coordinatesFromAddress[0].lat)
     }
 
     override fun reverseGeocode(lat: Double, lon: Double): AddressCommand? {

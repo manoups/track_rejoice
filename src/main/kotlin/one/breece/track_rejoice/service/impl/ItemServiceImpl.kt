@@ -8,10 +8,6 @@ import one.breece.track_rejoice.commands.LatLng
 import one.breece.track_rejoice.domain.Item
 import one.breece.track_rejoice.repository.ItemRepository
 import one.breece.track_rejoice.service.ItemService
-import org.locationtech.jts.geom.GeometryFactory
-import org.locationtech.jts.geom.MultiPoint
-import org.locationtech.jts.geom.Point
-import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory
 import org.springframework.stereotype.Service
 
 
@@ -25,7 +21,7 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
                 announcementCommand.shortDescription!!,
                 announcementCommand.color,
                 announcementCommand.phoneNumber!!,
-                makeMultiPoint(multipoint)
+                GeometryUtil.makeMultiPoint(multipoint)
             )
                 .also {
                     it.lastSeenDate = announcementCommand.lastSeenDate!!
@@ -40,18 +36,6 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
             announcementCommand.lastSeenDate!!,
             announcementCommand.additionalInformation,
             multipoint.map { doubleArrayOf(it.lng, it.lat) })
-    }
-
-    private fun makeMultiPoint(latLngList: List<LatLng>): MultiPoint {
-        val latLng = latLngList.map { makePoint(it.lng, it.lat) }.toTypedArray()
-        val gf = GeometryFactory()
-        return gf.createMultiPoint(latLng)
-    }
-
-    private fun makePoint(lon: Double, lat: Double): Point {
-        val gf = GeometryFactory()
-        val sf = PackedCoordinateSequenceFactory()
-        return gf.createPoint(sf.create(doubleArrayOf(lon, lat), 2))
     }
 
     override fun deleteById(id: Long) {

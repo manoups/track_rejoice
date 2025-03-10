@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service
 @Service
 class BicycleServiceImpl(
     private val repository: BicycleRepository,
-    private val mobileUtilService: MobileUtilService,
     private val bicycleMapper: Converter<Bicycle, BicycleResponseCommand>
 ) : BicycleService {
     override fun createAPB(announcementCommand: BicycleAnnouncementCommand): BicycleResponseCommand {
@@ -22,7 +21,7 @@ class BicycleServiceImpl(
             model = announcementCommand.model!!,
             year = announcementCommand.year!!,
             phoneNumber = announcementCommand.phoneNumber!!,
-            lastSeenLocation = mobileUtilService.makePoint(announcementCommand.lon!!, announcementCommand.lat!!),
+            lastSeenLocation = GeometryUtil.parseLocation(announcementCommand.lon!!, announcementCommand.lat!!),
         ).also {
             it.lastSeenDate = announcementCommand.lastSeenDate!!
             it.extraInfo = announcementCommand.additionalInformation
