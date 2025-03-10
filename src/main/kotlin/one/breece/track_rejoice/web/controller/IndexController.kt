@@ -24,9 +24,9 @@ class IndexController {
     fun land(
         @Valid position: UserPositionCommand, modelMap: ModelMap, bindingResult: BindingResult, model: Model
     ): ModelAndView {
-        modelMap.addAttribute("lon", position.lon)
+        modelMap.addAttribute("lng", position.lng)
         modelMap.addAttribute("lat", position.lat)
-        modelMap.addAttribute("myLon", position.lon)
+        modelMap.addAttribute("myLng", position.lng)
         modelMap.addAttribute("myLat", position.lat)
         modelMap.addAttribute("zoom", position.zoom)
         modelMap.addAttribute("identify", position.geoAvailable)

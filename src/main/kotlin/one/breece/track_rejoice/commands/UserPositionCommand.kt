@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull
 
 data class UserPositionCommand (
     @field:NotNull
-    val lon: Double? = null,
+    val lng: Double? = null,
     @field:NotNull
     val lat: Double? = null,
     @field:NotNull

@@ -7,7 +7,7 @@
 <body>
 <form th:action="@{/process}" method="post" id="form" name="coords">
     <input type="text" th:name="lat" id="lat" th:value="0.0" hidden>
-    <input type="text" th:name="lon" id="lon" th:value="0.0" hidden>
+    <input type="text" th:name="lng" id="lng" th:value="0.0" hidden>
     <input type="text" th:name="zoom" id="zoom" value="1" hidden>
     <input type="text" th:name="geoAvailable" id="geoAvailable" th:value="false" hidden>
 </form>
@@ -18,7 +18,7 @@
         if (result.state == 'granted' || result.state == 'prompt') {
             navigator.geolocation.getCurrentPosition(position => {
                 document.getElementById("lat").value = position.coords.latitude;
-                document.getElementById("lon").value = position.coords.longitude;
+                document.getElementById("lng").value = position.coords.longitude;
                 document.getElementById("zoom").value = 18;
                 document.getElementById("geoAvailable").value = "true"
                 document.coords.submit()
