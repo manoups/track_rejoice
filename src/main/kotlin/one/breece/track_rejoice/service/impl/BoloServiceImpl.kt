@@ -20,7 +20,10 @@ class BoloServiceImpl(
     private val beOnTheLookOutQueryRepository: BeOnTheLookoutQueryRepository,
     private val petToProjRepository: Converter<Pet, BeOnTheLookOutProj>,
     private val itemToProjRepository: Converter<Item, BeOnTheLookOutProj>,
-    private val bicycleToProjRepository: Converter<Bicycle, BeOnTheLookOutProj>
+    private val bicycleToProjRepository: Converter<Bicycle, BeOnTheLookOutProj>,
+    private val petToProjCommandRepository: Converter<one.breece.track_rejoice.domain.command.Pet, BeOnTheLookOutProj>,
+    private val itemToProjCommandRepository: Converter<one.breece.track_rejoice.domain.command.Item, BeOnTheLookOutProj>,
+    private val bicycleToProjCommandRepository: Converter<one.breece.track_rejoice.domain.command.Bicycle, BeOnTheLookOutProj>
 ) : BoloService {
     override fun enableAnnouncement(announcementId: Long) {
         repository.findById(announcementId).ifPresent {
@@ -50,12 +53,12 @@ class BoloServiceImpl(
     }
 
     override fun findAll(pageable: Pageable): Page<BeOnTheLookOutProj> {
-        val bolos = beOnTheLookOutQueryRepository.findAll(pageable)
+        val bolos = repository.findAll(pageable)
         val responsePayload = bolos.content.map {
             when(it) {
-                is Pet -> petToProjRepository.convert(it)
-                is Item -> itemToProjRepository.convert(it)
-                is Bicycle -> bicycleToProjRepository.convert(it)
+                is one.breece.track_rejoice.domain.command.Pet -> petToProjCommandRepository.convert(it)
+                is one.breece.track_rejoice.domain.command.Item -> itemToProjCommandRepository.convert(it)
+                is one.breece.track_rejoice.domain.command.Bicycle -> bicycleToProjCommandRepository.convert(it)
                 else -> throw IllegalArgumentException("Unknown type $it")
             }
         }

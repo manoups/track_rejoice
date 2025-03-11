@@ -1,12 +1,12 @@
-package one.breece.track_rejoice.mapper
+package one.breece.track_rejoice.mapper.command
 
-import one.breece.track_rejoice.domain.query.Item
+import one.breece.track_rejoice.domain.command.Item
 import one.breece.track_rejoice.repository.projections.BeOnTheLookOutProj
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class ItemToProjRepository:Converter<Item, BeOnTheLookOutProj> {
+class ItemToProjCommandRepository:Converter<Item, BeOnTheLookOutProj> {
     override fun convert(source: Item): BeOnTheLookOutProj? {
         return BeOnTheLookOutProj(
             source.shortDescription,
