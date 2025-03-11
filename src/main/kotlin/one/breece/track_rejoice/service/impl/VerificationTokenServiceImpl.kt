@@ -1,9 +1,9 @@
 package one.breece.track_rejoice.service.impl
 
 import jakarta.servlet.http.HttpServletRequest
-import one.breece.track_rejoice.domain.AppUser
-import one.breece.track_rejoice.domain.VerificationToken
-import one.breece.track_rejoice.repository.VerificationTokenRepository
+import one.breece.track_rejoice.domain.command.AppUser
+import one.breece.track_rejoice.domain.command.VerificationToken
+import one.breece.track_rejoice.repository.command.VerificationTokenRepository
 import one.breece.track_rejoice.service.VerificationTokenService
 import org.springframework.context.MessageSource
 import org.springframework.core.env.Environment

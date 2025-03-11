@@ -1,6 +1,6 @@
-package one.breece.track_rejoice.repository
+package one.breece.track_rejoice.repository.command
 
-import one.breece.track_rejoice.domain.Role
+import one.breece.track_rejoice.domain.command.Role
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Repository

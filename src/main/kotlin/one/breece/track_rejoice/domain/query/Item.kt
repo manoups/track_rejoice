@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.domain
+package one.breece.track_rejoice.domain.query
 
 import jakarta.persistence.Entity
 import jakarta.validation.constraints.NotNull
@@ -11,4 +11,4 @@ class Item(
     phoneNumber: String,
     @NotNull
     lastSeenLocation: MultiPoint,
-    ):ImmobileItem(phoneNumber, lastSeenLocation)
+    ): ImmobileItem(phoneNumber, lastSeenLocation)

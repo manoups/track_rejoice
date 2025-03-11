@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.domain
+package one.breece.track_rejoice.domain.command
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email

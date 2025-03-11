@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.domain
+package one.breece.track_rejoice.domain.query
 
 import jakarta.persistence.MappedSuperclass
 import one.breece.track_rejoice.commands.AddressCommand

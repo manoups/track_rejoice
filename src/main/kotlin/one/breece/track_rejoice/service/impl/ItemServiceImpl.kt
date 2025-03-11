@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import one.breece.track_rejoice.commands.ItemAnnouncementCommand
 import one.breece.track_rejoice.commands.ItemResponseCommand
 import one.breece.track_rejoice.commands.LatLng
-import one.breece.track_rejoice.domain.Item
-import one.breece.track_rejoice.repository.ItemRepository
+import one.breece.track_rejoice.domain.command.Item
+import one.breece.track_rejoice.repository.command.ItemRepository
 import one.breece.track_rejoice.service.ItemService
 import org.springframework.stereotype.Service
 

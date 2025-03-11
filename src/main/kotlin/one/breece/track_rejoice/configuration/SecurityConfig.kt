@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.configuration
 
-import one.breece.track_rejoice.repository.UserRepository
+import one.breece.track_rejoice.repository.command.UserRepository
 import one.breece.track_rejoice.security.CustomRememberMeServices
 import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider
 import org.springframework.context.annotation.Bean
@@ -50,7 +50,7 @@ class SecurityConfig {
                 authorize("/register*", permitAll)
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
-                authorize("/index*", permitAll)
+                authorize("/", permitAll)
                 authorize("/process*", permitAll)
                 authorize("/search*", permitAll)
                 authorize("/emailError*", permitAll)

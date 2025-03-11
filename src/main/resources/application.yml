@@ -4,6 +4,12 @@ server:
     whitelabel:
       enabled: false
 spring:
+  datasource:
+      hikari:
+        connection-timeout: 20000
+        maximum-pool-size: 5
+        max-lifetime: 1200000
+        idle-timeout: 300000
   servlet:
     multipart:
       max-file-size: 5MB
@@ -23,9 +29,9 @@ spring:
             non_contextual_creation: true
   flyway:
     enabled: true
-    url: ${spring.datasource.url}
-    password: ${spring.datasource.password}
-    user: ${spring.datasource.username}
+    url: ${spring.datasource.command.url}
+    password: ${spring.datasource.command.password}
+    user: ${spring.datasource.command.username}
     locations: classpath:db/migration/postgresql
     baseline-on-migrate: true
 

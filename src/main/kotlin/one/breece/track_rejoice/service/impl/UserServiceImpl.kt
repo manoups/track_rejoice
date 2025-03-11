@@ -2,12 +2,12 @@ package one.breece.track_rejoice.service.impl
 
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.commands.UserCommand
-import one.breece.track_rejoice.domain.AppUser
-import one.breece.track_rejoice.domain.Role
-import one.breece.track_rejoice.domain.VerificationToken
-import one.breece.track_rejoice.repository.RoleRepository
-import one.breece.track_rejoice.repository.UserRepository
-import one.breece.track_rejoice.repository.VerificationTokenRepository
+import one.breece.track_rejoice.domain.command.AppUser
+import one.breece.track_rejoice.domain.command.Role
+import one.breece.track_rejoice.domain.command.VerificationToken
+import one.breece.track_rejoice.repository.command.RoleRepository
+import one.breece.track_rejoice.repository.command.UserRepository
+import one.breece.track_rejoice.repository.command.VerificationTokenRepository
 import one.breece.track_rejoice.service.LoginAttemptService
 import one.breece.track_rejoice.service.UserService
 import one.breece.track_rejoice.web.dto.AppUserDetails

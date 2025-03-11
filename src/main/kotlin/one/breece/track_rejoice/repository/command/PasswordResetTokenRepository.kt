@@ -1,7 +1,7 @@
-package one.breece.track_rejoice.repository
+package one.breece.track_rejoice.repository.command
 
-import one.breece.track_rejoice.domain.AppUser
-import one.breece.track_rejoice.domain.PasswordResetToken
+import one.breece.track_rejoice.domain.command.AppUser
+import one.breece.track_rejoice.domain.command.PasswordResetToken
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*

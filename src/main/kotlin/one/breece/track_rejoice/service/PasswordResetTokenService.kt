@@ -1,8 +1,8 @@
 package one.breece.track_rejoice.service
 
 import one.breece.track_rejoice.commands.PasswordChangeCommand
-import one.breece.track_rejoice.domain.AppUser
-import one.breece.track_rejoice.domain.PasswordResetToken
+import one.breece.track_rejoice.domain.command.AppUser
+import one.breece.track_rejoice.domain.command.PasswordResetToken
 import one.breece.track_rejoice.service.impl.TokenEnum
 import one.breece.track_rejoice.util.GenericResponse
 import java.util.*

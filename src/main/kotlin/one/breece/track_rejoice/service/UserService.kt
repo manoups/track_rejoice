@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.service
 
 import one.breece.track_rejoice.commands.UserCommand
-import one.breece.track_rejoice.domain.AppUser
+import one.breece.track_rejoice.domain.command.AppUser
 import one.breece.track_rejoice.service.impl.TokenEnum
 import one.breece.track_rejoice.web.dto.AppUserDetails
 import org.springframework.security.core.userdetails.UserDetails

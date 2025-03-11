@@ -1,6 +1,6 @@
-package one.breece.track_rejoice.repository
+package one.breece.track_rejoice.repository.command
 
-import one.breece.track_rejoice.domain.AppUser
+import one.breece.track_rejoice.domain.command.AppUser
 import one.breece.track_rejoice.web.dto.AppUserDetails
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository

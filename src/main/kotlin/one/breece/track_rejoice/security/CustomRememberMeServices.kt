@@ -2,8 +2,8 @@ package one.breece.track_rejoice.security
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import one.breece.track_rejoice.domain.AppUser
-import one.breece.track_rejoice.repository.UserRepository
+import one.breece.track_rejoice.domain.command.AppUser
+import one.breece.track_rejoice.repository.command.UserRepository
 import org.springframework.security.authentication.AuthenticationDetailsSource
 import org.springframework.security.authentication.RememberMeAuthenticationToken
 import org.springframework.security.core.Authentication

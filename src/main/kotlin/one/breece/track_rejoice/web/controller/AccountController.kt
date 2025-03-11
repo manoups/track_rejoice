@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.web.controller
 
-import one.breece.track_rejoice.domain.AppUser
-import one.breece.track_rejoice.repository.UserRepository
+import one.breece.track_rejoice.domain.command.AppUser
+import one.breece.track_rejoice.repository.command.UserRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.annotation.AuthenticationPrincipal

@@ -1,6 +1,6 @@
-package one.breece.track_rejoice.repository
+package one.breece.track_rejoice.repository.command
 
-import one.breece.track_rejoice.domain.Pet
+import one.breece.track_rejoice.domain.command.Pet
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query

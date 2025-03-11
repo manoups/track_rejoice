@@ -30,13 +30,13 @@
     <table class="table table-striped">
         <tr class="table-header">
             <th th:text="#{search.table.description}">Description</th>
-            <th th:text="#{search.table.name}">Name</th>
+            <th th:text="#{search.table.color}">Color</th>
             <th th:text="#{search.table.date}">Last seen date</th>
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="pet: ${bolos}">
-            <td th:text="${pet.type}">Description</td>
-            <td th:text="${#strings.isEmpty(pet.name) ? 'N/A' : pet.name}">Name</td>
+            <td th:text="${#strings.capitalize(#strings.toLowerCase(pet.shortDescription))}">Description</td>
+            <td th:text="${#strings.isEmpty(pet.color) ? 'N/A' : pet.color}">Color</td>
             <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
                 <!--<a data-toggle="modal" data-target="#modal-warning"

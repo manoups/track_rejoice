@@ -1,6 +1,6 @@
-package one.breece.track_rejoice.repository
+package one.breece.track_rejoice.repository.command
 
-import one.breece.track_rejoice.domain.VerificationToken
+import one.breece.track_rejoice.domain.command.VerificationToken
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*

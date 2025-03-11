@@ -1,8 +1,8 @@
-package one.breece.track_rejoice.repository
+package one.breece.track_rejoice.repository.command
 
 import jakarta.persistence.Tuple
-import one.breece.track_rejoice.domain.BeOnTheLookOut
-import org.locationtech.jts.geom.Point
+import one.breece.track_rejoice.domain.command.BeOnTheLookOut
+import org.springframework.context.annotation.Primary
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import java.util.*
 
+@Primary
 @Repository
 interface BeOnTheLookOutRepository:JpaRepository<BeOnTheLookOut, Long> {
     @Query(
@@ -60,14 +61,6 @@ interface BeOnTheLookOutRepository:JpaRepository<BeOnTheLookOut, Long> {
 
     fun findBySku(sku: UUID): Optional<BeOnTheLookOut>
 
-    @Query(
-        """
-            select bolo from BeOnTheLookOut bolo where bolo.enabled=true and st_dwithin(bolo.lastSeenLocation, :point, :distanceInMeters)
-        """,
-        countQuery = """
-            select count(bolo) from BeOnTheLookOut bolo where bolo.enabled=true and st_dwithin(bolo.lastSeenLocation, :point, :distanceInMeters)
-        """,
-    )
-    fun findIdsByLngLat(point: Point, distanceInMeters: Double, pageable: Pageable): Page<BeOnTheLookOut>
+
 
 }

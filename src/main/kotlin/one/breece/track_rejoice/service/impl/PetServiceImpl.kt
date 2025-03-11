@@ -3,10 +3,10 @@ package one.breece.track_rejoice.service.impl
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.commands.PetAnnouncementCommand
 import one.breece.track_rejoice.commands.PetResponseCommand
-import one.breece.track_rejoice.domain.Pet
+import one.breece.track_rejoice.domain.command.Pet
 import one.breece.track_rejoice.domain.PetSexEnum
 import one.breece.track_rejoice.domain.SpeciesEnum
-import one.breece.track_rejoice.repository.PetRepository
+import one.breece.track_rejoice.repository.command.PetRepository
 import one.breece.track_rejoice.service.PetService
 import one.breece.track_rejoice.web.dto.PetResponse
 import org.springframework.core.convert.converter.Converter

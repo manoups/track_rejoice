@@ -38,7 +38,7 @@ class SearchController(
         model: Model
     ): String {
         val content = boloService.findAllByLngLat(lng, lat, 0.1 / (zoom/1.5), pageable).content
-        model.addAttribute("pets", content)
+        model.addAttribute("bolos", content)
         model.addAttribute("lng", lng)
         model.addAttribute("lat", lat)
         model.addAttribute("zoom", zoom)

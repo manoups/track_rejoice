@@ -2,9 +2,14 @@ spring:
   flyway:
     locations: classpath:db/migration/postgresql, classpath:db/migration/dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: root
-    password: root
+    command:
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: root
+      password: root
+    query:
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: root
+      password: root
 logging:
   level:
     org:

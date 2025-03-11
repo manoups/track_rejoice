@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.security
 
-import one.breece.track_rejoice.repository.UserRepository
+import one.breece.track_rejoice.repository.command.UserRepository
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider

@@ -2,8 +2,8 @@ package one.breece.track_rejoice.service.impl
 
 import one.breece.track_rejoice.commands.BicycleAnnouncementCommand
 import one.breece.track_rejoice.commands.BicycleResponseCommand
-import one.breece.track_rejoice.domain.Bicycle
-import one.breece.track_rejoice.repository.BicycleRepository
+import one.breece.track_rejoice.domain.command.Bicycle
+import one.breece.track_rejoice.repository.command.BicycleRepository
 import one.breece.track_rejoice.service.BicycleService
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service

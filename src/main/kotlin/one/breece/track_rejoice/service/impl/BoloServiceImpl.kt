@@ -1,14 +1,11 @@
 package one.breece.track_rejoice.service.impl
 
-import one.breece.track_rejoice.domain.BeOnTheLookOut
-import one.breece.track_rejoice.domain.Item
-import one.breece.track_rejoice.domain.Bicycle
-import one.breece.track_rejoice.domain.Pet
-import one.breece.track_rejoice.repository.BeOnTheLookOutRepository
-import one.breece.track_rejoice.repository.ItemRepository
-import one.breece.track_rejoice.repository.PetRepository
-import one.breece.track_rejoice.repository.BicycleRepository
+import one.breece.track_rejoice.domain.query.Bicycle
+import one.breece.track_rejoice.domain.query.Item
+import one.breece.track_rejoice.domain.query.Pet
+import one.breece.track_rejoice.repository.command.BeOnTheLookOutRepository
 import one.breece.track_rejoice.repository.projections.BeOnTheLookOutProj
+import one.breece.track_rejoice.repository.query.BeOnTheLookoutQueryRepository
 import one.breece.track_rejoice.service.BoloService
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
@@ -20,6 +17,7 @@ import java.util.*
 @Service
 class BoloServiceImpl(
     private val repository: BeOnTheLookOutRepository,
+    private val beOnTheLookOutQueryRepository: BeOnTheLookoutQueryRepository,
     private val petToProjRepository: Converter<Pet, BeOnTheLookOutProj>,
     private val itemToProjRepository: Converter<Item, BeOnTheLookOutProj>,
     private val bicycleToProjRepository: Converter<Bicycle, BeOnTheLookOutProj>
@@ -38,21 +36,30 @@ class BoloServiceImpl(
         pageable: Pageable
     ): Page<BeOnTheLookOutProj> {
         val point = GeometryUtil.parseLocation(lng, lat)
-        val bolos = repository.findIdsByLngLat(point, distanceInMeters, pageable)
+        val bolos = beOnTheLookOutQueryRepository.findIdsByLngLat(point, distanceInMeters, pageable)
 //        TODO: Delegate to factory pattern
         val responsePayload = bolos.content.map {
             when(it) {
                 is Pet -> petToProjRepository.convert(it)
                 is Item -> itemToProjRepository.convert(it)
                 is Bicycle -> bicycleToProjRepository.convert(it)
-                else -> throw IllegalArgumentException("Unknown type")
+                else -> throw IllegalArgumentException("Unknown type $it")
             }
         }
         return PageImpl(responsePayload, pageable, bolos.totalElements)
     }
 
-    override fun findAll(pageable: Pageable): Page<BeOnTheLookOut> {
-        return repository.findAll(pageable)
+    override fun findAll(pageable: Pageable): Page<BeOnTheLookOutProj> {
+        val bolos = beOnTheLookOutQueryRepository.findAll(pageable)
+        val responsePayload = bolos.content.map {
+            when(it) {
+                is Pet -> petToProjRepository.convert(it)
+                is Item -> itemToProjRepository.convert(it)
+                is Bicycle -> bicycleToProjRepository.convert(it)
+                else -> throw IllegalArgumentException("Unknown type $it")
+            }
+        }
+        return PageImpl(responsePayload, pageable, bolos.totalElements)
 
     }
 

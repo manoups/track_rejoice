@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.mapper
 
 import one.breece.track_rejoice.commands.BicycleResponseCommand
-import one.breece.track_rejoice.domain.Bicycle
+import one.breece.track_rejoice.domain.command.Bicycle
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
