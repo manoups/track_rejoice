@@ -25,3 +25,7 @@
 - [ ] replace leaflet with Google Maps API to get (reverse) Geocoding searchbar
 - [ ] use CQRS to give read-all access
 - [ ] secure payment callback API
+- [ ] details page
+- [ ] continue editing for unpublished announcements
+- [ ] show/center on map action on main screen
+- [ ] dynamic redirect after login
