@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout</title>
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"
+    />
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/lux/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.js"></script>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div th:replace="~{fragments/navbar::navbar}"></div>
+<div class="container">
+    <h2 th:utext="#{item.search.form}">Item Search Form</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="form-label" th:text="#{search.form.short.description}">Name:</span>
+                    <span class="form-control" th:class="'form-control'" id="shortDescription"
+                          th:utext="${itemAnnouncementCommand.shortDescription}"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="form-label" th:text="#{search.form.phoneNumber}">Phone Number:</span>
+                    <span class="form-control" th:class="'form-control'" id="phoneNumber"
+                          th:utext="${itemAnnouncementCommand.phoneNumber}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="form-label" th:text="#{search.table.date}">Last seen:</span>
+                    <span class="form-control" th:class="'form-control'"
+                          th:utext="${itemAnnouncementCommandlastSeenDate}"
+                          id="lastSeenDate"></span>
+                </div>
+                <div class="col-md-6">
+                    <span class="form-label" th:text="#{search.form.color}">Color:</span>
+                    <span class="form-control" th:if="'form-control'" id="color"
+                          th:utext="${itemAnnouncementCommand.color}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span th:required="optional" class="form-label"
+                          th:text="#{search.form.extra.info}">Extra Info:</span>
+                    <span class="form-control" th:class="'form-control'" id="additionalInformation"
+                          th:utext="${itemAnnouncementCommand.additionalInformation}">
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container">
+                <div class="row">
+                    <p><span th:utext="#{search.mobile.text}"></span>
+                        <span th:utext="${itemAnnouncementCommand.shortDescription}"
+                              id="displayMessage"></span></p>
+                </div>
+                <div id="mapid" style="width: 600px; height: 400px;"></div>
+            </div>
+            <div th:remove="all" class="col-md-4">
+                <form th:replace="~{fragments/address::address}"></form>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div th:replace="~{fragments/payment::paypal(${itemAnnouncementCommand.id})}"></div>
+    </div>
+
+    <script th:inline="javascript">
+
+        // document.getElementById("name").addEventListener("change", _ =>
+        //     document.getElementById("displayMessage").textContent =
+        //         document.getElementsByName("mainForm")[0].querySelector('#name').value
+        // )
+        var map = L.map('mapid', {
+            minZoom: 1,
+            maxZoom: 18,
+            attributionControl: false
+        })
+
+        let action = [[${action}]]
+        /*var markersGroup = L.layerGroup();
+        map.addLayer(markersGroup);
+        const MARKERS_MAX=1
+        map.on('click', function(e) {
+            // get the count of currently displayed markers
+            var markersCount = markersGroup.getLayers().length;
+
+            if (markersCount < MARKERS_MAX) {
+                var marker = L.marker(e.latlng).addTo(markersGroup);
+                return;
+            }
+
+            // remove the markers when MARKERS_MAX is reached
+            markersGroup.clearLayers();
+        });*/
+        // Ask for current location and navigate to that area
+        if ('create' == action) {
+            map.locate({setView: true, maxZoom: 18});
+        }
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+
+        if ('create' == action) {
+            map.pm.addControls({
+                position: 'topleft',
+                drawCircleMarker: false,
+                rotateMode: false,
+                drawMarker: false,
+                drawPolyline: true,
+                drawRectangle: false,
+                drawPolygon: false,
+                drawCircle: false,
+                drawText: false,
+                editMode: false,
+                dragMode: false,
+                cutPolygon: false,
+                removalMode: true
+            });
+        }
+
+
+        let latitude = 0;
+        let longitude = 0;
+        // let name = document.getElementById('name').value
+
+
+        if ('publish' == action) {
+            var latlngs = [[${itemAnnouncementCommand.latlngs}]];
+
+            var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+            map.setView([latlngs[0][0], latlngs[0][1]], 18);
+        }
+
+        map.on("pm:create", (e) => {
+            // if (!workingLayer) return
+            console.log(e)
+            e.layer._latlngs.forEach(latlng => {
+                console.log(latlng.lat);
+                console.log(latlng.lng);
+            });
+            document.getElementById('latlngs').value = JSON.stringify(e.layer._latlngs)
+            // map.pm.disableDraw();
+            map.pm.Toolbar.setButtonDisabled(e.shape, true)
+        });
+
+        map.on("pm:remove", _ => {
+            map.pm.disableGlobalRemovalMode()
+            map.pm.Toolbar.setButtonDisabled('Line', false)
+        });
+
+        /*map.on('draw:edited', function (e) {
+            var layers = e.layers;
+            layers.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) {
+                    console.log("In here!!!!")
+                }
+            });
+        });*/
+    </script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<!--<script src="/js/map.js"></script>-->
+</body>
+</html>
