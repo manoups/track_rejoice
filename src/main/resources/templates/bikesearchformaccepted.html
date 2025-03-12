@@ -59,7 +59,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <span class="form-label" th:text="#{search.table.date}">Last seen:</span>
-                    <span class="form-control" th:utext="${bicycleAnnouncementCommand.lastSeenDate}"
+                    <span class="form-control" th:utext="${#temporals.format(bicycleAnnouncementCommand.lastSeenDate, 'dd-MM-yyyy HH:mm')}"
                           id="lastSeenDate"></span>
                 </div>
                 <div class="col-md-6">
