@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="modal(id)" class="modal modal-warning fade in" th:id="${id}"
+<div th:fragment="modal(id, sku)" class="modal modal-warning fade in" th:id="${id}"
      aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -18,7 +18,7 @@
             <p class="modal-title"
                th:utext="'This action will irrevocably delete the announcement. Proceed?'">Text</p>
             <br>
-            <form action="#" th:action="@{'/announcements/{sku}'(id=${pet.sku})}" th:method="delete">
+            <form action="#" th:action="@{'/announcements/{sku}'(sku=${sku})}" th:method="delete">
                 <button class="btn btn-danger submitButton" type="submit" th:text="#{action.delete}">Delete
                 </button>
             </form>

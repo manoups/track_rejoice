@@ -12,10 +12,10 @@
             <th th:text="#{search.table.color}">Color</th>
             <th th:text="#{search.table.date}">Last seen date</th>
         </tr>
-        <tr th:each="pet: ${bolos}">
-            <td th:text="${#strings.capitalize(#strings.toLowerCase(pet.shortDescription))}">Description</td>
-            <td th:text="${#strings.isEmpty(pet.color) ? 'N/A' : #strings.capitalize(#strings.toLowerCase(pet.color))}">Name</td>
-            <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
+        <tr th:each="bolo: ${bolos}">
+            <td th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}">Description</td>
+            <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : #strings.capitalize(#strings.toLowerCase(bolo.color))}">Name</td>
+            <td th:text="${#temporals.format(bolo.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
         </tr>
     </table>
 </div>
@@ -34,18 +34,18 @@
             <th th:text="#{search.table.date}">Last seen date</th>
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
-        <tr th:each="pet: ${bolos}">
-            <td th:text="${#strings.capitalize(#strings.toLowerCase(pet.shortDescription))}">Description</td>
-            <td th:text="${#strings.isEmpty(pet.color) ? 'N/A' : pet.color}">Color</td>
-            <td th:text="${#temporals.format(pet.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
+        <tr th:each="bolo, itr: ${bolos}">
+            <td th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}">Description</td>
+            <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : bolo.color}">Color</td>
+            <td th:text="${#temporals.format(bolo.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
                 <!--<a data-toggle="modal" data-target="#modal-warning"
                    th:attr="data-target='#modal-warning'+${pet.id }"><span
                         class="glyphicon glyphicon-trash"></span></a>-->
-                <button class="btn btn-danger" data-bs-toggle="modal" th:attr="data-bs-target='#modal-warning'+${pet.sku }">Delete
+                <button class="btn btn-danger" data-bs-toggle="modal" th:attr="data-bs-target='#modal-warning-'+${itr.index}">Delete
                 </button>
             </td>
-            <th:block th:replace="~{fragments/delete-warning::modal('modal-warning'+${pet.sku})}">modal</th:block>
+            <th:block th:replace="~{fragments/delete-warning::modal('modal-warning-'+${itr.index}, ${bolo.sku})}">modal</th:block>
         </tr>
     </table>
 </div>
