@@ -23,7 +23,7 @@
                      th:classappend="${iterStat.first} ? 'active' : ''">
                     <img th:src="${photo.url}" class="d-block w-100" style="max-height: 500px; object-fit: contain;">
                     <div class="carousel-caption">
-                        <button class="btn btn-danger" th:data-key="${photo.key}" th:data-sku="${sku}" th:onclick="|deletePhoto(this.getAttribute('data-sku'), this.getAttribute('data-key'))|">Delete</button>
+                        <button th:unless="${enabled}" class="btn btn-danger" th:data-key="${photo.key}" th:data-sku="${sku}" th:onclick="|deletePhoto(this.getAttribute('data-sku'), this.getAttribute('data-key'))|">Delete</button>
 <!--                        <button class="btn btn-warning" th:onclick="|rotatePhoto('${photo.key}')|">Rotate</button>-->
                     </div>
                 </div>
