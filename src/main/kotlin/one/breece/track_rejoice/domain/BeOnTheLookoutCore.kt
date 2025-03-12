@@ -8,6 +8,7 @@ import jakarta.persistence.MappedSuperclass
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import one.breece.track_rejoice.domain.command.BoilerPlate
+import org.apache.commons.io.FilenameUtils
 import org.locationtech.jts.geom.Geometry
 import java.time.LocalDateTime
 import java.util.*
@@ -35,5 +36,18 @@ class BeOnTheLookoutCore(
 ) : BoilerPlate() {
     fun addPhoto(bucketName: String, name: String) {
         photo.add(Photo(bucketName, name))
+    }
+
+    fun removePhoto(key: String): Photo? {
+        val first = findPhoto(key)
+        if (first != null) {
+            photo.remove(first)
+            return first
+        }
+        return null
+    }
+
+    fun findPhoto(key: String): Photo? {
+        return photo.firstOrNull { FilenameUtils.getName(it.key) == key }
     }
 }

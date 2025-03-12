@@ -69,7 +69,7 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
                 val item = optional.get()
                 ItemResponseCommand(
                     item.id!!, item.enabled, item.shortDescription, item.phoneNumber, item.color, item.lastSeenDate, item.extraInfo,
-                    item.lastSeenLocation.coordinates.map { doubleArrayOf(it.y, it.x) }, item.sku,  item.photo.map { PhotoDescriptor("https://${it.bucket}.s3.amazonaws.com/${it.key}", FilenameUtils.removeExtension(FilenameUtils.getName(it.key))) })
+                    item.lastSeenLocation.coordinates.map { doubleArrayOf(it.y, it.x) }, item.sku,  item.photo.map { PhotoDescriptor("https://${it.bucket}.s3.amazonaws.com/${it.key}", FilenameUtils.getName(it.key)) })
             } else {
                 throw RuntimeException("Item with sku=$sku not found")
             }

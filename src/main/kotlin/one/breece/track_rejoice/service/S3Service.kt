@@ -69,7 +69,7 @@ class S3Service {
         }
     }
 
-    suspend fun deleteObject(data: ByteArray, bucketName: String?, objectKey: String?): String? {
+    suspend fun deleteObject(bucketName: String?, objectKey: String?): String? {
         val request = DeleteObjectRequest {
             bucket = bucketName
             key = objectKey
