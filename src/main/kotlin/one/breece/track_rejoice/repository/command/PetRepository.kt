@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 interface PetRepository : CrudRepository<Pet, Long> {
@@ -30,4 +31,5 @@ interface PetRepository : CrudRepository<Pet, Long> {
         """, nativeQuery = true
     )
     fun findDistanceBetween(id1: Long, id2: Long): Double
+    fun findBySku(sku: UUID): Optional<Pet>
 }

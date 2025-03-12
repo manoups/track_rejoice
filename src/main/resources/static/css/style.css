@@ -11,7 +11,17 @@ label:not(:has(+ input:required)):not(:has(+ select:required)):after {
     content: ' (optional)';
 }
 
+.form-control {
+    min-height: 38px
+}
 
+.mapid {
+    width: 600px;
+    height: 400px;
+}
+.textarea {
+    min-height: 190px
+}
 select:required:invalid {
     color: gray;
 }

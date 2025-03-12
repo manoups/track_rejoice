@@ -21,7 +21,6 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
             integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
             crossorigin=""></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/style.css">
@@ -29,41 +28,54 @@
 <body>
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
-    <h2 th:utext="#{item.search.form}">Item Search Form</h2>
-
+    <h2>Bicycle Search Form</h2>
     <div class="row">
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-6">
-                    <span class="form-label" th:text="#{search.form.short.description}">Name:</span>
-                    <span class="form-control" th:class="'form-control'" id="shortDescription"
-                          th:utext="${itemAnnouncementCommand.shortDescription}"></span>
+            <span class="form-label"
+                  th:text="#{search.form.transportation.maker}">Maker:</span>
+                    <span class="form-control" id="maker" th:utext="${bicycleAnnouncementCommand.maker}">
+            </span>
                 </div>
                 <div class="col-md-6">
-                    <span class="form-label" th:text="#{search.form.phoneNumber}">Phone Number:</span>
-                    <span class="form-control" th:class="'form-control'" id="phoneNumber"
-                          th:utext="${itemAnnouncementCommand.phoneNumber}"></span>
+            <span class="form-label"
+                  th:text="#{search.form.transportation.model}">Model:</span>
+                    <span class="form-control" id="model" th:utext="${bicycleAnnouncementCommand.model}">
+                        </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="form-label" th:text="#{search.form.transportation.year}">Year:</span>
+                    <span class="form-control" id="year" th:utext="${bicycleAnnouncementCommand.year}"></span>
+                </div>
+                <div class="col-md-6">
+            <span class="form-label"
+                  th:text="#{search.form.transportation.color}">Color:</span>
+                    <span class="form-control" id="color" th:utext="${bicycleAnnouncementCommand.color}"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <span class="form-label" th:text="#{search.table.date}">Last seen:</span>
-                    <span class="form-control" th:class="'form-control'"
-                          th:utext="${itemAnnouncementCommandlastSeenDate}"
+                    <span class="form-control" th:utext="${bicycleAnnouncementCommand.lastSeenDate}"
                           id="lastSeenDate"></span>
                 </div>
                 <div class="col-md-6">
-                    <span class="form-label" th:text="#{search.form.color}">Color:</span>
-                    <span class="form-control" th:if="'form-control'" id="color"
-                          th:utext="${itemAnnouncementCommand.color}"></span>
+            <span class="form-label" th:text="#{search.form.phoneNumber}">Phone
+              Number:</span>
+                    <span type="tel" class="form-control" id="phoneNumber"
+                          th:utext="${bicycleAnnouncementCommand.phoneNumber}"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <span th:required="optional" class="form-label"
-                          th:text="#{search.form.extra.info}">Extra Info:</span>
+            <span class="form-label"
+                  th:text="#{search.form.extra.info}">Extra
+              Info:</span>
                     <span class="form-control textarea" id="additionalInformation"
-                          th:utext="${itemAnnouncementCommand.additionalInformation}">
+                          th:utext="${bicycleAnnouncementCommand.additionalInformation}">
                         </span>
                 </div>
             </div>
@@ -77,11 +89,14 @@
             </div>
         </div>
     </div>
+
+    <br>
+    <br>
     <div class="row">
-        <div th:replace="~{fragments/uploadImage::photoUploader(${itemAnnouncementCommand.sku}, ${itemAnnouncementCommand.photos}, ${itemAnnouncementCommand.enabled})}"></div>
+        <div th:replace="~{fragments/uploadImage::photoUploader(${bicycleAnnouncementCommand.sku}, ${bicycleAnnouncementCommand.photos}, ${bicycleAnnouncementCommand.enabled})}"></div>
     </div>
-    <div th:unless="${itemAnnouncementCommand.enabled}">
-        <div th:replace="~{fragments/payment::paypal(${itemAnnouncementCommand.id})}"></div>
+    <div th:unless="${bicycleAnnouncementCommand.enabled}">
+        <div th:replace="~{fragments/payment::paypal(${bicycleAnnouncementCommand.id})}"></div>
     </div>
 
     <script th:inline="javascript">
@@ -94,16 +109,13 @@
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-
-        let latitude = 0;
-        let longitude = 0;
-        // let name = document.getElementById('name').value
+        let latitude = [[${bicycleAnnouncementCommand.lat}]] || 0;
+        let longitude = [[${bicycleAnnouncementCommand.lon}]] || 0;
 
 
-        var latlngs = [[${itemAnnouncementCommand.latlngs}]];
-
-        var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
-        map.setView([latlngs[0][0], latlngs[0][1]], 18);
+        map.setView([latitude, longitude], 18);
+        L.marker([latitude, longitude]).addTo(map)
+            .openPopup();
     </script>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

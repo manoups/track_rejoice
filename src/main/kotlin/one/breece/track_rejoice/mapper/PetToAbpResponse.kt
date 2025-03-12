@@ -22,7 +22,8 @@ class PetToAbpResponse : Converter<Pet, PetResponseCommand> {
             source.extraInfo,
             source.sex.toString(),
             source.lastSeenLocation.y,
-            source.lastSeenLocation.x
+            source.lastSeenLocation.x,
+            source.sku
         )
     }
 }

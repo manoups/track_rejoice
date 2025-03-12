@@ -10,34 +10,32 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import java.util.UUID
 
 @Controller
-@RequestMapping("/apb/form/transport")
+@RequestMapping("/bolo/form/transport")
 class BicycleFormController(private val transportationService: BicycleService) {
     @GetMapping(value = ["","/"])
     fun checkoutForm(model: Model): String {
         model.addAttribute("bicycleAnnouncementCommand",  BicycleAnnouncementCommand())
 //        model.addAttribute("dogs", resourceFile)
-        model.addAttribute("action", "create")
-        return "meansoftransportsearchform"
+        return "bikesearchform"
     }
 
     @PostMapping(value = ["","/"])
     fun index(@Valid bicycleAnnouncementCommand: BicycleAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
-        model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
-            "meansoftransportsearchform"
+            "bikesearchform"
         } else {
-            val apb = transportationService.createAPB(bicycleAnnouncementCommand)
-            "redirect:/apb/form/transport/created/${apb.id}"
+            val bolo = transportationService.createAPB(bicycleAnnouncementCommand)
+            "redirect:/bolo/form/transport/created/${bolo.sku}"
         }
     }
 
-    @GetMapping("/created/{id}")
-    fun created(@PathVariable id: Long, model: Model): String {
-        val apb = transportationService.readById(id)
-        model.addAttribute("bicycleAnnouncementCommand", apb)
-        model.addAttribute("action", "publish")
-        return "meansoftransportsearchform"
+    @GetMapping("/created/{sku}")
+    fun created(@PathVariable sku: UUID, model: Model): String {
+        val bolo = transportationService.readBySku(sku)
+        model.addAttribute("bicycleAnnouncementCommand", bolo)
+        return "bikesearchformaccepted"
     }
 }

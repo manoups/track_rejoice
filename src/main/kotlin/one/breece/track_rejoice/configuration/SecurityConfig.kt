@@ -38,7 +38,7 @@ class SecurityConfig {
             csrf {  disable() }
             authorizeHttpRequests {
 //                authorize("/", authenticated)
-//                authorize("/apb/*", authenticated)
+//                authorize("/bolo/*", authenticated)
 //                authorize("/search", authenticated)
                 authorize("/css/**", permitAll)
                 authorize("/js/**", permitAll)

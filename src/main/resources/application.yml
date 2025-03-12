@@ -74,6 +74,6 @@ support:
 aws:
   region: eu-west-3
   s3:
-    bucket: trackrejoice-image-qa
+    bucket: trackrejoice-public-01
 
 payments: enabled

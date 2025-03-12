@@ -1,9 +1,7 @@
 package one.breece.track_rejoice.service
 
 import aws.sdk.kotlin.services.s3.S3Client
-import aws.sdk.kotlin.services.s3.model.GetObjectRequest
-import aws.sdk.kotlin.services.s3.model.ListObjectsRequest
-import aws.sdk.kotlin.services.s3.model.PutObjectRequest
+import aws.sdk.kotlin.services.s3.model.*
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.toByteArray
 import one.breece.track_rejoice.web.dto.BucketItem
@@ -18,6 +16,7 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 import kotlin.system.exitProcess
+import aws.sdk.kotlin.services.s3.model.ObjectIdentifier
 
 @Component
 class S3Service {
@@ -70,6 +69,20 @@ class S3Service {
         }
     }
 
+    suspend fun deleteObject(data: ByteArray, bucketName: String?, objectKey: String?): String? {
+        val request = DeleteObjectRequest {
+            bucket = bucketName
+            key = objectKey
+        }
+
+        S3Client {
+            region = REGION
+        }.use { s3Client ->
+            val response = s3Client.deleteObject(request)
+            return response.versionId
+        }
+    }
+
 
     // Places an image into an Amazon S3 bucket.
     suspend fun putObject(data: ByteArray, bucketName: String?, objectKey: String?): String? {
@@ -79,7 +92,8 @@ class S3Service {
             body = ByteStream.fromBytes(data)
         }
 
-        S3Client { region = REGION
+        S3Client {
+            region = REGION
         }.use { s3Client ->
             val response = s3Client.putObject(request)
             return response.eTag

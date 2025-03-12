@@ -35,6 +35,7 @@ class CommandJpaConfiguration {
             .build()
     }
 
+    @Primary
     @Bean
     fun commandTransactionManager(
         @Qualifier("commandEntityManagerFactory") commandEntityManagerFactory: LocalContainerEntityManagerFactoryBean

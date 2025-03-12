@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import java.util.UUID
 
 @Controller
-@RequestMapping("/apb/form/pet")
+@RequestMapping("/bolo/form/pet")
 class PetFormController(private val petService: PetService) {
 
 //    @Value("classpath:static/text/dogs.txt")
@@ -24,7 +25,7 @@ class PetFormController(private val petService: PetService) {
     fun checkoutForm(model: Model): String {
         model.addAttribute("petAnnouncementCommand",  PetAnnouncementCommand())
 //        model.addAttribute("dogs", resourceFile)
-        model.addAttribute("action", "create")
+//        model.addAttribute("action", "create")
         return "petsearchform"
     }
 
@@ -34,16 +35,15 @@ class PetFormController(private val petService: PetService) {
         return if (bindingResult.hasErrors()) {
             "petsearchform"
         } else {
-            val apb = petService.createAPB(petAnnouncementCommand)
-            "redirect:/apb/form/pet/created/${apb.id}"
+            val bolo = petService.createAPB(petAnnouncementCommand)
+            "redirect:/bolo/form/pet/created/${bolo.sku}"
         }
     }
 
-    @GetMapping("/created/{id}")
-    fun created(@PathVariable id: Long, model: Model): String {
-        val apb = petService.readById(id)
-        model.addAttribute("petAnnouncementCommand", apb)
-        model.addAttribute("action", "publish")
-        return "petsearchform"
+    @GetMapping("/created/{sku}")
+    fun created(@PathVariable sku: UUID, model: Model): String {
+        val bolo = petService.readBySku(sku)
+        model.addAttribute("petAnnouncementCommand", bolo)
+        return "petsearchformaccepted"
     }
 }

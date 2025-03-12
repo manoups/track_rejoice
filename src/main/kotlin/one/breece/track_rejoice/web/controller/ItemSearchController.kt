@@ -10,34 +10,40 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import java.util.UUID
 
 @Controller
-@RequestMapping("/apb/form/item")
+@RequestMapping("/bolo/form/item")
 class ItemSearchController(private val itemService: ItemService) {
-    @GetMapping(value = ["","/"])
+    @GetMapping(value = ["", "/"])
     fun checkoutForm(model: Model): String {
-        model.addAttribute("itemAnnouncementCommand",  ItemAnnouncementCommand())
+        model.addAttribute("itemAnnouncementCommand", ItemAnnouncementCommand())
 //        model.addAttribute("dogs", resourceFile)
         model.addAttribute("action", "create")
         return "itemsearchform"
     }
 
-    @PostMapping(value = ["","/"])
-    fun index(@Valid itemAnnouncementCommand: ItemAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
+    @PostMapping(value = ["", "/"])
+    fun index(
+        @Valid itemAnnouncementCommand: ItemAnnouncementCommand,
+        bindingResult: BindingResult,
+        model: Model
+    ): String {
         model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
             "itemsearchform"
         } else {
-            val apb = itemService.createAPB(itemAnnouncementCommand)
-            "redirect:/apb/form/item/created/${apb.id}"
+            val bolo = itemService.createAPB(itemAnnouncementCommand)
+            "redirect:/bolo/form/item/created/${bolo.sku}"
         }
     }
 
-    @GetMapping("/created/{id}")
-    fun created(@PathVariable id: Long, model: Model): String {
-        val apb = itemService.readById(id)
-        model.addAttribute("itemAnnouncementCommand", apb)
+    @GetMapping("/created/{sku}")
+    fun created(@PathVariable sku: UUID, model: Model): String {
+        val itemResponseCommand = itemService.readBySku(sku)
+        model.addAttribute("itemAnnouncementCommand", itemResponseCommand)
         model.addAttribute("action", "publish")
-        return "itemsearchform"
+        model.addAttribute("photos", itemResponseCommand.photos)
+        return "itemsearchformaccepted"
     }
 }

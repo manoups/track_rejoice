@@ -1,6 +1,7 @@
 package one.breece.track_rejoice.service.impl
 
 import jakarta.transaction.Transactional
+import one.breece.track_rejoice.commands.ItemResponseCommand
 import one.breece.track_rejoice.commands.PetAnnouncementCommand
 import one.breece.track_rejoice.commands.PetResponseCommand
 import one.breece.track_rejoice.domain.command.Pet
@@ -9,10 +10,13 @@ import one.breece.track_rejoice.domain.SpeciesEnum
 import one.breece.track_rejoice.repository.command.PetRepository
 import one.breece.track_rejoice.service.PetService
 import one.breece.track_rejoice.web.dto.PetResponse
+import one.breece.track_rejoice.web.dto.PhotoDescriptor
+import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 import java.util.*
 
 @Service
@@ -40,7 +44,19 @@ class PetServiceImpl(
 //        newPet.addToTraceHistory(lastSeenLocation)
 
         val geofence = repository.save(newPet)
-        return PetResponseCommand(geofence.id!!, geofence.species.toString(), false, announcementCommand.name, announcementCommand.breed, announcementCommand.color, announcementCommand.phoneNumber, announcementCommand.address, announcementCommand.lastSeenDate!!, announcementCommand.additionalInformation)
+        return PetResponseCommand(
+            geofence.id!!,
+            geofence.species.toString(),
+            false,
+            announcementCommand.name,
+            announcementCommand.breed,
+            announcementCommand.color,
+            announcementCommand.phoneNumber,
+            announcementCommand.address,
+            announcementCommand.lastSeenDate!!,
+            announcementCommand.additionalInformation,
+            sku = geofence.sku
+        )
     }
 
 
@@ -49,8 +65,14 @@ class PetServiceImpl(
     }
 
     @Transactional
-    override fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse> {
-        return repository.findAllByLngLat(lon, lat, distanceInMeters, pageRequest).map { petToPetResponseMapper.convert(it)!! }
+    override fun findAllByLngLat(
+        lon: Double,
+        lat: Double,
+        distanceInMeters: Double,
+        pageRequest: Pageable
+    ): Page<PetResponse> {
+        return repository.findAllByLngLat(lon, lat, distanceInMeters, pageRequest)
+            .map { petToPetResponseMapper.convert(it)!! }
     }
 
     override fun findById(petId: Long): Optional<PetResponse> {
@@ -65,5 +87,37 @@ class PetServiceImpl(
 
     override fun readById(id: Long): PetResponseCommand? {
         return repository.findById(id).map { petToAbpResponse.convert(it) }.orElse(null)
+    }
+
+    override fun readBySku(sku: UUID): PetResponseCommand {
+        repository.findBySku(sku).let { optional ->
+            return if (optional.isPresent) {
+                val item = optional.get()
+                PetResponseCommand(
+                    item.id!!,
+                    item.species.toString(),
+                    item.enabled,
+                    item.name,
+                    item.breed,
+                    item.color,
+                    item.phoneNumber,
+                    item.humanReadableAddress,
+                    item.lastSeenDate,
+                    item.extraInfo,
+                    item.sex.toString(),
+                    item.lastSeenLocation.coordinates.first().y,
+                    item.lastSeenLocation.coordinates.first().x,
+                    item.sku,
+                    item.photo.map {
+                        PhotoDescriptor(
+                            "https://${it.bucket}.s3.amazonaws.com/${it.key}", FilenameUtils.removeExtension(
+                                FilenameUtils.getName(it.key)
+                            )
+                        )
+                    })
+            } else {
+                throw RuntimeException("Pet with sku=$sku not found")
+            }
+        }
     }
 }

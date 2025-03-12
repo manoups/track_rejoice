@@ -10,6 +10,7 @@ class BicycleMapper: Converter<Bicycle, BicycleResponseCommand> {
     override fun convert(source: Bicycle): BicycleResponseCommand {
         return BicycleResponseCommand(
             source.id!!,
+            source.enabled,
             source.color,
             source.maker,
             source.model,
@@ -18,7 +19,8 @@ class BicycleMapper: Converter<Bicycle, BicycleResponseCommand> {
             source.lastSeenDate,
             source.extraInfo,
             source.lastSeenLocation.y,
-            source.lastSeenLocation.x
+            source.lastSeenLocation.x,
+            source.sku
         )
     }
 }

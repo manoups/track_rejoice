@@ -36,6 +36,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'io.sentry:sentry-spring-boot-starter-jakarta'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'commons-io:commons-io:2.18.0'
+
     implementation 'org.springframework.modulith:spring-modulith-starter-core'
     implementation 'org.springframework.modulith:spring-modulith-starter-jpa'
     implementation 'org.flywaydb:flyway-core'

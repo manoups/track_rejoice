@@ -33,7 +33,7 @@
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
     <h2 th:utext="#{item.search.form}">Item Search Form</h2>
-    <form class="needs-validation" th:object="${itemAnnouncementCommand}" th:action="@{/apb/form/item}" method="post"
+    <form class="needs-validation" th:object="${itemAnnouncementCommand}" th:action="@{/bolo/form/item}" method="post"
           name="mainForm" id="mainForm">
 
         <div class="row">
@@ -115,8 +115,8 @@
             <div class="col-md-6">
                 <div class="container">
                     <div class="row">
-                        <p><span th:utext="#{search.mobile.text}"></span>
-                            <span th:utext="${#strings.equals(action, 'publish')} ? ${itemAnnouncementCommand.shortDescription} : #{search.mobile.pet.name.placeholder}"
+                        <p><span th:utext="#{search.mobile.text}+' '"></span>
+                            <span th:utext="#{search.mobile.item.name.placeholder}"
                                   id="displayMessage"></span></p>
                     </div>
                     <div id="mapid" style="width: 600px; height: 400px;"></div>
@@ -146,70 +146,39 @@
     </form>
     <script th:inline="javascript">
 
-        // document.getElementById("name").addEventListener("change", _ =>
-        //     document.getElementById("displayMessage").textContent =
-        //         document.getElementsByName("mainForm")[0].querySelector('#name').value
-        // )
+        document.getElementById("shortDescription").addEventListener("change", _ =>
+            document.getElementById("displayMessage").textContent =
+                document.getElementsByName("mainForm")[0].querySelector('#shortDescription').value
+        )
         var map = L.map('mapid', {
             minZoom: 1,
             maxZoom: 18,
             attributionControl: false
         })
 
-        let action = [[${action}]]
-        /*var markersGroup = L.layerGroup();
-        map.addLayer(markersGroup);
-        const MARKERS_MAX=1
-        map.on('click', function(e) {
-            // get the count of currently displayed markers
-            var markersCount = markersGroup.getLayers().length;
-
-            if (markersCount < MARKERS_MAX) {
-                var marker = L.marker(e.latlng).addTo(markersGroup);
-                return;
-            }
-
-            // remove the markers when MARKERS_MAX is reached
-            markersGroup.clearLayers();
-        });*/
-        // Ask for current location and navigate to that area
-        if ('create' == action) {
-            map.locate({setView: true, maxZoom: 18});
-        }
+        map.locate({setView: true, maxZoom: 18});
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 
-        if ('create' == action) {
-            map.pm.addControls({
-                position: 'topleft',
-                drawCircleMarker: false,
-                rotateMode: false,
-                drawMarker: false,
-                drawPolyline: true,
-                drawRectangle: false,
-                drawPolygon: false,
-                drawCircle: false,
-                drawText: false,
-                editMode: false,
-                dragMode: false,
-                cutPolygon: false,
-                removalMode: true
-            });
-        }
-
+        map.pm.addControls({
+            position: 'topleft',
+            drawCircleMarker: false,
+            rotateMode: false,
+            drawMarker: false,
+            drawPolyline: true,
+            drawRectangle: false,
+            drawPolygon: false,
+            drawCircle: false,
+            drawText: false,
+            editMode: false,
+            dragMode: false,
+            cutPolygon: false,
+            removalMode: true
+        });
 
         let latitude = 0;
         let longitude = 0;
-        // let name = document.getElementById('name').value
-
-
-        if ('publish' == action) {
-            var latlngs = [[${itemAnnouncementCommand.latlngs}]];
-
-            var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
-            map.setView([latlngs[0][0], latlngs[0][1]], 18);
-        }
 
         map.on("pm:create", (e) => {
             // if (!workingLayer) return
@@ -228,14 +197,6 @@
             map.pm.Toolbar.setButtonDisabled('Line', false)
         });
 
-        /*map.on('draw:edited', function (e) {
-            var layers = e.layers;
-            layers.eachLayer(function (layer) {
-                if (layer instanceof L.Marker) {
-                    console.log("In here!!!!")
-                }
-            });
-        });*/
     </script>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

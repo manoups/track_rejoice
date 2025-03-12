@@ -32,9 +32,9 @@
 <body>
 <div th:replace="~{fragments/navbar::navbar}"></div>
 <div class="container">
-    <h2>Pet Search Form</h2>
+    <h2>Bike Search Form</h2>
     <form class="needs-validation" th:object="${bicycleAnnouncementCommand}"
-          th:action="@{/apb/form/transport}" method="post"
+          th:action="@{/bolo/form/transport}" method="post"
           name="mainForm" id="mainForm">
 
         <div class="row">
@@ -94,127 +94,105 @@
                             </ul>
                         </div>
                     </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="lastSeenDate" class="form-label" th:text="#{search.table.date}">Last
-                        seen:</label>
-                    <input th:type="${#strings.equals(action, 'publish')} ? 'text': 'datetime-local'"
-                           class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
-            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required
-                           th:disabled="${#strings.equals(action, 'publish')}" aria-describedby="dateFeedback">
-                    <div id="dateFeedback" class="invalid-feedback"
-                         th:if="${#fields.hasErrors('lastSeenDate')}">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}"/>
-                        </ul>
-                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
-                        Number:</label>
-                    <input type="tel" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
-            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
-                           th:disabled="${#strings.equals(action, 'publish')}"
-                           aria-describedby="phoneFeedback">
-                    <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <label for="additionalInformation" th:required="optional" class="form-label"
-                           th:text="#{search.form.extra.info}">Extra
-                        Info:</label>
-                    <textarea class="form-control" rows="6" th:class="${#fields.hasErrors('additionalInformation')} ?
-            'form-control is-invalid':'form-control'" id="additionalInformation"
-                              th:disabled="${#strings.equals(action, 'publish')}"
-                              th:field="*{additionalInformation}" aria-describedby="extraFeedback">
-                        </textarea>
-                    <div id="extraFeedback" class="invalid-feedback"
-                         th:if="${#fields.hasErrors('additionalInformation')}">
-                        <ul>
-                            <li th:each="err : ${#fields.errors('additionalInformation')}" th:text="${err}"/>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="container">
                 <div class="row">
-                    <p><span th:utext="#{search.mobile.text}"></span>
-                        <span th:utext="${#strings.equals(action, 'publish')} ? ${bicycleAnnouncementCommand.maker} : #{search.mobile.transportation.placeholder}"
-                              id="displayMessage"></span></p>
+                    <div class="col-md-6">
+                        <label for="lastSeenDate" class="form-label" th:text="#{search.table.date}">Last
+                            seen:</label>
+                        <input th:type="${#strings.equals(action, 'publish')} ? 'text': 'datetime-local'"
+                               class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
+            'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required
+                               th:disabled="${#strings.equals(action, 'publish')}" aria-describedby="dateFeedback">
+                        <div id="dateFeedback" class="invalid-feedback"
+                             th:if="${#fields.hasErrors('lastSeenDate')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('lastSeenDate')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
+                            Number:</label>
+                        <input type="tel" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
+            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
+                               th:disabled="${#strings.equals(action, 'publish')}"
+                               aria-describedby="phoneFeedback">
+                        <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div id="mapid" style="width: 600px; height: 400px;"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="additionalInformation" th:required="optional" class="form-label"
+                               th:text="#{search.form.extra.info}">Extra
+                            Info:</label>
+                        <textarea class="form-control" rows="6" th:class="${#fields.hasErrors('additionalInformation')} ?
+            'form-control is-invalid':'form-control'" id="additionalInformation"
+                                  th:disabled="${#strings.equals(action, 'publish')}"
+                                  th:field="*{additionalInformation}" aria-describedby="extraFeedback">
+                        </textarea>
+                        <div id="extraFeedback" class="invalid-feedback"
+                             th:if="${#fields.hasErrors('additionalInformation')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('additionalInformation')}" th:text="${err}"/>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div th:remove="all" class="col-md-4">
-                <form th:replace="~{fragments/address::address}"></form>
+            <div class="col-md-6">
+                <div class="container">
+                    <div class="row">
+                        <p><span th:utext="#{search.mobile.text}+' '"></span>
+                            <span th:utext="#{search.mobile.transportation.placeholder}"
+                                  id="displayMessage"></span></p>
+                    </div>
+                    <div id="mapid" style="width: 600px; height: 400px;"></div>
+                </div>
+                <div th:remove="all" class="col-md-4">
+                    <form th:replace="~{fragments/address::address}"></form>
+                </div>
             </div>
         </div>
-</div>
-<input type="text" id="lat" th:field="*{lat}" hidden aria-describedby="latFeedback">
+        <input type="text" id="lat" th:field="*{lat}" hidden aria-describedby="latFeedback">
 
-<div id="latFeedback"
-     th:if="${#fields.hasErrors('lat')}">
-    <ul>
-        <li th:each="err : ${#fields.errors('lat')}" th:text="${err}"/>
-    </ul>
-</div>
-<input type="text" id="lon" th:field="*{lon}" hidden aria-describedby="lonFeedback">
-<div id="lonFeedback"
-     th:if="${#fields.hasErrors('lon')}">
-    <ul>
-        <li th:each="err : ${#fields.errors('lon')}" th:text="${err}"/>
-    </ul>
-</div>
-<br>
-<br>
-<div th:if="${#strings.equals(action, 'create')}">
-    <div th:replace="~{fragments/action::create}"></div>
-</div>
-<div th:if="${#strings.equals(action,'publish')}">
-    <div th:replace="~{fragments/payment::paypal(${bicycleAnnouncementCommand.id})}"></div>
-</div>
+        <div id="latFeedback"
+             th:if="${#fields.hasErrors('lat')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('lat')}" th:text="${err}"/>
+            </ul>
+        </div>
+        <input type="text" id="lon" th:field="*{lon}" hidden aria-describedby="lonFeedback">
+        <div id="lonFeedback"
+             th:if="${#fields.hasErrors('lon')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('lon')}" th:text="${err}"/>
+            </ul>
+        </div>
+        <br>
+        <br>
+        <div>
+            <div th:replace="~{fragments/action::create}"></div>
+        </div>
 
-</form>
-<script th:inline="javascript">
+    </form>
+    <script th:inline="javascript">
 
-    var map = L.map('mapid', {
-        minZoom: 1,
-        maxZoom: 18,
-        attributionControl: false
-    })
+        var map = L.map('mapid', {
+            minZoom: 1,
+            maxZoom: 18,
+            attributionControl: false
+        })
 
-    let action = [[${action}]]
-    /*var markersGroup = L.layerGroup();
-    map.addLayer(markersGroup);
-    const MARKERS_MAX=1
-    map.on('click', function(e) {
-        // get the count of currently displayed markers
-        var markersCount = markersGroup.getLayers().length;
 
-        if (markersCount < MARKERS_MAX) {
-            var marker = L.marker(e.latlng).addTo(markersGroup);
-            return;
-        }
-
-        // remove the markers when MARKERS_MAX is reached
-        markersGroup.clearLayers();
-    });*/
-    // Ask for current location and navigate to that area
-    if ('create' == action) {
         map.locate({setView: true, maxZoom: 18});
-    }
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 
-    if ('create' == action) {
         map.pm.addControls({
             position: 'topleft',
             drawCircleMarker: false,
@@ -230,50 +208,28 @@
             cutPolygon: false,
             removalMode: true
         });
-    }
 
 
-    let latitude = [[${bicycleAnnouncementCommand.lat}]] || 0;
-    let longitude = [[${bicycleAnnouncementCommand.lon}]] || 0;
+        let latitude = [[${bicycleAnnouncementCommand.lat}]] || 0;
+        let longitude = [[${bicycleAnnouncementCommand.lon}]] || 0;
 
 
-    map.setView([latitude, longitude], 18);
-    if ('publish' == action) {
-        L.marker([latitude, longitude]).addTo(map)
-            .openPopup();
-    }
+        map.setView([latitude, longitude], 18);
 
-    map.on("pm:create", (e) => {
-        // if (!workingLayer) return
-        document.getElementById('lat').value = e.layer._latlng.lat;
-        document.getElementById('lon').value = e.layer._latlng.lng;
-        map.pm.disableDraw();
-        map.pm.Toolbar.setButtonDisabled(e.shape, true)
-    });
-
-    map.on("pm:remove", _ => {
-        map.pm.disableGlobalRemovalMode()
-        map.pm.Toolbar.setButtonDisabled('Marker', false)
-    });
-
-    /*map.on('draw:edited', function (e) {
-        var layers = e.layers;
-        layers.eachLayer(function (layer) {
-            if (layer instanceof L.Marker) {
-                console.log("In here!!!!")
-            }
+        map.on("pm:create", (e) => {
+            // if (!workingLayer) return
+            document.getElementById('lat').value = e.layer._latlng.lat;
+            document.getElementById('lon').value = e.layer._latlng.lng;
+            map.pm.disableDraw();
+            map.pm.Toolbar.setButtonDisabled(e.shape, true)
         });
-    });*/
-    /*var actionVar = [[${action}]]
-    if (actionVar === 'create' && document.getElementById("address.street").value === ""
-        && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-            document.getElementById('lat').value = position.coords.latitude;
-            document.getElementById('lon').value = position.coords.longitude;
-            document.lonLatForm.submit();
+
+        map.on("pm:remove", _ => {
+            map.pm.disableGlobalRemovalMode()
+            map.pm.Toolbar.setButtonDisabled('Marker', false)
         });
-    }*/
-</script>
+
+    </script>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
