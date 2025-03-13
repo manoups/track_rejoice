@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.security.captcha
 
-import jakarta.servlet.http.HttpServletRequest
 import one.breece.track_rejoice.configuration.CaptchaSettings
+import one.breece.track_rejoice.service.LoginAttemptService
 import one.breece.track_rejoice.web.error.ReCaptchaInvalidException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -12,7 +12,7 @@ import java.util.regex.Pattern
 abstract class AbstractCaptchaService(
     protected var captchaSettings: CaptchaSettings,
     protected var reCaptchaAttemptService: ReCaptchaAttemptService,
-    private var request: HttpServletRequest,
+    private val loginAttemptService: LoginAttemptService,
     protected var restTemplate: RestOperations
 ) : ICaptchaService {
 
@@ -25,7 +25,7 @@ abstract class AbstractCaptchaService(
     protected fun securityCheck(response: String) {
         LOGGER.debug("Attempting to validate response {}", response)
 
-        if (reCaptchaAttemptService.isBlocked(clientIP())) {
+        if (reCaptchaAttemptService.isBlocked(loginAttemptService.clientIP())) {
             throw ReCaptchaInvalidException("Client exceeded maximum number of failed attempts")
         }
 
@@ -36,14 +36,6 @@ abstract class AbstractCaptchaService(
 
     protected fun responseSanityCheck(response: String): Boolean {
         return StringUtils.hasLength(response) && RESPONSE_PATTERN.matcher(response).matches()
-    }
-
-    protected fun clientIP(): String {
-        val xfHeader = request.getHeader("X-Forwarded-For")
-        if (xfHeader == null || xfHeader.isEmpty() || !xfHeader.contains(request.remoteAddr)) {
-            return request.remoteAddr
-        }
-        return xfHeader.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
     }
 
     companion object {
