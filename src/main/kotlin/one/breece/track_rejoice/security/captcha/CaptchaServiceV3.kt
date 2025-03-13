@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.security.captcha
 
-import jakarta.servlet.http.HttpServletRequest
 import one.breece.track_rejoice.configuration.CaptchaSettings
+import one.breece.track_rejoice.service.LoginAttemptService
 import one.breece.track_rejoice.web.dto.GoogleResponse
 import one.breece.track_rejoice.web.error.ReCaptchaInvalidException
 import one.breece.track_rejoice.web.error.ReCaptchaUnavailableException
@@ -14,15 +14,15 @@ import java.net.URI
 
 @Service("captchaServiceV3")
 class CaptchaServiceV3(captchaSettings: CaptchaSettings,
-                       reCaptchaAttemptService: ReCaptchaAttemptService, request: HttpServletRequest, restTemplate: RestOperations
-) : AbstractCaptchaService(captchaSettings, reCaptchaAttemptService, request, restTemplate) {
+                       reCaptchaAttemptService: ReCaptchaAttemptService, loginAttemptService: LoginAttemptService, restTemplate: RestOperations
+) : AbstractCaptchaService(captchaSettings, reCaptchaAttemptService, loginAttemptService, restTemplate) {
 
     @Throws(ReCaptchaInvalidException::class)
     override fun processResponse(response: String, action: String) {
         securityCheck(response)
 
         val verifyUri =
-            URI.create(java.lang.String.format(RECAPTCHA_URL_TEMPLATE, reCaptchaSecret, response, clientIP()))
+            URI.create(java.lang.String.format(RECAPTCHA_URL_TEMPLATE, reCaptchaSecret, response, loginAttemptService.clientIP()))
         try {
             val googleResponse: GoogleResponse? = restTemplate.getForObject(verifyUri, GoogleResponse::class.java)
             LOGGER.debug("Google's response: {} ", googleResponse.toString())
@@ -31,14 +31,14 @@ class CaptchaServiceV3(captchaSettings: CaptchaSettings,
                     .equals(action) || googleResponse.score < captchaSettings.threshold
             ) {
                 if (googleResponse?.hasClientError() == true) {
-                    reCaptchaAttemptService.reCaptchaFailed(super.clientIP())
+                    reCaptchaAttemptService.reCaptchaFailed(loginAttemptService.clientIP())
                 }
                 throw ReCaptchaInvalidException("reCaptcha was not successfully validated")
             }
         } catch (rce: RestClientException) {
             throw ReCaptchaUnavailableException("Registration unavailable at this time.  Please try again later.", rce)
         }
-        reCaptchaAttemptService.reCaptchaSucceeded(super.clientIP())
+        reCaptchaAttemptService.reCaptchaSucceeded(loginAttemptService.clientIP())
     }
 
     companion object {

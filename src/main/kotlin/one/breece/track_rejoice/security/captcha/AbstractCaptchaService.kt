@@ -12,7 +12,7 @@ import java.util.regex.Pattern
 abstract class AbstractCaptchaService(
     protected var captchaSettings: CaptchaSettings,
     protected var reCaptchaAttemptService: ReCaptchaAttemptService,
-    private val loginAttemptService: LoginAttemptService,
+    protected val loginAttemptService: LoginAttemptService,
     protected var restTemplate: RestOperations
 ) : ICaptchaService {
 
