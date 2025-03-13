@@ -17,7 +17,7 @@
 
     <div class="mt-4" th:if="${photos != null and not #lists.isEmpty(photos)}">
         <h4>Uploaded Photos</h4>
-        <div id="carouselPhotos" class="carousel slide" data-bs-ride="carousel">
+        <div id="carouselPhotos" class="carousel carousel-dark slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div th:each="photo, iterStat : ${photos}" class="carousel-item"
                      th:classappend="${iterStat.first} ? 'active' : ''">
