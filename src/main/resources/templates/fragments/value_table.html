@@ -16,6 +16,9 @@
             <td th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}">Description</td>
             <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : #strings.capitalize(#strings.toLowerCase(bolo.color))}">Name</td>
             <td th:text="${#temporals.format(bolo.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
+            <td>
+                <a class="btn btn-info" th:href="${bolo.detailsUrl}">Details</a>
+            </td>
         </tr>
     </table>
 </div>

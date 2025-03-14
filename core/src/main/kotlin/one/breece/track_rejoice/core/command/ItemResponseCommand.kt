@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.command.command
+package one.breece.track_rejoice.core.command
 
 import java.time.LocalDateTime
 import java.util.*

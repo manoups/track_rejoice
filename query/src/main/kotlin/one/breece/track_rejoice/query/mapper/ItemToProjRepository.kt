@@ -14,7 +14,8 @@ class ItemToProjRepository:Converter<Item, BeOnTheLookOutProj> {
             source.lastSeenLocation.coordinates.map { doubleArrayOf(it.y, it.x) },
             "MultiPoint",
             source.lastSeenDate,
-            source.sku.toString()
+            source.sku.toString(),
+            "/details/item/${source.sku}"
         )
     }
 }

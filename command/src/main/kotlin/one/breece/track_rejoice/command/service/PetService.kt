@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.command.service
 
 import one.breece.track_rejoice.command.command.PetAnnouncementCommand
-import one.breece.track_rejoice.command.command.PetResponseCommand
+import one.breece.track_rejoice.core.command.PetResponseCommand
 
 interface PetService : APBService<PetAnnouncementCommand, PetResponseCommand> {
 //    fun findAllByLngLat(lon: Double, lat: Double, distanceInMeters: Double, pageRequest: Pageable): Page<PetResponse>

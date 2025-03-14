@@ -1,15 +1,15 @@
-package one.breece.track_rejoice.command.mapper
+package one.breece.track_rejoice.query.mapper
 
 import one.breece.track_rejoice.core.command.PetResponseCommand
-import one.breece.track_rejoice.command.domain.Pet
 import one.breece.track_rejoice.core.command.PhotoDescriptor
+import one.breece.track_rejoice.query.domain.Pet
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class PetToPetResponseCommand : Converter<Pet, PetResponseCommand> {
-    override fun convert(source: Pet): PetResponseCommand? {
+class PetToQueryPetResponseCommand: Converter<Pet, PetResponseCommand> {
+    override fun convert(source: Pet): PetResponseCommand {
         return PetResponseCommand(
             source.id!!,
             source.species.toString(),

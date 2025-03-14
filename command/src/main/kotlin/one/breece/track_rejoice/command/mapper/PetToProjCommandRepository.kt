@@ -14,7 +14,8 @@ class PetToProjCommandRepository:Converter<Pet, BeOnTheLookOutProj> {
             source.lastSeenLocation.coordinates.map { arrayOf(it.x, it.y) },
             "Marker",
             source.lastSeenDate,
-            source.sku.toString()
+            source.sku.toString(),
+            "/details/pet/${source.sku}"
         )
     }
 }

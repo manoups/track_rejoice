@@ -1,14 +1,14 @@
-package one.breece.track_rejoice.command.mapper
+package one.breece.track_rejoice.query.mapper
 
 import one.breece.track_rejoice.core.command.ItemResponseCommand
-import one.breece.track_rejoice.command.domain.Item
 import one.breece.track_rejoice.core.command.PhotoDescriptor
+import one.breece.track_rejoice.query.domain.Item
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class ItemToItemResponseCommand : Converter<Item, ItemResponseCommand> {
+class ItemToQueryItemResponseCommand : Converter<Item, ItemResponseCommand> {
     override fun convert(source: Item): ItemResponseCommand {
         return ItemResponseCommand(
             source.id!!,
@@ -18,7 +18,7 @@ class ItemToItemResponseCommand : Converter<Item, ItemResponseCommand> {
             source.phoneNumber,
             source.lastSeenDate,
             source.extraInfo,
-            source.lastSeenLocation.coordinates.map { doubleArrayOf(it.x, it.y) },
+            source.lastSeenLocation.coordinates.map { doubleArrayOf(it.y, it.x) },
             source.sku,
             source.photo.map {
                 PhotoDescriptor(

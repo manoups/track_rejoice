@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.command.web.controller
 
 import kotlinx.coroutines.runBlocking
-import one.breece.track_rejoice.command.command.PhotoDescriptor
+import one.breece.track_rejoice.core.command.PhotoDescriptor
 import one.breece.track_rejoice.command.domain.Bicycle
 import one.breece.track_rejoice.command.domain.Item
 import one.breece.track_rejoice.command.domain.Pet

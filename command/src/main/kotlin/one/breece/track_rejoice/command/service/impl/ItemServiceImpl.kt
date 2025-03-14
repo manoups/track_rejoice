@@ -3,14 +3,12 @@ package one.breece.track_rejoice.command.service.impl
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import one.breece.track_rejoice.command.command.ItemAnnouncementCommand
-import one.breece.track_rejoice.command.command.ItemResponseCommand
-import one.breece.track_rejoice.command.command.PhotoDescriptor
 import one.breece.track_rejoice.command.domain.Item
 import one.breece.track_rejoice.command.repository.ItemRepository
 import one.breece.track_rejoice.command.service.ItemService
+import one.breece.track_rejoice.core.command.ItemResponseCommand
 import one.breece.track_rejoice.core.util.GeometryUtil
 import one.breece.track_rejoice.core.util.LatLng
-import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service
 import java.util.*
@@ -43,26 +41,11 @@ class ItemServiceImpl(private val repository: ItemRepository,
         repository.deleteById(id)
     }
 
-   /* override fun readById(id: Long): ItemResponseCommand? {
-        repository.findById(id).let { optional ->
-            return if (optional.isPresent) {
-                val item = optional.get()
-                ItemResponseCommand(
-                    item.id!!, item.enabled, item.shortDescription, item.phoneNumber, item.color, item.lastSeenDate, item.extraInfo,
-                    item.lastSeenLocation.coordinates.map { doubleArrayOf(it.y, it.x) }, item.sku, item.photo.map { PhotoDescriptor("https://${it.bucket}.s3.amazonaws.com/${it.key}", it.key) })
-            } else {
-                null
-            }
-        }
-    }*/
-
     override fun readBySku(sku: UUID): ItemResponseCommand {
         repository.findBySku(sku).let { optional ->
             return if (optional.isPresent) {
                 val item = optional.get()
-                ItemResponseCommand(
-                    item.id!!, item.enabled, item.shortDescription, item.phoneNumber, item.color, item.lastSeenDate, item.extraInfo,
-                    item.lastSeenLocation.coordinates.map { doubleArrayOf(it.y, it.x) }, item.sku,  item.photo.map { PhotoDescriptor("https://${it.bucket}.s3.amazonaws.com/${it.key}", FilenameUtils.getName(it.key)) })
+                itemToItemResponseCommand.convert(item)!!
             } else {
                 throw RuntimeException("Item with sku=$sku not found")
             }

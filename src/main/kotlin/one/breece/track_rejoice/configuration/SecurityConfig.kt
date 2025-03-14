@@ -51,6 +51,7 @@ class SecurityConfig {
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
                 authorize("/", permitAll)
+                authorize("/details/**", permitAll)
                 authorize("/process*", permitAll)
                 authorize("/search*", permitAll)
                 authorize("/emailError*", permitAll)

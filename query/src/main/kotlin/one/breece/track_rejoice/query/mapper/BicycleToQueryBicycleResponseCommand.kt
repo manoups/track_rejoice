@@ -1,28 +1,27 @@
-package one.breece.track_rejoice.command.mapper
+package one.breece.track_rejoice.query.mapper
 
-import one.breece.track_rejoice.core.command.PetResponseCommand
-import one.breece.track_rejoice.command.domain.Pet
+import one.breece.track_rejoice.core.command.BicycleResponseCommand
 import one.breece.track_rejoice.core.command.PhotoDescriptor
+import one.breece.track_rejoice.query.domain.Bicycle
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class PetToPetResponseCommand : Converter<Pet, PetResponseCommand> {
-    override fun convert(source: Pet): PetResponseCommand? {
-        return PetResponseCommand(
+class BicycleToQueryBicycleResponseCommand  : Converter<Bicycle, BicycleResponseCommand> {
+    override fun convert(source: Bicycle): BicycleResponseCommand {
+        return BicycleResponseCommand(
             source.id!!,
-            source.species.toString(),
             source.enabled,
-            source.name,
-            source.breed,
             source.color,
+            source.maker,
+            source.model,
+            source.year,
             source.phoneNumber,
             source.lastSeenDate,
             source.extraInfo,
-            source.sex.toString(),
-            source.lastSeenLocation.coordinates.first().y,
-            source.lastSeenLocation.coordinates.first().x,
+            source.lastSeenLocation.y,
+            source.lastSeenLocation.x,
             source.sku,
             source.photo.map {
                 PhotoDescriptor(
@@ -30,6 +29,7 @@ class PetToPetResponseCommand : Converter<Pet, PetResponseCommand> {
                         FilenameUtils.getName(it.key)
                     )
                 )
-            })
+            }
+        )
     }
 }
