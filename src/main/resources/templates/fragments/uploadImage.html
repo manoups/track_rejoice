@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container mt-5" th:fragment="photoUploader(sku, photos, enabled)">
-    <h2>Upload Photos</h2>
+    <h2 th:unless="${enabled}">Upload Photos</h2>
     <form th:unless="${enabled}" id="uploadForm" th:action="@{/upload}" method="post" enctype="multipart/form-data">
         <input type="file" name="image" id="fileInput" accept="image/jpeg, image/png" multiple required>
         <input type="text" name="sku" th:value="${sku}" hidden>
@@ -16,7 +16,7 @@
     <span th:if="${msg != null}" th:text="${msg}"></span>
 
     <div class="mt-4" th:if="${photos != null and not #lists.isEmpty(photos)}">
-        <h4>Uploaded Photos</h4>
+        <h4>Photos</h4>
         <div id="carouselPhotos" class="carousel carousel-dark slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div th:each="photo, iterStat : ${photos}" class="carousel-item"

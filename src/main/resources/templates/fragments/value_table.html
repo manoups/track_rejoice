@@ -11,6 +11,7 @@
             <th th:text="#{search.table.description}">Description</th>
             <th th:text="#{search.table.color}">Color</th>
             <th th:text="#{search.table.date}">Last seen date</th>
+            <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="bolo: ${bolos}">
             <td th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}">Description</td>
