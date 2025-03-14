@@ -1,10 +1,10 @@
-package one.breece.track_rejoice.web.controller
+package one.breece.track_rejoice.command.web.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.paypal.sdk.PaypalServerSdkClient
 import com.paypal.sdk.exceptions.ApiException
 import com.paypal.sdk.models.*
-import one.breece.track_rejoice.service.BoloService
+import one.breece.track_rejoice.command.service.BoloService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,10 +26,10 @@ class PayPalController(
         try {
             val cart = objectMapper.writeValueAsString(request["cart"])
             val response = createOrder(cart)
-            return ResponseEntity(response, HttpStatus.OK);
+            return ResponseEntity(response, HttpStatus.OK)
         } catch (e: Exception) {
-            e.printStackTrace();
-            return ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace()
+            return ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -50,7 +50,7 @@ class PayPalController(
             ).build()
         ).build()
         val ordersController = client.ordersController
-        val apiResponse = ordersController.ordersCreate(ordersCreateInput);
+        val apiResponse = ordersController.ordersCreate(ordersCreateInput)
         return apiResponse.result
     }
 
@@ -58,7 +58,7 @@ class PayPalController(
     fun captureOrder(@PathVariable orderID: String, @PathVariable announcementId: Long): ResponseEntity<Order> {
         try {
             boloService.enableAnnouncement(announcementId)
-            val response = captureOrders(orderID);
+            val response = captureOrders(orderID)
             return ResponseEntity(response, HttpStatus.OK)
         } catch (e: Exception) {
             e.printStackTrace()

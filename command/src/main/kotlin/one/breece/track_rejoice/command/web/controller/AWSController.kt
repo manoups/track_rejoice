@@ -1,10 +1,10 @@
-package one.breece.track_rejoice.web.controller
+package one.breece.track_rejoice.command.web.controller
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import kotlinx.coroutines.runBlocking
-import one.breece.track_rejoice.service.S3Service
-import one.breece.track_rejoice.web.dto.BucketItem
+import one.breece.track_rejoice.command.dto.BucketItem
+import one.breece.track_rejoice.command.service.impl.S3Service
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

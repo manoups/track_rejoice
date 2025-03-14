@@ -1,9 +1,12 @@
 package one.breece.track_rejoice.command.service.impl
 
 
+import one.breece.track_rejoice.command.domain.Bicycle
+import one.breece.track_rejoice.command.domain.Item
+import one.breece.track_rejoice.command.domain.Pet
+import one.breece.track_rejoice.command.repository.BeOnTheLookOutRepository
 import one.breece.track_rejoice.command.service.BoloService
 import one.breece.track_rejoice.core.projections.BeOnTheLookOutProj
-import one.breece.track_rejoice.repository.command.BeOnTheLookOutRepository
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -14,9 +17,9 @@ import java.util.*
 @Service
 class BoloServiceImpl(
     private val repository: BeOnTheLookOutRepository,
-    private val petToProjCommandRepository: Converter<one.breece.track_rejoice.domain.command.Pet, BeOnTheLookOutProj>,
-    private val itemToProjCommandRepository: Converter<one.breece.track_rejoice.domain.command.Item, BeOnTheLookOutProj>,
-    private val bicycleToProjCommandRepository: Converter<one.breece.track_rejoice.domain.command.Bicycle, BeOnTheLookOutProj>
+    private val petToProjCommandRepository: Converter<Pet, BeOnTheLookOutProj>,
+    private val itemToProjCommandRepository: Converter<Item, BeOnTheLookOutProj>,
+    private val bicycleToProjCommandRepository: Converter<Bicycle, BeOnTheLookOutProj>
 ) : BoloService {
     override fun enableAnnouncement(announcementId: Long) {
         repository.findById(announcementId).ifPresent {
@@ -29,9 +32,9 @@ class BoloServiceImpl(
         val bolos = repository.findAll(pageable)
         val responsePayload = bolos.content.map {
             when(it) {
-                is one.breece.track_rejoice.domain.command.Pet -> petToProjCommandRepository.convert(it)
-                is one.breece.track_rejoice.domain.command.Item -> itemToProjCommandRepository.convert(it)
-                is one.breece.track_rejoice.domain.command.Bicycle -> bicycleToProjCommandRepository.convert(it)
+                is Pet -> petToProjCommandRepository.convert(it)
+                is Item -> itemToProjCommandRepository.convert(it)
+                is Bicycle -> bicycleToProjCommandRepository.convert(it)
                 else -> throw IllegalArgumentException("Unknown type $it")
             }
         }

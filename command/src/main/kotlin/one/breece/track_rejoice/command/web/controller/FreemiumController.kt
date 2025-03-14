@@ -1,6 +1,6 @@
-package one.breece.track_rejoice.web.controller
+package one.breece.track_rejoice.command.web.controller
 
-import one.breece.track_rejoice.service.BoloService
+import one.breece.track_rejoice.command.service.BoloService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

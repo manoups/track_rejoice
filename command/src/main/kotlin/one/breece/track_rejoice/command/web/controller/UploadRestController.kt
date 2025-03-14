@@ -1,9 +1,9 @@
-package one.breece.track_rejoice.web.controller
+package one.breece.track_rejoice.command.web.controller
 
 import kotlinx.coroutines.runBlocking
-import one.breece.track_rejoice.repository.command.BeOnTheLookOutRepository
+import one.breece.track_rejoice.command.repository.BeOnTheLookOutRepository
+import one.breece.track_rejoice.command.service.impl.S3Service
 import one.breece.track_rejoice.security.util.GenericResponse
-import one.breece.track_rejoice.service.S3Service
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable

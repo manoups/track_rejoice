@@ -1,8 +1,8 @@
-package one.breece.track_rejoice.web.controller
+package one.breece.track_rejoice.command.web.controller
 
 import jakarta.validation.Valid
-import one.breece.track_rejoice.commands.BicycleAnnouncementCommand
-import one.breece.track_rejoice.service.BicycleService
+import one.breece.track_rejoice.command.command.BicycleAnnouncementCommand
+import one.breece.track_rejoice.command.service.BicycleService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import java.util.UUID
+import java.util.*
 
 @Controller
 @RequestMapping("/bolo/form/transport")
@@ -27,7 +27,7 @@ class BicycleFormController(private val transportationService: BicycleService) {
         return if (bindingResult.hasErrors()) {
             "bikesearchform"
         } else {
-            val bolo = transportationService.createAPB(bicycleAnnouncementCommand)
+            val bolo = transportationService.createBolo(bicycleAnnouncementCommand)
             "redirect:/bolo/form/transport/created/${bolo.sku}"
         }
     }

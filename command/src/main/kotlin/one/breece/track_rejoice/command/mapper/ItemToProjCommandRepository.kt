@@ -1,6 +1,6 @@
-package one.breece.track_rejoice.mapper.command
+package one.breece.track_rejoice.command.mapper
 
-import one.breece.track_rejoice.domain.command.Item
+import one.breece.track_rejoice.command.domain.Item
 import one.breece.track_rejoice.core.projections.BeOnTheLookOutProj
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component

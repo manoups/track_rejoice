@@ -1,10 +1,13 @@
-package one.breece.track_rejoice.service
+package one.breece.track_rejoice.command.service.impl
 
 import aws.sdk.kotlin.services.s3.S3Client
-import aws.sdk.kotlin.services.s3.model.*
+import aws.sdk.kotlin.services.s3.model.DeleteObjectRequest
+import aws.sdk.kotlin.services.s3.model.GetObjectRequest
+import aws.sdk.kotlin.services.s3.model.ListObjectsRequest
+import aws.sdk.kotlin.services.s3.model.PutObjectRequest
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.toByteArray
-import one.breece.track_rejoice.web.dto.BucketItem
+import one.breece.track_rejoice.command.dto.BucketItem
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.w3c.dom.Document
@@ -16,7 +19,6 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 import kotlin.system.exitProcess
-import aws.sdk.kotlin.services.s3.model.ObjectIdentifier
 
 @Component
 class S3Service {

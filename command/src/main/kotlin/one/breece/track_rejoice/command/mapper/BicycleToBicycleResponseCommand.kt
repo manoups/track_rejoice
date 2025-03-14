@@ -1,12 +1,12 @@
-package one.breece.track_rejoice.mapper
+package one.breece.track_rejoice.command.mapper
 
-import one.breece.track_rejoice.commands.BicycleResponseCommand
-import one.breece.track_rejoice.domain.command.Bicycle
+import one.breece.track_rejoice.command.command.BicycleResponseCommand
+import one.breece.track_rejoice.command.domain.Bicycle
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class BicycleMapper: Converter<Bicycle, BicycleResponseCommand> {
+class BicycleToBicycleResponseCommand: Converter<Bicycle, BicycleResponseCommand> {
     override fun convert(source: Bicycle): BicycleResponseCommand {
         return BicycleResponseCommand(
             source.id!!,

@@ -2,26 +2,29 @@ package one.breece.track_rejoice.command.service.impl
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import one.breece.track_rejoice.command.command.ItemAnnouncementCommand
+import one.breece.track_rejoice.command.command.ItemResponseCommand
+import one.breece.track_rejoice.command.command.PhotoDescriptor
+import one.breece.track_rejoice.command.domain.Item
+import one.breece.track_rejoice.command.repository.ItemRepository
 import one.breece.track_rejoice.command.service.ItemService
-import one.breece.track_rejoice.commands.ItemAnnouncementCommand
-import one.breece.track_rejoice.commands.ItemResponseCommand
-import one.breece.track_rejoice.core.util.LatLng
 import one.breece.track_rejoice.core.util.GeometryUtil
-import one.breece.track_rejoice.domain.command.Item
-import one.breece.track_rejoice.repository.command.ItemRepository
-import one.breece.track_rejoice.web.dto.PhotoDescriptor
+import one.breece.track_rejoice.core.util.LatLng
 import org.apache.commons.io.FilenameUtils
+import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service
-import java.lang.RuntimeException
 import java.util.*
 
 
 @Service
-class ItemServiceImpl(private val repository: ItemRepository, private val objectMapper: ObjectMapper) : ItemService {
-    override fun createAPB(announcementCommand: ItemAnnouncementCommand): ItemResponseCommand {
+class ItemServiceImpl(private val repository: ItemRepository,
+                      private val objectMapper: ObjectMapper,
+                      private val itemToItemResponseCommand: Converter<Item, ItemResponseCommand>
+    ) : ItemService {
+    override fun createBolo(announcementCommand: ItemAnnouncementCommand): ItemResponseCommand {
         val multipoint: List<LatLng> =
             objectMapper.readValue(announcementCommand.latlngs!!, object : TypeReference<List<LatLng>>() {})
-        val geofence =
+        val item =
             Item(
                 announcementCommand.shortDescription!!,
                 announcementCommand.color,
@@ -33,24 +36,14 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
                     it.extraInfo = announcementCommand.additionalInformation
                 }
                 .let { repository.save(it) }
-        return ItemResponseCommand(
-            geofence.id!!,
-            geofence.enabled,
-            announcementCommand.shortDescription,
-            announcementCommand.color,
-            announcementCommand.phoneNumber,
-            announcementCommand.lastSeenDate!!,
-            announcementCommand.additionalInformation,
-            multipoint.map { doubleArrayOf(it.lng, it.lat) },
-            geofence.sku
-        )
+        return itemToItemResponseCommand.convert(item)!!
     }
 
     override fun deleteById(id: Long) {
         repository.deleteById(id)
     }
 
-    override fun readById(id: Long): ItemResponseCommand? {
+   /* override fun readById(id: Long): ItemResponseCommand? {
         repository.findById(id).let { optional ->
             return if (optional.isPresent) {
                 val item = optional.get()
@@ -61,7 +54,7 @@ class ItemServiceImpl(private val repository: ItemRepository, private val object
                 null
             }
         }
-    }
+    }*/
 
     override fun readBySku(sku: UUID): ItemResponseCommand {
         repository.findBySku(sku).let { optional ->

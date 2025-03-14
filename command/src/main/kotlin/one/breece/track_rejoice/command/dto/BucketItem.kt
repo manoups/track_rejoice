@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.web.dto
+package one.breece.track_rejoice.command.dto
 
 data class BucketItem (
     var key: String? = null,

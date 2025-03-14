@@ -2,11 +2,11 @@ package one.breece.track_rejoice.command.service.impl
 
 import one.breece.track_rejoice.command.command.BicycleAnnouncementCommand
 import one.breece.track_rejoice.command.command.BicycleResponseCommand
+import one.breece.track_rejoice.command.command.PhotoDescriptor
 import one.breece.track_rejoice.command.domain.Bicycle
 import one.breece.track_rejoice.command.repository.BicycleRepository
 import one.breece.track_rejoice.command.service.BicycleService
 import one.breece.track_rejoice.core.util.GeometryUtil
-import one.breece.track_rejoice.web.dto.PhotoDescriptor
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Service
@@ -15,9 +15,9 @@ import java.util.*
 @Service
 class BicycleServiceImpl(
     private val repository: BicycleRepository,
-    private val bicycleMapper: Converter<Bicycle, BicycleResponseCommand>
+    private val bicycleToBicycleResponseCommand: Converter<Bicycle, BicycleResponseCommand>
 ) : BicycleService {
-    override fun createAPB(announcementCommand: BicycleAnnouncementCommand): BicycleResponseCommand {
+    override fun createBolo(announcementCommand: BicycleAnnouncementCommand): BicycleResponseCommand {
 
         val transportation = Bicycle(
             color = announcementCommand.color!!,
@@ -30,16 +30,16 @@ class BicycleServiceImpl(
             it.lastSeenDate = announcementCommand.lastSeenDate!!
             it.extraInfo = announcementCommand.additionalInformation
         }
-        return bicycleMapper.convert(repository.save(transportation))!!
+        return bicycleToBicycleResponseCommand.convert(repository.save(transportation))!!
     }
 
     override fun deleteById(id: Long) {
         repository.deleteById(id)
     }
 
-    override fun readById(id: Long): BicycleResponseCommand? {
+    /*override fun readById(id: Long): BicycleResponseCommand? {
         return repository.findById(id).map { bicycleMapper.convert(it) }.orElse(null)
-    }
+    }*/
 
     override fun readBySku(sku: UUID): BicycleResponseCommand {
         repository.findBySku(sku).let { optional ->

@@ -1,15 +1,15 @@
-package one.breece.track_rejoice.mapper.command
+package one.breece.track_rejoice.command.mapper
 
-import one.breece.track_rejoice.domain.command.Pet
+import one.breece.track_rejoice.command.domain.Bicycle
 import one.breece.track_rejoice.core.projections.BeOnTheLookOutProj
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class PetToProjCommandRepository:Converter<Pet, BeOnTheLookOutProj> {
-    override fun convert(source: Pet): BeOnTheLookOutProj? {
+class BicycleToProjCommandRepository : Converter<Bicycle, BeOnTheLookOutProj> {
+    override fun convert(source: Bicycle): BeOnTheLookOutProj? {
         return BeOnTheLookOutProj(
-            source.species.toString(),
+            "${source.model} ${source.maker}",
             source.color,
             source.lastSeenLocation.coordinates.map { arrayOf(it.x, it.y) },
             "Marker",

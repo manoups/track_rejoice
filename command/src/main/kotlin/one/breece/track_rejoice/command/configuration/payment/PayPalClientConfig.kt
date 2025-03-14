@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.payment
+package one.breece.track_rejoice.command.configuration.payment
 
 import com.paypal.sdk.Environment
 import com.paypal.sdk.PaypalServerSdkClient

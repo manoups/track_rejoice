@@ -1,10 +1,8 @@
-package one.breece.track_rejoice.web.controller
+package one.breece.track_rejoice.command.web.controller
 
 import jakarta.validation.Valid
-import one.breece.track_rejoice.commands.PetAnnouncementCommand
-import one.breece.track_rejoice.service.PetService
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
+import one.breece.track_rejoice.command.command.PetAnnouncementCommand
+import one.breece.track_rejoice.command.service.PetService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import java.util.UUID
+import java.util.*
 
 @Controller
 @RequestMapping("/bolo/form/pet")
@@ -35,7 +33,7 @@ class PetFormController(private val petService: PetService) {
         return if (bindingResult.hasErrors()) {
             "petsearchform"
         } else {
-            val bolo = petService.createAPB(petAnnouncementCommand)
+            val bolo = petService.createBolo(petAnnouncementCommand)
             "redirect:/bolo/form/pet/created/${bolo.sku}"
         }
     }

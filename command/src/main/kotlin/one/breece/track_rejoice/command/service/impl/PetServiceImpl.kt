@@ -3,29 +3,25 @@ package one.breece.track_rejoice.command.service.impl
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.command.command.PetAnnouncementCommand
 import one.breece.track_rejoice.command.command.PetResponseCommand
+import one.breece.track_rejoice.command.command.PhotoDescriptor
 import one.breece.track_rejoice.command.domain.Pet
 import one.breece.track_rejoice.command.repository.PetRepository
 import one.breece.track_rejoice.command.service.PetService
 import one.breece.track_rejoice.core.domain.PetSexEnum
 import one.breece.track_rejoice.core.domain.SpeciesEnum
 import one.breece.track_rejoice.core.util.GeometryUtil
-import one.breece.track_rejoice.web.dto.PetResponse
-import one.breece.track_rejoice.web.dto.PhotoDescriptor
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class PetServiceImpl(
     private val repository: PetRepository,
-    private val petToPetResponseMapper: Converter<Pet, PetResponse>,
-    private val petToAbpResponse: Converter<Pet, PetResponseCommand>
+    private val petToPetResponseCommand : Converter<Pet, PetResponseCommand>
 ) : PetService {
     @Transactional
-    override fun createAPB(announcementCommand: PetAnnouncementCommand): PetResponseCommand {
+    override fun createBolo(announcementCommand: PetAnnouncementCommand): PetResponseCommand {
 //        val lastSeenLocation = geocodingService.geocode(petAnnouncementCommand.address)!!
         val newPet = Pet(
             name = announcementCommand.name!!,
@@ -41,20 +37,8 @@ class PetServiceImpl(
         }
 //        newPet.addToTraceHistory(lastSeenLocation)
 
-        val geofence = repository.save(newPet)
-        return PetResponseCommand(
-            geofence.id!!,
-            geofence.species.toString(),
-            false,
-            announcementCommand.name,
-            announcementCommand.breed,
-            announcementCommand.color,
-            announcementCommand.phoneNumber,
-            announcementCommand.address,
-            announcementCommand.lastSeenDate!!,
-            announcementCommand.additionalInformation,
-            sku = geofence.sku
-        )
+        val pet = repository.save(newPet)
+        return petToPetResponseCommand.convert(pet)!!
     }
 
 
@@ -83,9 +67,6 @@ class PetServiceImpl(
         return repository.findAll().map { petToPetResponseMapper.convert(it)!! }
     }*/
 
-    override fun readById(id: Long): PetResponseCommand? {
-        return repository.findById(id).map { petToAbpResponse.convert(it) }.orElse(null)
-    }
 
     override fun readBySku(sku: UUID): PetResponseCommand {
         repository.findBySku(sku).let { optional ->
@@ -99,7 +80,6 @@ class PetServiceImpl(
                     item.breed,
                     item.color,
                     item.phoneNumber,
-                    item.humanReadableAddress,
                     item.lastSeenDate,
                     item.extraInfo,
                     item.sex.toString(),

@@ -1,13 +1,12 @@
-package one.breece.track_rejoice.mapper
+package one.breece.track_rejoice.command.mapper
 
-import one.breece.track_rejoice.commands.PetResponseCommand
-import one.breece.track_rejoice.domain.command.Pet
+import one.breece.track_rejoice.command.command.PetResponseCommand
+import one.breece.track_rejoice.command.domain.Pet
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class PetToAbpResponse : Converter<Pet, PetResponseCommand> {
-
+class PetToPetResponseCommand : Converter<Pet, PetResponseCommand> {
     override fun convert(source: Pet): PetResponseCommand? {
         return PetResponseCommand(
             source.id!!,
@@ -17,13 +16,9 @@ class PetToAbpResponse : Converter<Pet, PetResponseCommand> {
             source.breed,
             source.color,
             source.phoneNumber,
-            source.humanReadableAddress,
             source.lastSeenDate,
             source.extraInfo,
-            source.sex.toString(),
-            source.lastSeenLocation.y,
-            source.lastSeenLocation.x,
-            source.sku
+            sku = source.sku
         )
     }
 }
