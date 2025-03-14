@@ -2,6 +2,7 @@ package one.breece.track_rejoice.service.impl
 
 import one.breece.track_rejoice.commands.BicycleAnnouncementCommand
 import one.breece.track_rejoice.commands.BicycleResponseCommand
+import one.breece.track_rejoice.core.util.GeometryUtil
 import one.breece.track_rejoice.domain.command.Bicycle
 import one.breece.track_rejoice.repository.command.BicycleRepository
 import one.breece.track_rejoice.service.BicycleService

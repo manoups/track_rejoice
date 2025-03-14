@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.mapper.command
 
 import one.breece.track_rejoice.domain.command.Bicycle
-import one.breece.track_rejoice.repository.projections.BeOnTheLookOutProj
+import one.breece.track_rejoice.core.projections.BeOnTheLookOutProj
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 

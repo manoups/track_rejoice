@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import one.breece.track_rejoice.commands.ItemAnnouncementCommand
 import one.breece.track_rejoice.commands.ItemResponseCommand
-import one.breece.track_rejoice.commands.LatLng
+import one.breece.track_rejoice.core.util.LatLng
+import one.breece.track_rejoice.core.util.GeometryUtil
 import one.breece.track_rejoice.domain.command.Item
 import one.breece.track_rejoice.repository.command.ItemRepository
 import one.breece.track_rejoice.service.ItemService
 import one.breece.track_rejoice.web.dto.PhotoDescriptor
-import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException

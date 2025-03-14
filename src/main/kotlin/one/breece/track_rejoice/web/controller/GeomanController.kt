@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.web.controller
 
-import one.breece.track_rejoice.service.UtilService
+import one.breece.track_rejoice.security.service.UtilService
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.annotation.CurrentSecurityContext
 import org.springframework.security.core.context.SecurityContext

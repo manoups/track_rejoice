@@ -1,6 +1,7 @@
 package one.breece.track_rejoice.domain.command
 
 import jakarta.persistence.Entity
+import one.breece.track_rejoice.core.domain.BoilerPlate
 import org.locationtech.jts.geom.Point
 import java.time.LocalDateTime
 

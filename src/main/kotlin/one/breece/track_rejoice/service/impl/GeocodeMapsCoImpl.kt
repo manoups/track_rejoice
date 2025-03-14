@@ -1,6 +1,7 @@
 package one.breece.track_rejoice.service.impl
 
 import one.breece.track_rejoice.commands.AddressCommand
+import one.breece.track_rejoice.core.util.GeometryUtil
 import one.breece.track_rejoice.service.GeocodingService
 import one.breece.track_rejoice.web.dto.AddressDTO
 import one.breece.track_rejoice.web.dto.CoordinateDTO

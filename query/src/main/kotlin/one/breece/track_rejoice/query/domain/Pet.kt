@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.domain.command
+package one.breece.track_rejoice.query.domain
 
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

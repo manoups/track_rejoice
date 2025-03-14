@@ -1,12 +1,12 @@
-package one.breece.track_rejoice.mapper.command
+package one.breece.track_rejoice.query.mapper
 
-import one.breece.track_rejoice.domain.command.Pet
 import one.breece.track_rejoice.core.projections.BeOnTheLookOutProj
+import one.breece.track_rejoice.query.domain.Pet
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class PetToProjCommandRepository:Converter<Pet, BeOnTheLookOutProj> {
+class PetToProjRepository:Converter<Pet, BeOnTheLookOutProj> {
     override fun convert(source: Pet): BeOnTheLookOutProj? {
         return BeOnTheLookOutProj(
             source.species.toString(),

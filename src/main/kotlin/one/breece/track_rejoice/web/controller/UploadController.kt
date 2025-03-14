@@ -6,16 +6,14 @@ import one.breece.track_rejoice.domain.command.Item
 import one.breece.track_rejoice.domain.command.Pet
 import one.breece.track_rejoice.repository.command.BeOnTheLookOutRepository
 import one.breece.track_rejoice.service.S3Service
-import one.breece.track_rejoice.service.UtilService
+import one.breece.track_rejoice.security.service.UtilService
 import one.breece.track_rejoice.web.dto.PhotoDescriptor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.annotation.CurrentSecurityContext
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile

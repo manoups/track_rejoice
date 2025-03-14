@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.domain.command
 
 import jakarta.persistence.*
-import one.breece.track_rejoice.domain.BeOnTheLookoutCore
+import one.breece.track_rejoice.core.domain.BeOnTheLookoutCore
 import org.hibernate.annotations.TenantId
 import org.locationtech.jts.geom.Geometry
 import java.util.HashSet
