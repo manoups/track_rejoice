@@ -1,9 +1,7 @@
 package one.breece.track_rejoice.core.domain
 
 import jakarta.annotation.Nonnull
-import jakarta.persistence.Column
-import jakarta.persistence.ElementCollection
-import jakarta.persistence.MappedSuperclass
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.apache.commons.io.FilenameUtils
@@ -18,8 +16,6 @@ open class BeOnTheLookoutCore(
     var phoneNumber: String,
     @Nonnull
     var lastSeenDate: LocalDateTime = LocalDateTime.now(),
-
-
     @Column(columnDefinition = "geometry(Geometry, 4326)", nullable = false)
     open val lastSeenLocation: Geometry,
     @Column(columnDefinition = "varchar(1024)")
@@ -27,8 +23,8 @@ open class BeOnTheLookoutCore(
     @Column(unique = true, nullable = false, updatable = false)
     val sku: UUID = UUID.randomUUID(),
     @NotNull
-    @Column(columnDefinition = "boolean default false")
-    var enabled: Boolean = false,
+    @Enumerated(EnumType.STRING)
+    var state: BoloStateEnum = BoloStateEnum.DRAFT,
     @ElementCollection
     var photo: MutableSet<Photo> = HashSet()
 ) : BoilerPlate() {

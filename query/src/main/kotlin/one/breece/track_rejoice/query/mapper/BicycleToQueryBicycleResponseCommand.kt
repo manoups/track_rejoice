@@ -2,6 +2,7 @@ package one.breece.track_rejoice.query.mapper
 
 import one.breece.track_rejoice.core.command.BicycleResponseCommand
 import one.breece.track_rejoice.core.command.PhotoDescriptor
+import one.breece.track_rejoice.core.domain.BoloStateEnum
 import one.breece.track_rejoice.query.domain.Bicycle
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
@@ -12,7 +13,7 @@ class BicycleToQueryBicycleResponseCommand  : Converter<Bicycle, BicycleResponse
     override fun convert(source: Bicycle): BicycleResponseCommand {
         return BicycleResponseCommand(
             source.id!!,
-            source.enabled,
+            source.state == BoloStateEnum.ACTIVE,
             source.color,
             source.maker,
             source.model,

@@ -6,6 +6,7 @@ import one.breece.track_rejoice.command.domain.Item
 import one.breece.track_rejoice.command.domain.Pet
 import one.breece.track_rejoice.command.repository.BeOnTheLookOutRepository
 import one.breece.track_rejoice.command.service.BoloService
+import one.breece.track_rejoice.core.domain.BoloStateEnum
 import one.breece.track_rejoice.core.projections.BeOnTheLookOutProj
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.domain.Page
@@ -23,7 +24,7 @@ class BoloServiceImpl(
 ) : BoloService {
     override fun enableAnnouncement(announcementId: Long) {
         repository.findById(announcementId).ifPresent {
-            it.enabled = true
+            it.state = BoloStateEnum.ACTIVE
             repository.save(it)
         }
     }

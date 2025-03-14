@@ -2,6 +2,7 @@ package one.breece.track_rejoice.query.mapper
 
 import one.breece.track_rejoice.core.command.PetResponseCommand
 import one.breece.track_rejoice.core.command.PhotoDescriptor
+import one.breece.track_rejoice.core.domain.BoloStateEnum
 import one.breece.track_rejoice.query.domain.Pet
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.convert.converter.Converter
@@ -13,7 +14,7 @@ class PetToQueryPetResponseCommand: Converter<Pet, PetResponseCommand> {
         return PetResponseCommand(
             source.id!!,
             source.species.toString(),
-            source.enabled,
+            source.state == BoloStateEnum.ACTIVE,
             source.name,
             source.breed,
             source.color,

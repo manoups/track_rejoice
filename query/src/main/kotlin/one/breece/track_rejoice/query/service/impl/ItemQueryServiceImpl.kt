@@ -2,6 +2,7 @@ package one.breece.track_rejoice.query.service.impl
 
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.core.command.ItemResponseCommand
+import one.breece.track_rejoice.core.domain.BoloStateEnum
 import one.breece.track_rejoice.query.domain.Item
 import one.breece.track_rejoice.query.repository.ItemQueryRepository
 import one.breece.track_rejoice.query.service.ItemQueryService
@@ -16,7 +17,7 @@ class ItemQueryServiceImpl(
 ) : ItemQueryService {
     @Transactional
     override fun readBySku(sku: UUID): ItemResponseCommand {
-        return repository.readBySku(sku).map { itemToQueryItemResponseCommand.convert(it) }
+        return repository.readBySkuAndState(sku, BoloStateEnum.ACTIVE).map { itemToQueryItemResponseCommand.convert(it) }
             .orElseThrow { NoSuchElementException() }
     }
 }
