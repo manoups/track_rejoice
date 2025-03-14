@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.configuration
 
-import one.breece.track_rejoice.repository.command.UserRepository
 import one.breece.track_rejoice.security.CustomRememberMeServices
+import one.breece.track_rejoice.security.repository.UserRepository
 import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -1,6 +1,6 @@
 package one.breece.track_rejoice.configuration
 
-import one.breece.track_rejoice.domain.command.AppUser
+import one.breece.track_rejoice.security.domain.AppUser
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer

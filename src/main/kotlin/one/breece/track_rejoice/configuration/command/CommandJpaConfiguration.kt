@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.configuration.command
 
-import one.breece.track_rejoice.domain.command.AppUser
 import one.breece.track_rejoice.domain.command.BeOnTheLookOut
+import one.breece.track_rejoice.security.domain.AppUser
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder
 import org.springframework.context.annotation.Bean

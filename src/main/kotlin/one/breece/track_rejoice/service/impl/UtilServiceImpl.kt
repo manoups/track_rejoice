@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.service.impl
 
-import one.breece.track_rejoice.domain.command.AppUser
 import one.breece.track_rejoice.repository.command.PetRepository
+import one.breece.track_rejoice.security.domain.AppUser
 import one.breece.track_rejoice.service.GeocodingService
 import one.breece.track_rejoice.service.UtilService
 import org.springframework.http.HttpStatus
