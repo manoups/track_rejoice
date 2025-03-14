@@ -5,4 +5,5 @@ rootProject.name = 'track_rejoice'
 include 'query'
 include 'security'
 include 'core'
+include 'command'
 
