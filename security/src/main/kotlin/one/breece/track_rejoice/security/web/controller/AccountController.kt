@@ -1,4 +1,4 @@
-package one.breece.track_rejoice.web.controller
+package one.breece.track_rejoice.security.web.controller
 
 import one.breece.track_rejoice.security.domain.AppUser
 import one.breece.track_rejoice.security.repository.UserRepository

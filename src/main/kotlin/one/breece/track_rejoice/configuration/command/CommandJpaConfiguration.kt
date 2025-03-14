@@ -17,7 +17,7 @@ import javax.sql.DataSource
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    basePackages = ["one.breece.track_rejoice.repository.command"],
+    basePackages = ["one.breece.track_rejoice.repository.command", "one.breece.track_rejoice.security.repository"],
     basePackageClasses = [BeOnTheLookOut::class, AppUser::class],
     entityManagerFactoryRef = "commandEntityManagerFactory",
     transactionManagerRef = "commandTransactionManager"
