@@ -96,19 +96,20 @@
             .bindPopup(name || "You");
     }
 
+    var markers = []
     for (var i = 0; i < data.length; i++) {
         if (data[i].geometryType == 'Marker') {
             if (data[i].lastSeenLocation.length != 1) {
                 console.error("Expected size 1, found " + data[i].lastSeenLocation.size)
             }
-            L.marker([data[i].lastSeenLocation[0][1], data[i].lastSeenLocation[0][0]]).addTo(mymap)
-                .bindPopup(data[i].name || data[i].type);
+            markers.push(L.marker([data[i].lastSeenLocation[0][1], data[i].lastSeenLocation[0][0]]).addTo(mymap)
+                .bindPopup(data[i].shortDescription || data[i].type));
         } else if (data[i].geometryType == 'MultiPoint') {
             if (data[i].lastSeenLocation.length < 2) {
                 console.error("Expected size > 1, found " + data[i].lastSeenLocation.size)
             }
-            L.polyline(data[i].lastSeenLocation, {color: 'red'}).addTo(mymap)
-                .bindPopup(data[i].name || data[i].type);
+            markers.push(L.polyline(data[i].lastSeenLocation, {color: 'red'}).addTo(mymap)
+                .bindPopup(data[i].shortDescription || data[i].type));
         }
     }
     document.getElementById('zoom').value = mymap.getZoom();
@@ -135,6 +136,15 @@
         document.coords.submit();
         // You can use these coordinates for further actions, like displaying a popup
     });
+
+    function onBoloClicked(index) {
+        if (data[index].geometryType == 'Marker') {
+            mymap.setView([data[index].lastSeenLocation[0][1], data[index].lastSeenLocation[0][0]], document.getElementById('zoom').value || 18);
+        } else if (data[index].geometryType == 'MultiPoint') {
+            mymap.setView(data[index].lastSeenLocation[0], document.getElementById('zoom').value || 18);
+        }
+        markers[index].openPopup();
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

@@ -13,8 +13,9 @@
             <th th:text="#{search.table.date}">Last seen date</th>
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
-        <tr th:each="bolo: ${bolos}">
-            <td th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}">Description</td>
+        <tr th:each="bolo, iterStat: ${bolos}">
+            <td><a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}"
+                   th:data-index="${iterStat.index}" th:onclick="|onBoloClicked(this.getAttribute('data-index'))|"></a></td>
             <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : #strings.capitalize(#strings.toLowerCase(bolo.color))}">Name</td>
             <td th:text="${#temporals.format(bolo.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
