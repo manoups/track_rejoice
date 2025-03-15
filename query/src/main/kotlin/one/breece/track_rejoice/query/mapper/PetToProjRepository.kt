@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class PetToProjRepository:Converter<Pet, BeOnTheLookOutProj> {
     override fun convert(source: Pet): BeOnTheLookOutProj? {
         return BeOnTheLookOutProj(
-            source.species.toString(),
+            "${source.name} (${source.species})",
             source.color,
             source.lastSeenLocation.coordinates.map { arrayOf(it.x, it.y) },
             "Marker",

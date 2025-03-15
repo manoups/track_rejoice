@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 class BicycleToProjRepository : Converter<Bicycle, BeOnTheLookOutProj> {
     override fun convert(source: Bicycle): BeOnTheLookOutProj? {
         return BeOnTheLookOutProj(
-            "${source.model} ${source.maker}",
+            "${source.maker} ${source.model}",
             source.color,
             source.lastSeenLocation.coordinates.map { arrayOf(it.x, it.y) },
             "Marker",

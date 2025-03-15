@@ -3,6 +3,10 @@ body {
     overflow-x: hidden;
 }
 
+.link-underline-opacity-75-hover:hover {
+    cursor: pointer;
+}
+
 .p-5 {
     padding: 3rem !important;
 }
