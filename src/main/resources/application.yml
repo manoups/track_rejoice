@@ -4,6 +4,8 @@ server:
     whitelabel:
       enabled: false
 spring:
+  devtools:
+    add-properties: false
   datasource:
       hikari:
         connection-timeout: 20000

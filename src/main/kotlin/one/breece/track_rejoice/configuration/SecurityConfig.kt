@@ -68,7 +68,7 @@ class SecurityConfig {
             logout {
                 clearAuthentication = true
                 invalidateHttpSession = true
-                logoutSuccessUrl = "/index?message-key=logout.message"
+                logoutSuccessUrl = "/"
                 deleteCookies("remove", "JSESSIONID")
             }
         }
