@@ -98,7 +98,7 @@
             <div th:replace="~{fragments/uploadImage::photoUploader(${bicycleAnnouncementCommand.sku}, ${bicycleAnnouncementCommand.photos}, ${bicycleAnnouncementCommand.enabled})}"></div>
         </div>
         <div class="col-md-3">
-            <img th:src="${bicycleAnnouncementCommand.qrcode}" alt="QR Image will be displayed here"/>
+            <img th:src="${bicycleAnnouncementCommand.qrcode} ne null ? ${bicycleAnnouncementCommand.qrcode} : 'https://trackrejoice-public-01.s3.eu-west-3.amazonaws.com/placeholder.png'" width="250" height="250" alt="QR Image will be displayed here"/>
         </div>
     </div>
     <div class="row">
