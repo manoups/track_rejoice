@@ -15,14 +15,15 @@ import one.breece.track_rejoice.security.web.controller.RegistrationRestControll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
@@ -34,9 +35,14 @@ import org.springframework.web.context.WebApplicationContext
     AccountController::class, RegistrationCaptchaController::class, RegistrationController::class,
     RegistrationRestController::class])
 class BicycleFormControllerTest {
-
     @Autowired
     lateinit var wac: WebApplicationContext
+
+    @Value("\${spring.security.user.name}")
+    lateinit var username: String
+
+    @Value("\${spring.security.user.password}")
+    lateinit var password: String
 
     var mockMvc: MockMvc? = null
 
@@ -50,9 +56,25 @@ class BicycleFormControllerTest {
 
     @WithMockUser("spring")
     @Test
-    fun getBicycleForm() {
+    fun givenSecureEndpoint_whenForcedCredentials_then200() {
         mockMvc!!.perform(get("/bolo/form/transport"))
             .andExpect(status().isOk)
             .andExpect(view().name("bikesearchform"))
+            .andExpect(model().attributeExists("bicycleAnnouncementCommand"))
+    }
+
+    @Test
+    fun givenSecureEndpoint_whenInvalidUser_then401() {
+        mockMvc!!.perform(get("/bolo/form/transport").with(httpBasic("foo", "bar")))
+            .andExpect(status().isUnauthorized)
+    }
+
+//    User created in properties
+    @Test
+    fun givenSecureEndpoint_whenValidUser_then200() {
+        mockMvc!!.perform(get("/bolo/form/transport").with(httpBasic(username, password)))
+            .andExpect(status().isOk)
+            .andExpect(view().name("bikesearchform"))
+            .andExpect(model().attributeExists("bicycleAnnouncementCommand"))
     }
 }
