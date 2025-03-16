@@ -30,7 +30,8 @@ class BicycleToQueryBicycleResponseCommand  : Converter<Bicycle, BicycleResponse
                         FilenameUtils.getName(it.key)
                     )
                 )
-            }
+            },
+            source.qrCodeKey
         )
     }
 }

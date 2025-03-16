@@ -17,5 +17,6 @@ data class PetResponseCommand(
     val lat: Double? = null,
     val lon: Double? = null,
     val sku: UUID,
-    val photos: List<PhotoDescriptor> = emptyList()
+    val photos: List<PhotoDescriptor> = emptyList(),
+    val qrCode: String? = null
 )

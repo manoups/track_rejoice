@@ -13,5 +13,6 @@ class ItemResponseCommand(
     val additionalInformation: String? = null,
     val latlngs: List<DoubleArray>? = null,
     val sku: UUID,
-    val photos: List<PhotoDescriptor> = emptyList()
+    val photos: List<PhotoDescriptor> = emptyList(),
+    val qrCode: String? = null
 )

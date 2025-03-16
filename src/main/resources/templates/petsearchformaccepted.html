@@ -64,7 +64,8 @@
                 <div class="col-md-6">
                     <span class="form-label" th:text="#{search.table.date}">Last seen:</span>
                     <span class="form-control" th:class="'form-control'"
-                          th:utext="${#temporals.format(petAnnouncementCommand.lastSeenDate, 'dd-MM-yyyy HH:mm')}" id="lastSeenDate"></span>
+                          th:utext="${#temporals.format(petAnnouncementCommand.lastSeenDate, 'dd-MM-yyyy HH:mm')}"
+                          id="lastSeenDate"></span>
                 </div>
                 <div class="col-md-6">
                     <span class="form-label" th:text="#{search.form.color}">Color:</span>
@@ -93,10 +94,17 @@
     <br>
     <br>
     <div class="row">
-        <div th:replace="~{fragments/uploadImage::photoUploader(${petAnnouncementCommand.sku}, ${petAnnouncementCommand.photos}, ${petAnnouncementCommand.enabled})}"></div>
+        <div class="col-md-9">
+            <div th:replace="~{fragments/uploadImage::photoUploader(${petAnnouncementCommand.sku}, ${petAnnouncementCommand.photos}, ${petAnnouncementCommand.enabled})}"></div>
+        </div>
+        <div class="col-md-3">
+            <img th:src="${petAnnouncementCommand.qrcode}" alt="QR Image will be displayed here"/>
+        </div>
     </div>
-    <div th:unless="${petAnnouncementCommand.enabled}">
-        <div th:replace="~{fragments/payment::paypal(${petAnnouncementCommand.id})}"></div>
+    <div class="row">
+        <div th:unless="${petAnnouncementCommand.enabled}">
+            <div th:replace="~{fragments/payment::paypal(${petAnnouncementCommand.id})}"></div>
+        </div>
     </div>
 
     <script th:inline="javascript">

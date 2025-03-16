@@ -9,7 +9,7 @@ import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
 @Component
-class PetToQueryPetResponseCommand: Converter<Pet, PetResponseCommand> {
+class PetToQueryPetResponseCommand : Converter<Pet, PetResponseCommand> {
     override fun convert(source: Pet): PetResponseCommand {
         return PetResponseCommand(
             source.id!!,
@@ -31,6 +31,7 @@ class PetToQueryPetResponseCommand: Converter<Pet, PetResponseCommand> {
                         FilenameUtils.getName(it.key)
                     )
                 )
-            })
+            }, source.qrCodeKey
+        )
     }
 }

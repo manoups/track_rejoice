@@ -78,10 +78,17 @@
         </div>
     </div>
     <div class="row">
-        <div th:replace="~{fragments/uploadImage::photoUploader(${itemAnnouncementCommand.sku}, ${itemAnnouncementCommand.photos}, ${itemAnnouncementCommand.enabled})}"></div>
+        <div class="col-md-9">
+            <div th:replace="~{fragments/uploadImage::photoUploader(${itemAnnouncementCommand.sku}, ${itemAnnouncementCommand.photos}, ${itemAnnouncementCommand.enabled})}"></div>
+        </div>
+        <div class="col-md-3">
+            <img th:src="${itemAnnouncementCommand.qrcode}" alt="QR Image will be displayed here"/>
+        </div>
     </div>
-    <div th:unless="${itemAnnouncementCommand.enabled}">
-        <div th:replace="~{fragments/payment::paypal(${itemAnnouncementCommand.id})}"></div>
+    <div class="row">
+        <div th:unless="${itemAnnouncementCommand.enabled}">
+            <div th:replace="~{fragments/payment::paypal(${itemAnnouncementCommand.id})}"></div>
+        </div>
     </div>
 
     <script th:inline="javascript">

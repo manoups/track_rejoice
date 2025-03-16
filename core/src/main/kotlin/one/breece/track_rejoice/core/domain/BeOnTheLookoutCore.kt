@@ -26,7 +26,8 @@ open class BeOnTheLookoutCore(
     @Enumerated(EnumType.STRING)
     var state: BoloStateEnum = BoloStateEnum.DRAFT,
     @ElementCollection
-    var photo: MutableSet<Photo> = HashSet()
+    var photo: MutableSet<Photo> = HashSet(),
+    var qrCodeKey: String? = null
 ) : BoilerPlate() {
     fun addPhoto(bucketName: String, name: String) {
         photo.add(Photo(bucketName, name))
