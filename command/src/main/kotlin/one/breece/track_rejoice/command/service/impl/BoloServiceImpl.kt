@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.statemachine.StateMachine
+import org.springframework.statemachine.StateMachineContext
 import org.springframework.statemachine.config.StateMachineFactory
 import org.springframework.statemachine.support.DefaultStateMachineContext
 import org.springframework.stereotype.Service
@@ -45,9 +46,9 @@ class BoloServiceImpl(
         val bolos = repository.findAll(pageable)
         val responsePayload = bolos.content.map {
             when (it) {
-                is Pet -> petToProjCommandRepository.convert(it)
-                is Item -> itemToProjCommandRepository.convert(it)
-                is Bicycle -> bicycleToProjCommandRepository.convert(it)
+                is Pet -> petToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/pet/created/${ptr?.sku}" }
+                is Item -> itemToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/item/created/${ptr?.sku}" }
+                is Bicycle -> bicycleToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/bike/created/${ptr?.sku}" }
                 else -> throw IllegalArgumentException("Unknown type $it")
             }
         }
@@ -62,15 +63,29 @@ class BoloServiceImpl(
     }
 
     private fun build(boloId: Long): Optional<StateMachine<BoloStates, BoloEvents>> {
-        return repository.findById(boloId).map { bolo ->
-            val sm = factory.getStateMachine(bolo.id.toString())
-            sm.stopReactively().block()
-            sm.stateMachineAccessor.doWithAllRegions {
+        return repository.findById(boloId).map {
+            val stateMachine = factory.getStateMachine(it.id.toString())
+            val stateMachineContext = DefaultStateMachineContext<BoloStates, BoloEvents>(it.state, null, null, null)
+            return@map this.restoreStateMachine(stateMachine, stateMachineContext);
+        }
+    }
+
+    protected fun restoreStateMachine(
+        stateMachine: StateMachine<BoloStates, BoloEvents>,
+        stateMachineContext: StateMachineContext<BoloStates, BoloEvents>?
+    ): StateMachine<BoloStates, BoloEvents> {
+        if (stateMachineContext == null) {
+            return stateMachine
+        } else {
+            stateMachine.stopReactively().block()
+            stateMachine.stateMachineAccessor.doWithAllRegions {
                 it.addStateMachineInterceptor(stateChangeInterceptor)
-                it.resetStateMachine(DefaultStateMachineContext(bolo.state, null, null, null))
+                it.resetStateMachineReactively(
+                    stateMachineContext
+                ).block()
+                stateMachine.startReactively().block()
             }
-            sm.startReactively().block()
-            return@map sm
+            return stateMachine
         }
     }
 

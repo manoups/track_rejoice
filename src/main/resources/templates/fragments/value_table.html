@@ -14,9 +14,14 @@
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="bolo, iterStat: ${bolos}">
-            <td><a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}"
-                   th:data-index="${iterStat.index}" th:onclick="|onBoloClicked(this.getAttribute('data-index'))|"></a></td>
-            <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : #strings.capitalize(#strings.toLowerCase(bolo.color))}">Name</td>
+            <td>
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                   th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}"
+                   th:data-index="${iterStat.index}" th:onclick="|onBoloClicked(this.getAttribute('data-index'))|"></a>
+            </td>
+            <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : #strings.capitalize(#strings.toLowerCase(bolo.color))}">
+                Name
+            </td>
             <td th:text="${#temporals.format(bolo.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
                 <a class="btn btn-info" th:href="${bolo.detailsUrl}">Details</a>
@@ -40,17 +45,24 @@
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="bolo, itr: ${bolos}">
-            <td th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}">Description</td>
+            <td>
+                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                   th:text="${#strings.capitalize(#strings.toLowerCase(bolo.shortDescription))}"
+                   th:href="${bolo.detailsUrl}"></a>
+            </td>
             <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : bolo.color}">Color</td>
             <td th:text="${#temporals.format(bolo.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
             <td>
                 <!--<a data-toggle="modal" data-target="#modal-warning"
                    th:attr="data-target='#modal-warning'+${pet.id }"><span
                         class="glyphicon glyphicon-trash"></span></a>-->
-                <button class="btn btn-danger" data-bs-toggle="modal" th:attr="data-bs-target='#modal-warning-'+${itr.index}">Delete
+                <button class="btn btn-danger" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#modal-warning-'+${itr.index}">Delete
                 </button>
             </td>
-            <th:block th:replace="~{fragments/delete-warning::modal('modal-warning-'+${itr.index}, ${bolo.sku})}">modal</th:block>
+            <th:block th:replace="~{fragments/delete-warning::modal('modal-warning-'+${itr.index}, ${bolo.sku})}">
+                modal
+            </th:block>
         </tr>
     </table>
 </div>
