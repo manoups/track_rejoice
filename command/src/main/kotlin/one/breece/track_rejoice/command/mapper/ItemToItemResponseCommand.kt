@@ -26,6 +26,6 @@ class ItemToItemResponseCommand : Converter<Item, ItemResponseCommand> {
                     "https://${it.bucket}.s3.amazonaws.com/${it.key}",
                     FilenameUtils.getName(it.key)
                 )
-            })
+            }, source.qrCodeKey)
     }
 }

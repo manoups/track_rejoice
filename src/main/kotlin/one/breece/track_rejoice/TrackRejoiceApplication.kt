@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableAsync
 
 @EnableAsync
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["one.breece.track_rejoice"])
 class TrackRejoiceApplication
 
 fun main(args: Array<String>) {
