@@ -1,7 +1,7 @@
 package one.breece.track_rejoice.query.service.impl
 
 
-import one.breece.track_rejoice.core.domain.BoloStateEnum
+import one.breece.track_rejoice.core.domain.BoloStates
 import one.breece.track_rejoice.core.projections.BeOnTheLookOutProj
 import one.breece.track_rejoice.core.util.GeometryUtil
 import one.breece.track_rejoice.query.domain.Bicycle
@@ -30,7 +30,7 @@ class BoloQueryServiceImpl(
         pageable: Pageable
     ): Page<BeOnTheLookOutProj> {
         val point = GeometryUtil.parseLocation(lng, lat)
-        val bolos = beOnTheLookOutQueryRepository.findIdsByLngLat(point, distanceInMeters, BoloStateEnum.ACTIVE, pageable)
+        val bolos = beOnTheLookOutQueryRepository.findIdsByLngLat(point, distanceInMeters, BoloStates.ACTIVE, pageable)
 //        TODO: Delegate to factory pattern
         val responsePayload = bolos.content.map {
             when(it) {

@@ -57,7 +57,7 @@ class PayPalController(
     @PostMapping("/api/orders/{orderID}/{announcementId}/capture")
     fun captureOrder(@PathVariable orderID: String, @PathVariable announcementId: Long): ResponseEntity<Order> {
         try {
-            boloService.enableAnnouncement(announcementId)
+            boloService.activateAnnouncement(announcementId)
             val response = captureOrders(orderID)
             return ResponseEntity(response, HttpStatus.OK)
         } catch (e: Exception) {

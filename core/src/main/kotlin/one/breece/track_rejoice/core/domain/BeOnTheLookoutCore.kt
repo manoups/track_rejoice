@@ -24,7 +24,7 @@ open class BeOnTheLookoutCore(
     val sku: UUID = UUID.randomUUID(),
     @NotNull
     @Enumerated(EnumType.STRING)
-    var state: BoloStateEnum = BoloStateEnum.DRAFT,
+    var state: BoloStates = BoloStates.DRAFT,
     @ElementCollection
     var photo: MutableSet<Photo> = HashSet(),
     var qrCodeKey: String? = null

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 class FreemiumController(private val boloService: BoloService) {
     @PostMapping("/api/orders/{orderID}/{announcementId}/capture")
     fun captureOrders(@PathVariable announcementId: Long, @PathVariable orderID: String): ResponseEntity<String> {
-        boloService.enableAnnouncement(announcementId)
+        boloService.activateAnnouncement(announcementId)
         return ResponseEntity("OK", HttpStatus.OK)
     }
 

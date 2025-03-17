@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable
 import java.util.*
 
 interface BoloService {
-    fun enableAnnouncement(announcementId: Long)
+    fun activateAnnouncement(announcementId: Long)
     fun findAll(pageable: Pageable): Page<BeOnTheLookOutProj>
     fun deleteBySku(sku: UUID)
 }

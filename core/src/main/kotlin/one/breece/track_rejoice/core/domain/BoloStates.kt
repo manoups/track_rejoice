@@ -1,5 +1,5 @@
 package one.breece.track_rejoice.core.domain
 
-enum class BoloStateEnum {
+enum class BoloStates {
     DRAFT, ACTIVE, DELETED, FOUND
 }

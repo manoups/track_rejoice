@@ -3,13 +3,18 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.spring' version '2.1.20-RC'
     id 'org.springframework.boot' version '3.4.3'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.jetbrains.kotlin.plugin.jpa' version '2.1.20-RC'}
+    id 'org.jetbrains.kotlin.plugin.jpa' version '2.1.20-RC'
+}
 
 group = 'one.breece'
 version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+ext {
+    set('springStatemachineVersion', "4.0.0")
 }
 
 dependencies {
@@ -28,7 +33,19 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.google.zxing:core:3.5.3'
     implementation 'com.google.zxing:javase:3.5.3'
+    implementation 'org.springframework.statemachine:spring-statemachine-starter'
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'com.h2database:h2'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.statemachine:spring-statemachine-bom:${springStatemachineVersion}"
+    }
 }
 
 test {
