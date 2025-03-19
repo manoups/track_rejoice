@@ -43,7 +43,7 @@ class BoloServiceImpl(
     }
 
     override fun findAll(pageable: Pageable): Page<BeOnTheLookOutProj> {
-        val bolos = repository.findAll(pageable)
+        val bolos = repository.findAllByStateIn(listOf(BoloStates.DRAFT, BoloStates.ACTIVE), pageable)
         val responsePayload = bolos.content.map {
             when (it) {
                 is Pet -> petToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/pet/created/${ptr?.sku}" }
@@ -57,8 +57,30 @@ class BoloServiceImpl(
     }
 
     override fun deleteBySku(sku: UUID) {
-        repository.findBySku(sku).ifPresent {
-            repository.delete(it)
+        val optional = repository.findBySku(sku)
+        if(optional.isEmpty) {
+            throw RuntimeException("Bolo not found")
+        }
+        buildBySku(sku).ifPresent {
+            sendEvent(optional.get().id!!, it, BoloEvents.DEACTIVATE)
+        }
+    }
+
+    override fun markFoundBySku(sku: UUID) {
+        val optional = repository.findBySku(sku)
+        if(optional.isEmpty) {
+            throw RuntimeException("Bolo not found")
+        }
+        buildBySku(sku).ifPresent {
+            sendEvent(optional.get().id!!, it, BoloEvents.MARK_FOUND)
+        }
+    }
+
+    private fun buildBySku(sku: UUID): Optional<StateMachine<BoloStates, BoloEvents>> {
+        return repository.findBySku(sku).map {
+            val stateMachine = factory.getStateMachine(it.id.toString())
+            val stateMachineContext = DefaultStateMachineContext<BoloStates, BoloEvents>(it.state, null, null, null)
+            return@map this.restoreStateMachine(stateMachine, stateMachineContext);
         }
     }
 

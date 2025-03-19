@@ -48,10 +48,6 @@ class ItemServiceImpl(
         return itemToItemResponseCommand.convert(item)!!
     }
 
-    override fun deleteById(id: Long) {
-        repository.deleteById(id)
-    }
-
     override fun readBySku(sku: UUID): ItemResponseCommand {
         repository.findBySku(sku).let { optional ->
             return if (optional.isPresent) {

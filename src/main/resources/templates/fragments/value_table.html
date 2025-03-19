@@ -56,9 +56,20 @@
                 <!--<a data-toggle="modal" data-target="#modal-warning"
                    th:attr="data-target='#modal-warning'+${pet.id }"><span
                         class="glyphicon glyphicon-trash"></span></a>-->
-                <button class="btn btn-danger" data-bs-toggle="modal"
-                        th:attr="data-bs-target='#modal-warning-'+${itr.index}">Delete
-                </button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form action="#" th:action="@{'/announcements/mark/found/{sku}'(sku=${bolo.sku})}" th:method="post">
+                            <button class="btn btn-info btn-sm" type="submit" th:text="#{action.mark.found}">Mark as
+                                Found
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                th:attr="data-bs-target='#modal-warning-'+${itr.index}">Delete
+                        </button>
+                    </div>
+                </div>
             </td>
             <th:block th:replace="~{fragments/delete-warning::modal('modal-warning-'+${itr.index}, ${bolo.sku})}">
                 modal

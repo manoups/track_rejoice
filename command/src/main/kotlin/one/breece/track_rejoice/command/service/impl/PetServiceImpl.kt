@@ -48,11 +48,6 @@ class PetServiceImpl(
         return petToPetResponseCommand.convert(pet)!!
     }
 
-
-    override fun deleteById(id: Long) {
-        repository.deleteById(id)
-    }
-
     override fun readBySku(sku: UUID): PetResponseCommand {
         repository.findBySku(sku).let { optional ->
             return if (optional.isPresent) {

@@ -9,4 +9,5 @@ interface BoloService {
     fun activateAnnouncement(announcementId: Long)
     fun findAll(pageable: Pageable): Page<BeOnTheLookOutProj>
     fun deleteBySku(sku: UUID)
+    fun markFoundBySku(sku: UUID)
 }

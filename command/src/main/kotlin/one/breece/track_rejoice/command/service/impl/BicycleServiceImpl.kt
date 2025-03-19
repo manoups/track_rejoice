@@ -42,11 +42,6 @@ class BicycleServiceImpl(
         return bicycleToBicycleResponseCommand.convert(bicycle)!!
     }
 
-    override fun deleteById(id: Long) {
-        repository.deleteById(id)
-    }
-
-
     override fun readBySku(sku: UUID): BicycleResponseCommand {
         repository.findBySku(sku).let { optional ->
             return if (optional.isPresent) {

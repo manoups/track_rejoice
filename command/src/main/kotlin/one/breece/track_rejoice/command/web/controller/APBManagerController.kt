@@ -4,10 +4,7 @@ import one.breece.track_rejoice.command.service.BoloService
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @Controller
@@ -25,6 +22,12 @@ class APBManagerController(
     @DeleteMapping("/{sku}")
     fun deleteAnnouncement(@PathVariable("sku") sku: UUID): String {
         boloService.deleteBySku(sku)
+        return "redirect:/announcements"
+    }
+
+    @PostMapping("/mark/found/{sku}")
+    fun markFoundAnnouncement(@PathVariable("sku") sku: UUID): String {
+        boloService.markFoundBySku(sku)
         return "redirect:/announcements"
     }
 }
