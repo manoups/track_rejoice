@@ -47,12 +47,12 @@
             <div class="row">
                 <div class="col-md-4 dropdown">
                     <span class="form-label" th:text="#{search.table.species}">Species:</span>
-                    <span th:utext="${petAnnouncementCommand.species}"
+                    <span th:utext="${#strings.capitalize(#strings.toLowerCase(petAnnouncementCommand.species))}"
                           th:class="'form-control'"></span>
                 </div>
                 <div class="col-md-4 dropdown">
                     <span class="form-label" th:text="#{search.table.sex}">Sex:</span>
-                    <span th:utext="${petAnnouncementCommand.sex}" th:class="'form-control'"></span>
+                    <span th:utext="${#strings.capitalize(#strings.toLowerCase(petAnnouncementCommand.sex))}" th:class="'form-control'"></span>
                 </div>
                 <div class="col-md-4">
                     <span class="form-label" th:text="#{search.form.breed}">Breed:</span>
