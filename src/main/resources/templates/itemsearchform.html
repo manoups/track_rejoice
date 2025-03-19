@@ -37,7 +37,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="shortDescription" class="form-label" th:text="#{search.form.short.description}">Name:</label>
+                        <label for="shortDescription" class="form-label" th:text="#{search.form.short.description}">Short Description:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('shortDescription')} ?
             'form-control is-invalid':'form-control'" id="shortDescription" th:field="*{shortDescription}" required
                                th:disabled="${#strings.equals(action, 'publish')}"
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="color" class="form-label" th:text="#{search.form.color}">Color:</label>
+                        <label for="color" class="form-label" th:text="#{search.form.item.color}">Color:</label>
                         <input type="text" class="form-control" th:if="${#fields.hasErrors('color')} ?
             'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback"
                                th:disabled="${#strings.equals(action, 'publish')}">

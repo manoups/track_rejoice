@@ -53,7 +53,7 @@
                           id="lastSeenDate"></span>
                 </div>
                 <div class="col-md-6">
-                    <span class="form-label" th:text="#{search.form.color}">Color:</span>
+                    <span class="form-label" th:text="#{search.form.item.color}">Color:</span>
                     <span class="form-control" th:if="'form-control'" id="color"
                           th:utext="${itemAnnouncementCommand.color}"></span>
                 </div>
@@ -77,6 +77,8 @@
             </div>
         </div>
     </div>
+    <br>
+    <br>
     <div class="row">
         <div class="col-md-9">
             <div th:replace="~{fragments/uploadImage::photoUploader(${itemAnnouncementCommand.sku}, ${itemAnnouncementCommand.photos}, ${itemAnnouncementCommand.enabled})}"></div>
