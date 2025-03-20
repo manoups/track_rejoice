@@ -62,6 +62,7 @@ class SecurityConfig {
                 defaultSuccessUrl("/index", true)
                 authenticationFailureHandler = customAuthenticationFailureHandler
             }
+            oauth2Login { defaultSuccessUrl("/google-login", true) }
             logout {
                 clearAuthentication = true
                 invalidateHttpSession = true

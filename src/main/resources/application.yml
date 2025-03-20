@@ -58,16 +58,16 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          google:
-#            clientId: 760121390009-sgn0o84bb0jo3q0hu4rult1fb3qnhfv1.apps.googleusercontent.com
-#            clientSecret: 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
-#            scope:
-#              - email
-#              - profile
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 760121390009-sgn0o84bb0jo3q0hu4rult1fb3qnhfv1.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
 support:
   email: emmanouil.psanis@gmail.com
 
