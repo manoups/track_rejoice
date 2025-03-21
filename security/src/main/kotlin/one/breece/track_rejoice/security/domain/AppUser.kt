@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
+import one.breece.track_rejoice.security.converters.AESEncryptionConverter
 import org.springframework.security.oauth2.core.user.OAuth2User
 
 @Entity
@@ -12,11 +13,14 @@ class AppUser(
     private var password: String,
     @NotBlank
     @Email
+    @Convert(converter = AESEncryptionConverter::class)
     @Column(nullable = false, unique = true)
     private val username: String,
     @NotBlank
+    @Convert(converter = AESEncryptionConverter::class)
     val firstName: String,
     @NotBlank
+    @Convert(converter = AESEncryptionConverter::class)
     val lastName: String,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
