@@ -70,6 +70,13 @@
                        th:value="#{label.form.submit}"/>
 
             </form>
+
+            <p style="text-align: center">OR</p>
+
+            <!-- OAuth2 Login -->
+            <a th:href="@{/oauth2/authorization/google}">
+                <button class="oauth-btn" style="display: block; margin: 0 auto;">Login with Google</button>
+            </a>
         </div>
         <br/> <span th:remove="all">Current Locale :  <span th:utext="${#locale}"></span><br/><br/></span>
         <a class="btn btn-default" th:remove="all" th:href="@{/register}"

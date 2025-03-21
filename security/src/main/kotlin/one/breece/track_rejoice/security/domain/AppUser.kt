@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
+import org.springframework.security.oauth2.core.user.OAuth2User
 
 @Entity
 class AppUser(
@@ -40,7 +41,10 @@ class AppUser(
     override val isUsing2FA: Boolean = false,
     @Enumerated(EnumType.STRING)
     val provider: Provider = Provider.LOCAL
-) : AppUserDetails {
+) : AppUserDetails, OAuth2User {
+    override fun getAttributes(): Map<String, Any> = emptyMap()
+    override fun getName(): String = username
+
     override fun getAuthorities(): MutableSet<Role> = authorities
 
     override fun getPassword(): String = password

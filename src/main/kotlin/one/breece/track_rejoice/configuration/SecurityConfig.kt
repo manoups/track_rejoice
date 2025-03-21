@@ -1,7 +1,10 @@
 package one.breece.track_rejoice.configuration
 
 import one.breece.track_rejoice.security.CustomRememberMeServices
+import one.breece.track_rejoice.security.command.UserCommand
+import one.breece.track_rejoice.security.domain.Provider
 import one.breece.track_rejoice.security.repository.UserRepository
+import one.breece.track_rejoice.security.service.impl.UserServiceImpl
 import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,11 +14,16 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
+import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.security.web.FilterInvocation
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler
@@ -35,15 +43,15 @@ class SecurityConfig {
         requestMatcherProvider: RequestMatcherProvider
     ): SecurityFilterChain {
         http {
-            csrf {  disable() }
+            csrf { disable() }
             authorizeHttpRequests {
                 authorize("/css/**", permitAll)
                 authorize("/js/**", permitAll)
                 authorize("/user/**", hasAuthority("ROLE_USER"))
-                authorize("/login*" , permitAll)
+                authorize("/login*", permitAll)
                 authorize("/password-*", permitAll)
-                authorize("/actuator*",  permitAll)
-                authorize("/actuator/**",  permitAll)
+                authorize("/actuator*", permitAll)
+                authorize("/actuator/**", permitAll)
                 authorize("/register*", permitAll)
                 authorize("/register/**", permitAll)
                 authorize("/successRegister*", permitAll)
@@ -59,10 +67,13 @@ class SecurityConfig {
             formLogin {
                 loginPage = "/login"
                 failureUrl = "/login?error=true"
-                defaultSuccessUrl("/index", true)
+                defaultSuccessUrl("/", true)
+//                permitAll = true
                 authenticationFailureHandler = customAuthenticationFailureHandler
             }
-            oauth2Login { defaultSuccessUrl("/google-login", true) }
+            oauth2Login {
+                loginPage = "/login"
+                defaultSuccessUrl("/", true) }
             logout {
                 clearAuthentication = true
                 invalidateHttpSession = true
@@ -80,14 +91,14 @@ class SecurityConfig {
         return expressionHandler
     }
 
-       /* @Bean
-        fun authProvider(userRepository: UserRepository, userDetailsService: UserDetailsService): DaoAuthenticationProvider {
-            val authProvider = CustomAuthenticationProvider(userRepository)
-            authProvider.setUserDetailsService(userDetailsService)
-            authProvider.setPasswordEncoder(passwordEncoder())
-    //        authProvider.setPostAuthenticationChecks(differentLocationChecker())
-            return authProvider
-        }*/
+    /* @Bean
+     fun authProvider(userRepository: UserRepository, userDetailsService: UserDetailsService): DaoAuthenticationProvider {
+         val authProvider = CustomAuthenticationProvider(userRepository)
+         authProvider.setUserDetailsService(userDetailsService)
+         authProvider.setPasswordEncoder(passwordEncoder())
+ //        authProvider.setPostAuthenticationChecks(differentLocationChecker())
+         return authProvider
+     }*/
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -106,17 +117,17 @@ class SecurityConfig {
         return rememberMeServices
     }
 
-/*    @Bean(name = ["GeoIPCountry"])
-    @Throws(IOException::class)
-    fun databaseReader(): DatabaseReader {
-        val resource = File(
-            javaClass
-                .classLoader
-                .getResource("maxmind/GeoLite2-Country.mmdb")
-                .file
-        )
-        return DatabaseReader.Builder(resource).build()
-    }*/
+    /*    @Bean(name = ["GeoIPCountry"])
+        @Throws(IOException::class)
+        fun databaseReader(): DatabaseReader {
+            val resource = File(
+                javaClass
+                    .classLoader
+                    .getResource("maxmind/GeoLite2-Country.mmdb")
+                    .file
+            )
+            return DatabaseReader.Builder(resource).build()
+        }*/
 
     @Bean
     fun roleHierarchy(): RoleHierarchy {
@@ -127,6 +138,29 @@ class SecurityConfig {
     @Bean
     fun httpSessionEventPublisher(): HttpSessionEventPublisher {
         return HttpSessionEventPublisher()
+    }
+
+    @Bean
+    fun oauth2UserService(userDetailsService: UserServiceImpl?): OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+        return OAuth2UserService {
+            val delegate = DefaultOAuth2UserService()
+            val oauth2User = delegate.loadUser(it)
+
+            val email = oauth2User.attributes["email"] as String
+            val firstName = oauth2User.attributes["given_name"] as String
+            val last = oauth2User.attributes["family_name"] as String
+
+            if (!userDetailsService!!.userExists(email)) {
+                userDetailsService.saveUser(UserCommand(firstName, last, "{noop}", email), Provider.GOOGLE)
+            }
+            val userDetails = userDetailsService.findByEmail(email).get()
+            SecurityContextHolder.getContext().authentication =
+                org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities()
+                )
+
+            userDetails
+        }
     }
 
     /*@Bean

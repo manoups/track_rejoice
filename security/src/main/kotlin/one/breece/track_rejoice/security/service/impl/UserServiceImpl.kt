@@ -2,10 +2,7 @@ package one.breece.track_rejoice.security.service.impl
 
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.security.command.UserCommand
-import one.breece.track_rejoice.security.domain.AppUser
-import one.breece.track_rejoice.security.domain.AppUserDetails
-import one.breece.track_rejoice.security.domain.Role
-import one.breece.track_rejoice.security.domain.VerificationToken
+import one.breece.track_rejoice.security.domain.*
 import one.breece.track_rejoice.security.error.UserAlreadyExistException
 import one.breece.track_rejoice.security.repository.RoleRepository
 import one.breece.track_rejoice.security.repository.UserRepository
@@ -37,20 +34,25 @@ class UserServiceImpl(
     }
 
     @Transactional
-    override fun saveUser(userCommand: UserCommand): AppUserDetails {
+    override fun saveUser(userCommand: UserCommand, provider: Provider): AppUserDetails {
         if (emailExists(userCommand.email!!)) {
             throw UserAlreadyExistException("User exists already")
         }
-        val appUser = AppUser(
-            passwordEncoder.encode(userCommand.password),
-            userCommand.email.trim().lowercase(),
-            userCommand.firstName!!,
-            userCommand.lastName!!
-        )
+        val appUser = createUser(userCommand, provider)
         val roleOptional = roleRepository.findByName(ROLE_USER)
         val role: Role = roleOptional.orElseThrow { RuntimeException("Role $ROLE_USER not found in the DB") }
         appUser.authorities.add(role)
         return repository.save(appUser)
+    }
+
+    private fun createUser(userCommand: UserCommand, provider: Provider = Provider.LOCAL): AppUser {
+        return AppUser(
+            passwordEncoder.encode(userCommand.password),
+            userCommand.email!!.trim().lowercase(),
+            userCommand.firstName!!,
+            userCommand.lastName!!,
+            provider = provider
+        )
     }
 
     override fun findUserByEmail(email: String): Optional<AppUserDetails> {
