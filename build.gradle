@@ -91,17 +91,3 @@ allOpen {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-tasks.withType(Jar) {
-    manifest {
-        attributes 'Main-Class': 'one.breece.track_rejoice.TrackRejoiceApplicationKt'
-    }
-}
-
-tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
-    mainClass = 'one.breece.track_rejoice.TrackRejoiceApplicationKt'
-}
-
-springBoot {
-    mainClass = 'one.breece.track_rejoice.TrackRejoiceApplicationKt'
-}
