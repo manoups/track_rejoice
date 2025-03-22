@@ -30,13 +30,9 @@ spring:
           lob:
             non_contextual_creation: true
   flyway:
-    enabled: true
     url: ${spring.datasource.command.url}
-    password: ${spring.datasource.command.password}
-    user: ${spring.datasource.command.username}
     locations: classpath:db/migration/postgresql
     baseline-on-migrate: true
-
   mail:
     host: smtp.gmail.com
     port: 465

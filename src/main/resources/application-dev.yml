@@ -1,6 +1,9 @@
 spring:
   flyway:
+    enabled: true
     locations: classpath:db/migration/postgresql, classpath:db/migration/dev
+    password: ${spring.datasource.command.password}
+    user: ${spring.datasource.command.username}
   datasource:
     command:
       url: jdbc:postgresql://localhost:5432/postgres
