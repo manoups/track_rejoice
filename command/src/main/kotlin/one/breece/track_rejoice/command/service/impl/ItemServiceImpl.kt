@@ -48,6 +48,7 @@ class ItemServiceImpl(
         return itemToItemResponseCommand.convert(item)!!
     }
 
+    @Transactional
     override fun readBySku(sku: UUID): ItemResponseCommand {
         repository.findBySku(sku).let { optional ->
             return if (optional.isPresent) {

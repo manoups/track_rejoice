@@ -42,6 +42,7 @@ class BicycleServiceImpl(
         return bicycleToBicycleResponseCommand.convert(bicycle)!!
     }
 
+    @Transactional
     override fun readBySku(sku: UUID): BicycleResponseCommand {
         repository.findBySku(sku).let { optional ->
             return if (optional.isPresent) {

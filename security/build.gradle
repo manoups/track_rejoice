@@ -22,7 +22,6 @@ dependencies {
     implementation 'org.passay:passay:1.0'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'aws.sdk.kotlin:ses-jvm:1.4.41'
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }

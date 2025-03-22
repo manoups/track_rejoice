@@ -48,6 +48,7 @@ class PetServiceImpl(
         return petToPetResponseCommand.convert(pet)!!
     }
 
+    @Transactional
     override fun readBySku(sku: UUID): PetResponseCommand {
         repository.findBySku(sku).let { optional ->
             return if (optional.isPresent) {
