@@ -7,7 +7,7 @@
 <body>
 <div th:fragment="freemium" class="row col-12">
     <a type="submit" class="btn btn-primary" th:onclick="onApprove()">Submit</a>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script th:inline="javascript">
         let announcementId = [[${petAnnouncementCommand.id}]]
         var serverContext = [[@{/}]];

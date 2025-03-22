@@ -13,6 +13,13 @@ spring:
       url: jdbc:postgresql://localhost:5432/postgres
       username: root
       password: root
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 760121390009-sgn0o84bb0jo3q0hu4rult1fb3qnhfv1.apps.googleusercontent.com
+            clientSecret: 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
 logging:
   level:
     org:
