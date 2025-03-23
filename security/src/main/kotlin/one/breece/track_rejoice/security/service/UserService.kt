@@ -16,4 +16,5 @@ interface UserService: UserDetailsManager, UserDetailsPasswordService {
     fun createVerificationTokenForUser(userDetails: AppUserDetails, token: String)
     fun validateVerificationToken(token: String): Pair<TokenEnum, UserDetails?>
     fun saveUser(userCommand: UserCommand, provider: Provider = Provider.LOCAL): AppUserDetails
+    fun loadByUsernameAndProvider(username: String, provider: Provider = Provider.LOCAL): UserDetails
 }

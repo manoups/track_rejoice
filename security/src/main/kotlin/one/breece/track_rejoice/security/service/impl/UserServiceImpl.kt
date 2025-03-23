@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional
 import one.breece.track_rejoice.security.command.UserCommand
 import one.breece.track_rejoice.security.domain.*
 import one.breece.track_rejoice.security.error.UserAlreadyExistException
+import one.breece.track_rejoice.security.error.UserSignedInWithOAuthException
 import one.breece.track_rejoice.security.repository.RoleRepository
 import one.breece.track_rejoice.security.repository.UserRepository
 import one.breece.track_rejoice.security.repository.VerificationTokenRepository
@@ -34,15 +35,25 @@ class UserServiceImpl(
     }
 
     @Transactional
+    @Throws(UserAlreadyExistException::class, UserSignedInWithOAuthException::class)
     override fun saveUser(userCommand: UserCommand, provider: Provider): AppUserDetails {
-        if (emailExists(userCommand.email!!)) {
-            throw UserAlreadyExistException("User exists already")
+        repository.findByUsername(userCommand.email!!).ifPresent {
+            if (it.provider == Provider.GOOGLE) {
+                throw UserSignedInWithOAuthException("User exists already with Google provider")
+            } else
+                throw UserAlreadyExistException("User exists already")
         }
         val appUser = createUser(userCommand, provider)
         val roleOptional = roleRepository.findByName(ROLE_USER)
         val role: Role = roleOptional.orElseThrow { RuntimeException("Role $ROLE_USER not found in the DB") }
         appUser.authorities.add(role)
         return repository.save(appUser)
+    }
+
+    @Throws(UsernameNotFoundException::class)
+    override fun loadByUsernameAndProvider(username: String, provider: Provider): UserDetails {
+        return repository.getByUsernameAndProvider(username, provider)
+            .orElseThrow { UsernameNotFoundException("User not found") }
     }
 
     private fun createUser(userCommand: UserCommand, provider: Provider = Provider.LOCAL): AppUser {
@@ -100,7 +111,8 @@ class UserServiceImpl(
         if (loginAttemptService.isBlocked) {
             throw UsernameNotFoundException("blocked")
         }
-        return repository.findByUsername(email.trim().lowercase()).orElseThrow { UsernameNotFoundException("User not found: $email") }
+        return repository.findByUsername(email.trim().lowercase())
+            .orElseThrow { UsernameNotFoundException("User not found: $email") }
     }
 
     override fun createUser(user: UserDetails?) {
@@ -130,9 +142,5 @@ class UserServiceImpl(
             repository.save(it)
         }
         return repository.findByUsername(user.username).orElse(null)
-    }
-
-    private fun emailExists(email: String): Boolean {
-        return repository.findByUsername(email).isPresent
     }
 }

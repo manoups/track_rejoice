@@ -20,7 +20,7 @@ class RegistrationRestController(
 ) {
     @PostMapping("/password-reset")
     fun resetPassword(request: HttpServletRequest, @RequestParam("email") userEmail: String): GenericResponse {
-        val user = userService.loadUserByUsername(userEmail)
+        val user = userService.loadByUsernameAndProvider(userEmail)
         val token =
             passwordResetTokenService.createPasswordResetTokenForUser(user.username)
         resetTokenMailServiceImpl.send(request, token.token, user)

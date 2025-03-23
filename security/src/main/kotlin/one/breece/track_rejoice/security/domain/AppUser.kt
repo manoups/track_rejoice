@@ -44,7 +44,7 @@ class AppUser(
     var enabled: Boolean = false,
     override val isUsing2FA: Boolean = false,
     @Enumerated(EnumType.STRING)
-    val provider: Provider = Provider.LOCAL
+    override val provider: Provider = Provider.LOCAL
 ) : AppUserDetails, OAuth2User {
     override fun getAttributes(): Map<String, Any> = emptyMap()
     override fun getName(): String = username

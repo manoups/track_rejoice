@@ -4,4 +4,5 @@ import org.springframework.security.core.userdetails.UserDetails
 
 interface AppUserDetails : UserDetails {
     val isUsing2FA: Boolean
+    val provider:Provider
 }

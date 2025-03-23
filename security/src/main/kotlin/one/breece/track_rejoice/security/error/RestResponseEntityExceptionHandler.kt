@@ -78,6 +78,14 @@ class RestResponseEntityExceptionHandler(private val messages: MessageSource) : 
         return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.CONFLICT, request)
     }
 
+    @ExceptionHandler(value = [UserSignedInWithOAuthException::class])
+    fun handleUserSignedInWithAuth(ex: RuntimeException, request: WebRequest): ResponseEntity<Any>? {
+        logger.error("409 Status Code", ex)
+        val bodyOfResponse =
+            GenericResponse(messages.getMessage("message.regConflictError", null, request.locale), "UserSignedInWithOAuth")
+        return handleExceptionInternal(ex, bodyOfResponse, HttpHeaders(), HttpStatus.CONFLICT, request)
+    }
+
     // 500
     @ExceptionHandler(value = [MailAuthenticationException::class])
     fun handleMail(ex: RuntimeException?, request: WebRequest): ResponseEntity<Any> {
