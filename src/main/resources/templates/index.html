@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Track Rejoice</title>
-    <!--  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen"/>-->
 
-    <!--  <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
@@ -63,14 +61,22 @@
                     <div th:replace="~{fragments/value_table::value_table}"></div>
                 </div>
             </div>
-            <div class="text-center" sec:authorize="!isAuthenticated()">
-                <p>Log in/ Sign up to discover more actions!</p>
-                <a class="btn btn-info" th:href="@{/login}">Log in</a>
+            <div class="dropdown">
+                <button class="dropbtn" th:onclick="myFunction()">Post An Announcement</button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="/bolo/form/pet">Pet</a>
+                    <a href="/bolo/form/transport">Bike</a>
+                    <a href="/bolo/form/item">Item</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script th:inline="javascript">
+
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
     var mymap = L.map('mapid', {
         minZoom: 1,
         maxZoom: 18,
