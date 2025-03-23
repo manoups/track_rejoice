@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.command.service.impl
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.command.command.PetAnnouncementCommand
 import one.breece.track_rejoice.command.domain.Pet
@@ -27,7 +28,7 @@ class PetServiceImpl(
 
 
     @Transactional
-    override fun createBolo(announcementCommand: PetAnnouncementCommand): PetResponseCommand {
+    override fun createBolo(announcementCommand: PetAnnouncementCommand, request: HttpServletRequest): PetResponseCommand {
 //        val lastSeenLocation = geocodingService.geocode(petAnnouncementCommand.address)!!
         val newPet = Pet(
             name = announcementCommand.name!!,
@@ -44,7 +45,8 @@ class PetServiceImpl(
 //        newPet.addToTraceHistory(lastSeenLocation)
 
         val pet = repository.save(newPet)
-        applicationEventPublisher.publishEvent(CreateQR("http://localhost:8081/details/pet/${pet.sku}", bucketName, "qr-code/${pet.sku}.png", pet.id!!))
+        val host = request.requestURL.toString().replace(request.requestURI, "")
+        applicationEventPublisher.publishEvent(CreateQR("$host/details/pet/${pet.sku}", bucketName, "qr-code/${pet.sku}.png", pet.id!!))
         return petToPetResponseCommand.convert(pet)!!
     }
 

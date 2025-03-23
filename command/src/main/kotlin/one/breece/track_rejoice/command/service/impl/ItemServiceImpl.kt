@@ -2,6 +2,7 @@ package one.breece.track_rejoice.command.service.impl
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.command.command.ItemAnnouncementCommand
 import one.breece.track_rejoice.command.domain.Item
@@ -29,7 +30,7 @@ class ItemServiceImpl(
     lateinit var bucketName: String
 
     @Transactional
-    override fun createBolo(announcementCommand: ItemAnnouncementCommand): ItemResponseCommand {
+    override fun createBolo(announcementCommand: ItemAnnouncementCommand, request: HttpServletRequest): ItemResponseCommand {
         val multipoint: List<LatLng> =
             objectMapper.readValue(announcementCommand.latlngs!!, object : TypeReference<List<LatLng>>() {})
         val item =
@@ -44,7 +45,8 @@ class ItemServiceImpl(
                     it.extraInfo = announcementCommand.additionalInformation
                 }
                 .let { repository.save(it) }
-        applicationEventPublisher.publishEvent(CreateQR("http://localhost:8081/details/item/${item.sku}", bucketName, "qr-code/${item.sku}.png", item.id!!))
+        val host = request.requestURL.toString().replace(request.requestURI, "")
+        applicationEventPublisher.publishEvent(CreateQR("$host/details/item/${item.sku}", bucketName, "qr-code/${item.sku}.png", item.id!!))
         return itemToItemResponseCommand.convert(item)!!
     }
 

@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.command.service.impl
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.transaction.Transactional
 import one.breece.track_rejoice.command.command.BicycleAnnouncementCommand
 import one.breece.track_rejoice.command.domain.Bicycle
@@ -25,7 +26,7 @@ class BicycleServiceImpl(
     lateinit var bucketName: String
 
     @Transactional
-    override fun createBolo(announcementCommand: BicycleAnnouncementCommand): BicycleResponseCommand {
+    override fun createBolo(announcementCommand: BicycleAnnouncementCommand, request: HttpServletRequest): BicycleResponseCommand {
         val transportation = Bicycle(
             color = announcementCommand.color!!,
             maker = announcementCommand.maker!!,
@@ -38,7 +39,8 @@ class BicycleServiceImpl(
             it.extraInfo = announcementCommand.additionalInformation
         }
         val bicycle = repository.save(transportation)
-        applicationEventPublisher.publishEvent(CreateQR("http://localhost:8081/details/bike/${bicycle.sku}", bucketName, "qr-code/${bicycle.sku}.png", bicycle.id!!))
+        val host = request.requestURL.toString().replace(request.requestURI, "")
+        applicationEventPublisher.publishEvent(CreateQR("$host/details/bike/${bicycle.sku}", bucketName, "qr-code/${bicycle.sku}.png", bicycle.id!!))
         return bicycleToBicycleResponseCommand.convert(bicycle)!!
     }
 

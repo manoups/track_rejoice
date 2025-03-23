@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.command.web.controller
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.command.command.ItemAnnouncementCommand
 import one.breece.track_rejoice.command.service.ItemService
@@ -27,13 +28,14 @@ class ItemSearchController(private val itemService: ItemService) {
     fun index(
         @Valid itemAnnouncementCommand: ItemAnnouncementCommand,
         bindingResult: BindingResult,
-        model: Model
+        model: Model,
+        request: HttpServletRequest
     ): String {
         model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
             "itemsearchform"
         } else {
-            val bolo = itemService.createBolo(itemAnnouncementCommand)
+            val bolo = itemService.createBolo(itemAnnouncementCommand, request)
             "redirect:/bolo/form/item/created/${bolo.sku}"
         }
     }

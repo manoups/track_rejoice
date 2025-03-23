@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.command.web.controller
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.command.command.PetAnnouncementCommand
 import one.breece.track_rejoice.command.service.PetService
@@ -19,21 +20,25 @@ class PetFormController(private val petService: PetService) {
 //    @Value("classpath:static/text/dogs.txt")
 //    lateinit var resourceFile: Resource
 
-    @GetMapping(value = ["","/"])
+    @GetMapping(value = ["", "/"])
     fun checkoutForm(model: Model): String {
-        model.addAttribute("petAnnouncementCommand",  PetAnnouncementCommand())
+        model.addAttribute("petAnnouncementCommand", PetAnnouncementCommand())
 //        model.addAttribute("dogs", resourceFile)
 //        model.addAttribute("action", "create")
         return "petsearchform"
     }
 
-    @PostMapping(value = ["","/"])
-    fun index(@Valid petAnnouncementCommand: PetAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
+    @PostMapping(value = ["", "/"])
+    fun index(
+        @Valid petAnnouncementCommand: PetAnnouncementCommand,
+        bindingResult: BindingResult,
+        model: Model, request: HttpServletRequest
+    ): String {
         model.addAttribute("action", "create")
         return if (bindingResult.hasErrors()) {
             "petsearchform"
         } else {
-            val bolo = petService.createBolo(petAnnouncementCommand)
+            val bolo = petService.createBolo(petAnnouncementCommand, request)
             "redirect:/bolo/form/pet/created/${bolo.sku}"
         }
     }

@@ -1,5 +1,6 @@
 package one.breece.track_rejoice.command.web.controller
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.command.command.BicycleAnnouncementCommand
 import one.breece.track_rejoice.command.service.BicycleService
@@ -15,19 +16,24 @@ import java.util.*
 @Controller
 @RequestMapping("/bolo/form/transport")
 class BicycleFormController(private val transportationService: BicycleService) {
-    @GetMapping(value = ["","/"])
+    @GetMapping(value = ["", "/"])
     fun checkoutForm(model: Model): String {
-        model.addAttribute("bicycleAnnouncementCommand",  BicycleAnnouncementCommand())
+        model.addAttribute("bicycleAnnouncementCommand", BicycleAnnouncementCommand())
 //        model.addAttribute("dogs", resourceFile)
         return "bikesearchform"
     }
 
-    @PostMapping(value = ["","/"])
-    fun index(@Valid bicycleAnnouncementCommand: BicycleAnnouncementCommand, bindingResult: BindingResult, model: Model): String {
+    @PostMapping(value = ["", "/"])
+    fun index(
+        @Valid bicycleAnnouncementCommand: BicycleAnnouncementCommand,
+        bindingResult: BindingResult,
+        model: Model,
+        request: HttpServletRequest
+    ): String {
         return if (bindingResult.hasErrors()) {
             "bikesearchform"
         } else {
-            val bolo = transportationService.createBolo(bicycleAnnouncementCommand)
+            val bolo = transportationService.createBolo(bicycleAnnouncementCommand, request)
             "redirect:/bolo/form/transport/created/${bolo.sku}"
         }
     }
