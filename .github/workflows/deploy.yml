@@ -21,11 +21,11 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t mycontainerregistry.azurecr.io/trackrejoice:latest .
-        docker push mycontainerregistry.azurecr.io/trackrejoice:latest
+        docker build -t trackRejoiceContainerRegistry/trackrejoice:latest .
+        docker push trackRejoiceContainerRegistry/trackrejoice:latest
 
     - name: Deploy to Azure Web App (Container)
       uses: azure/webapps-deploy@v2
       with:
         app-name: track-rejoice-webapp
-        images: mycontainerregistry.azurecr.io/trackrejoice:latest
+        images: trackRejoiceContainerRegistry/trackrejoice:latest
