@@ -15,7 +15,7 @@ jobs:
     - name: Login to Azure Container Registry (ACR)
       uses: azure/docker-login@v1
       with:
-        login-server: rg-trackrejoice-linuxvm-dev-01
+        login-server: trackrejoicecontainerregistry.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
