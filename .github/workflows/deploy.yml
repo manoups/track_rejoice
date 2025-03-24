@@ -18,6 +18,7 @@ jobs:
         login-server: trackrejoicecontainerregistry.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
+        enable-AzPSSession: true
 
     - name: Build and Push Docker Image
       run: |
