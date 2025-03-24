@@ -27,5 +27,5 @@ jobs:
     - name: Deploy to Azure Web App (Container)
       uses: azure/webapps-deploy@v2
       with:
-        app-name: track-rejoice-webapp
+        app-name: Track-rejoice-server
         images: trackrejoicecontainerregistry.azurecr.io/trackrejoice:latest
