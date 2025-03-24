@@ -21,8 +21,8 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t mycontainerregistry.azurecr.io/myapp:latest .
-        docker push mycontainerregistry.azurecr.io/myapp:latest
+        docker build -t mycontainerregistry.azurecr.io/trackrejoice:latest .
+        docker push mycontainerregistry.azurecr.io/trackrejoice:latest
 
     - name: Deploy to Azure Web App (Container)
       uses: azure/webapps-deploy@v2
