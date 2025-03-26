@@ -23,7 +23,6 @@ jobs:
         login-server: trackrejoicecontainerregistry.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        enable-AzPSSession: true
 
     - name: Build and Push Docker Image
       run: |
@@ -33,5 +32,5 @@ jobs:
     - name: Deploy to Azure Web App (Container)
       uses: azure/webapps-deploy@v2
       with:
-        app-name: Track-rejoice-server
+        app-name: track-rejoice-docker
         images: trackrejoicecontainerregistry.azurecr.io/trackrejoice:latest
