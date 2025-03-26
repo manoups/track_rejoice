@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: trackrejoicecontainerregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_06e94507488746cc96c1166378f8bd25 }}/trackrejoice:${{ github.sha }}
+        tags: trackrejoicecontainerregistry.azurecr.io/trackrejoice:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'track-rejoice-docker'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_5e65b7200e1a4665a7079a2a00d3a8c6 }}
-        images: 'trackrejoicecontainerregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_06e94507488746cc96c1166378f8bd25 }}/trackrejoice:${{ github.sha }}'
+        images: 'trackrejoicecontainerregistry.azurecr.io/trackrejoice:${{ github.sha }}'
