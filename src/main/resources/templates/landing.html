@@ -24,6 +24,10 @@
                 document.coords.submit()
             })
         } else if (result.state == 'denied') {
+            document.getElementById("lat").value = 0.0;
+            document.getElementById("lng").value = 0.0;
+            document.getElementById("zoom").value = 1;
+            document.getElementById("geoAvailable").value = "false"
             document.coords.submit()
         }
     })
