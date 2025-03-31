@@ -28,7 +28,10 @@ class PetServiceImpl(
 
 
     @Transactional
-    override fun createBolo(announcementCommand: PetAnnouncementCommand, request: HttpServletRequest): PetResponseCommand {
+    override fun createBolo(
+        announcementCommand: PetAnnouncementCommand,
+        request: HttpServletRequest
+    ): PetResponseCommand {
 //        val lastSeenLocation = geocodingService.geocode(petAnnouncementCommand.address)!!
         val newPet = Pet(
             name = announcementCommand.name!!,
@@ -46,19 +49,20 @@ class PetServiceImpl(
 
         val pet = repository.save(newPet)
         val host = request.requestURL.toString().replace(request.requestURI, "")
-        applicationEventPublisher.publishEvent(CreateQR("$host/details/pet/${pet.sku}", bucketName, "qr-code/${pet.sku}.png", pet.id!!))
+        applicationEventPublisher.publishEvent(
+            CreateQR(
+                "$host/details/pet/${pet.sku}",
+                bucketName,
+                "qr-code/${pet.sku}.png",
+                pet.id!!
+            )
+        )
         return petToPetResponseCommand.convert(pet)!!
     }
 
     @Transactional
     override fun readBySku(sku: UUID): PetResponseCommand {
-        repository.findBySku(sku).let { optional ->
-            return if (optional.isPresent) {
-                val pet = optional.get()
-                petToPetResponseCommand.convert(pet)!!
-            } else {
-                throw RuntimeException("Pet with sku=$sku not found")
-            }
-        }
+        return repository.findBySku(sku).map { petToPetResponseCommand.convert(it)!! }
+            .orElseThrow { RuntimeException("Pet with sku=$sku not found") }
     }
 }

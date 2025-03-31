@@ -1,14 +1,6 @@
 package one.breece.track_rejoice.command.web.controller
 
-import kotlinx.coroutines.runBlocking
-import one.breece.track_rejoice.core.command.PhotoDescriptor
-import one.breece.track_rejoice.command.domain.Bicycle
-import one.breece.track_rejoice.command.domain.Item
-import one.breece.track_rejoice.command.domain.Pet
-import one.breece.track_rejoice.command.repository.BeOnTheLookOutRepository
-import one.breece.track_rejoice.command.service.impl.S3Service
-import one.breece.track_rejoice.security.service.UtilService
-import org.springframework.beans.factory.annotation.Value
+import one.breece.track_rejoice.command.service.UploadService
 import org.springframework.security.core.annotation.CurrentSecurityContext
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.stereotype.Controller
@@ -23,12 +15,10 @@ import java.util.*
 
 @Controller
 class UploadController(
-    private val s3Service: S3Service,
-    private val utilService: UtilService,
-    private val repository: BeOnTheLookOutRepository
+
+    private val uploadService: UploadService
 ) {
-    @Value("\${aws.s3.bucket}")
-    lateinit var bucketName: String
+
 
 
     @Deprecated(message = "Use the new upload form")
@@ -43,33 +33,16 @@ class UploadController(
         @RequestParam("image") file: MultipartFile,
         @RequestParam("sku") sku: UUID,
         @CurrentSecurityContext context: SecurityContext
-    ): String = runBlocking {
+    ): String {
         var redirect = ""
         try {
-            val findBySku = repository.findBySku(sku)
-            if (findBySku.isEmpty) {
-                throw RuntimeException("SKU not found: $sku")
-            }
-            val user = utilService.getUsername(context)
-            val name = "${user}/${file.originalFilename}"
-            val bytes = file.bytes
-            // Put the file into the bucket.
-            val putObject = s3Service.putObject(bytes, bucketName, name)
-            val photoDescriptor = PhotoDescriptor("https://$bucketName.s3.amazonaws.com/$name", name)
-            val beOnTheLookOut = findBySku.get()
-            redirect = when(beOnTheLookOut) {
-                is Pet -> "pet"
-                is Bicycle -> "bicycle"
-                is Item -> "item"
-                else -> throw RuntimeException("Unknown type: ${beOnTheLookOut::class.java.name}")
-            }
-            beOnTheLookOut.addPhoto(bucketName, name)
-            repository.save(beOnTheLookOut)
-            model.addAttribute("msg", "Uploaded images: $name")
-            model.addAttribute("photos", listOf( photoDescriptor))
+           val response = uploadService.upload(file, sku, context)
+            redirect = response.redirect
+            model.addAttribute("msg", "Uploaded images: ${response.name}")
+            model.addAttribute("photos", listOf( response.photoDescriptor))
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return@runBlocking "redirect:bolo/form/$redirect/created/$sku"
+        return "redirect:bolo/form/$redirect/created/$sku"
     }
 }

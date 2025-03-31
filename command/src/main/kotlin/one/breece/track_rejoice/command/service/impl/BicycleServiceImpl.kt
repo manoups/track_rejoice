@@ -46,13 +46,7 @@ class BicycleServiceImpl(
 
     @Transactional
     override fun readBySku(sku: UUID): BicycleResponseCommand {
-        repository.findBySku(sku).let { optional ->
-            return if (optional.isPresent) {
-                val item = optional.get()
-                bicycleToBicycleResponseCommand.convert(item)!!
-            } else {
-                throw RuntimeException("Bicycle with sku=$sku not found")
-            }
-        }
+        return repository.findBySku(sku).map { bicycleToBicycleResponseCommand.convert(it)!! }
+            .orElseThrow { RuntimeException("Bicycle with sku=$sku not found") }
     }
 }

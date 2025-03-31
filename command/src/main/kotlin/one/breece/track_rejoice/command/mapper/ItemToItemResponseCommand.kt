@@ -5,11 +5,16 @@ import one.breece.track_rejoice.command.domain.Item
 import one.breece.track_rejoice.core.command.PhotoDescriptor
 import one.breece.track_rejoice.core.domain.BoloStates
 import org.apache.commons.io.FilenameUtils
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
+import java.nio.file.Paths
 
 @Component
 class ItemToItemResponseCommand : Converter<Item, ItemResponseCommand> {
+    @Value("\${spring.cloud.azure.storage.blob.endpoint}")
+    lateinit var endpoint: String
+
     override fun convert(source: Item): ItemResponseCommand {
         return ItemResponseCommand(
             source.id!!,
@@ -23,7 +28,7 @@ class ItemToItemResponseCommand : Converter<Item, ItemResponseCommand> {
             source.sku,
             source.photo.map {
                 PhotoDescriptor(
-                    "https://${it.bucket}.s3.amazonaws.com/${it.key}",
+                    Paths.get(endpoint, it.bucket, it.key).toString(),
                     FilenameUtils.getName(it.key)
                 )
             }, source.qrCodeKey)

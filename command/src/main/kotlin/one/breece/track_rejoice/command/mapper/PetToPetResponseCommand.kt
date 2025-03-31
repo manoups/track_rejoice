@@ -1,15 +1,20 @@
 package one.breece.track_rejoice.command.mapper
 
-import one.breece.track_rejoice.core.command.PetResponseCommand
 import one.breece.track_rejoice.command.domain.Pet
+import one.breece.track_rejoice.core.command.PetResponseCommand
 import one.breece.track_rejoice.core.command.PhotoDescriptor
 import one.breece.track_rejoice.core.domain.BoloStates
 import org.apache.commons.io.FilenameUtils
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
+import java.nio.file.Paths
 
 @Component
 class PetToPetResponseCommand : Converter<Pet, PetResponseCommand> {
+    @Value("\${spring.cloud.azure.storage.blob.endpoint}")
+    lateinit var endpoint: String
+
     override fun convert(source: Pet): PetResponseCommand? {
         return PetResponseCommand(
             source.id!!,
@@ -27,10 +32,7 @@ class PetToPetResponseCommand : Converter<Pet, PetResponseCommand> {
             source.sku,
             source.photo.map {
                 PhotoDescriptor(
-                    "https://${it.bucket}.s3.amazonaws.com/${it.key}", FilenameUtils.removeExtension(
-                        FilenameUtils.getName(it.key)
-                    )
-                )
+                    Paths.get(endpoint, it.bucket, it.key).toString(), FilenameUtils.getName(it.key))
             }, source.qrCodeKey)
     }
 }

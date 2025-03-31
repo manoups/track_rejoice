@@ -52,13 +52,7 @@ class ItemServiceImpl(
 
     @Transactional
     override fun readBySku(sku: UUID): ItemResponseCommand {
-        repository.findBySku(sku).let { optional ->
-            return if (optional.isPresent) {
-                val item = optional.get()
-                itemToItemResponseCommand.convert(item)!!
-            } else {
-                throw RuntimeException("Item with sku=$sku not found")
-            }
-        }
+        return repository.findBySku(sku).map { itemToItemResponseCommand.convert(it)!! }
+            .orElseThrow { RuntimeException("Item with sku=$sku not found") }
     }
 }

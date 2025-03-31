@@ -4,6 +4,12 @@ server:
     whitelabel:
       enabled: false
 spring:
+  cloud:
+    azure:
+      storage:
+        blob:
+          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+          endpoint: ${AZURE_STORAGE_ACCOUNT_ENDPOINT}
   devtools:
     add-properties: false
   datasource:
@@ -23,7 +29,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         dialect: one.breece.track_rejoice.configuration.CustomPostgreSQLDialect
