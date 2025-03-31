@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://trackrejoiceregistry.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_857020bd594348349e5802c4f9c53dcc }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_c2a87128694d4af3989558ec8509bc81 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_94d625fdc38448c5a97bdac12be9e851 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_fa46d580dbd447f4a45b77eeade2a604 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: trackrejoiceregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_857020bd594348349e5802c4f9c53dcc }}/trackrejoice:${{ github.sha }}
+        tags: trackrejoiceregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_94d625fdc38448c5a97bdac12be9e851 }}/trackrejoice:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'track-rejoice-meta'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_78f8e50515544343bd439621ff8b81d3 }}
-        images: 'trackrejoiceregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_857020bd594348349e5802c4f9c53dcc }}/trackrejoice:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_16251b9cc9ca483c90aebc3d18e77769 }}
+        images: 'trackrejoiceregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_94d625fdc38448c5a97bdac12be9e851 }}/trackrejoice:${{ github.sha }}'
