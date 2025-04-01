@@ -5,11 +5,15 @@ import one.breece.track_rejoice.core.command.PhotoDescriptor
 import one.breece.track_rejoice.core.domain.BoloStates
 import one.breece.track_rejoice.query.domain.Bicycle
 import org.apache.commons.io.FilenameUtils
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
+import java.nio.file.Paths
 
 @Component
 class BicycleToQueryBicycleResponseCommand  : Converter<Bicycle, BicycleResponseCommand> {
+    @Value("\${spring.cloud.azure.storage.blob.endpoint}")
+    lateinit var endpoint: String
     override fun convert(source: Bicycle): BicycleResponseCommand {
         return BicycleResponseCommand(
             source.id!!,
@@ -26,7 +30,7 @@ class BicycleToQueryBicycleResponseCommand  : Converter<Bicycle, BicycleResponse
             source.sku,
             source.photo.map {
                 PhotoDescriptor(
-                    "https://${it.bucket}.s3.amazonaws.com/${it.key}", FilenameUtils.removeExtension(
+                    Paths.get(endpoint, it.bucket, it.key).toString(), FilenameUtils.removeExtension(
                         FilenameUtils.getName(it.key)
                     )
                 )
