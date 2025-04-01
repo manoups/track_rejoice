@@ -1,14 +1,13 @@
 package one.breece.track_rejoice.command.mapper
 
-import one.breece.track_rejoice.core.command.BicycleResponseCommand
 import one.breece.track_rejoice.command.domain.Bicycle
+import one.breece.track_rejoice.core.command.BicycleResponseCommand
 import one.breece.track_rejoice.core.command.PhotoDescriptor
 import one.breece.track_rejoice.core.domain.BoloStates
 import org.apache.commons.io.FilenameUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
-import java.nio.file.Paths
 
 @Component
 class BicycleToBicycleResponseCommand : Converter<Bicycle, BicycleResponseCommand> {
@@ -31,7 +30,7 @@ class BicycleToBicycleResponseCommand : Converter<Bicycle, BicycleResponseComman
             source.sku,
             source.photo.map {
                 PhotoDescriptor(
-                    Paths.get(endpoint, it.bucket, it.key).toString(), FilenameUtils.removeExtension(
+                    "$endpoint${it.bucket}/${it.key}", FilenameUtils.removeExtension(
                         FilenameUtils.getName(it.key)
                     )
                 )

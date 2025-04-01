@@ -8,7 +8,6 @@ import org.apache.commons.io.FilenameUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
-import java.nio.file.Paths
 
 @Component
 class BicycleToQueryBicycleResponseCommand  : Converter<Bicycle, BicycleResponseCommand> {
@@ -30,10 +29,7 @@ class BicycleToQueryBicycleResponseCommand  : Converter<Bicycle, BicycleResponse
             source.sku,
             source.photo.map {
                 PhotoDescriptor(
-                    Paths.get(endpoint, it.bucket, it.key).toString(), FilenameUtils.removeExtension(
-                        FilenameUtils.getName(it.key)
-                    )
-                )
+                    "$endpoint${it.bucket}/${it.key}", FilenameUtils.removeExtension(FilenameUtils.getName(it.key)))
             },
             source.qrCodeKey
         )
