@@ -19,5 +19,6 @@ data class PetAnnouncementCommand(
     val lastSeenDate: LocalDateTime? = null,
     @Size(max = 500) val additionalInformation: String? = null,
     @field:NotNull val lat: Double? = null,
-    @field:NotNull val lon: Double? = null
+    @field:NotNull val lon: Double? = null,
+    @field:NotNull val initializedCoords: Boolean? = null
 )

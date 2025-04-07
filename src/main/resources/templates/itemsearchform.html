@@ -40,7 +40,6 @@
                         <label for="shortDescription" class="form-label" th:text="#{search.form.short.description}">Short Description:</label>
                         <input type="text" class="form-control" th:class="${#fields.hasErrors('shortDescription')} ?
             'form-control is-invalid':'form-control'" id="shortDescription" th:field="*{shortDescription}" required
-                               th:disabled="${#strings.equals(action, 'publish')}"
                                aria-describedby="shortDescriptionFeedback">
                         <div id="shortDescriptionFeedback" class="invalid-feedback"
                              th:if="${#fields.hasErrors('shortDescription')}">
@@ -54,7 +53,6 @@
                             Number:</label>
                         <input type="tel" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
             'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
-                               th:disabled="${#strings.equals(action, 'publish')}"
                                aria-describedby="phoneFeedback">
                         <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
                             <ul>
@@ -67,10 +65,10 @@
                     <div class="col-md-6">
                         <label for="lastSeenDate" class="form-label" th:text="#{search.table.date}">Last
                             seen:</label>
-                        <input th:type="${#strings.equals(action, 'publish')} ? 'text': 'datetime-local'"
+                        <input th:type="'datetime-local'"
                                class="form-control" th:class="${#fields.hasErrors('lastSeenDate')} ?
             'form-control is-invalid':'form-control'" th:field="*{lastSeenDate}" id="lastSeenDate" required
-                               th:disabled="${#strings.equals(action, 'publish')}" aria-describedby="dateFeedback">
+                                aria-describedby="dateFeedback">
                         <div id="dateFeedback" class="invalid-feedback"
                              th:if="${#fields.hasErrors('lastSeenDate')}">
                             <ul>
@@ -81,8 +79,7 @@
                     <div class="col-md-6">
                         <label for="color" class="form-label" th:text="#{search.form.item.color}">Color:</label>
                         <input type="text" class="form-control" th:if="${#fields.hasErrors('color')} ?
-            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback"
-                               th:disabled="${#strings.equals(action, 'publish')}">
+            'form-control is-invalid':'form-control'" id="color" th:field="*{color}" aria-describedby="colorFeedback">
                         <div id="colorFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('color')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('color')}" th:text="${err}"/>
@@ -97,7 +94,6 @@
                             Info:</label>
                         <textarea class="form-control" rows="6" th:class="${#fields.hasErrors('additionalInformation')} ?
             'form-control is-invalid':'form-control'" id="additionalInformation"
-                                  th:disabled="${#strings.equals(action, 'publish')}"
                                   th:field="*{additionalInformation}" aria-describedby="extraFeedback">
                         </textarea>
                         <div id="extraFeedback" class="invalid-feedback"
@@ -131,13 +127,12 @@
                 <li th:each="err : ${#fields.errors('latlngs')}" th:text="${err}"/>
             </ul>
         </div>
+        <input type="text" id="initializedCoords" th:field="*{initializedCoords}" hidden>
+
         <br>
         <br>
-        <div th:if="${#strings.equals(action, 'create')}">
+        <div>
             <div th:replace="~{fragments/action::create}"></div>
-        </div>
-        <div th:if="${#strings.equals(action,'publish')}">
-            <div th:replace="~{fragments/payment::paypal(${itemAnnouncementCommand.id})}"></div>
         </div>
 
     </form>
@@ -174,23 +169,39 @@
             removalMode: true
         });
 
-        let latitude = 0;
-        let longitude = 0;
+
+        const initialized = [[${itemAnnouncementCommand.initializedCoords}]] || false
+        let zoom = initialized ? 18 : 1
+        let name = document.getElementById('shortDescription').value
+        if (name && 0 < name.trim().length) {
+            document.getElementById("displayMessage").textContent = name
+        }
+        // map.setView([latitude, longitude], zoom);
+
+        if (initialized) {
+            let latlngs2 = [[${itemAnnouncementCommand.latlngs}]];
+            L.polyline(JSON.parse(latlngs2)).addTo(map)
+                .bindPopup(shortDescription).openPopup();
+            initializeAndDisable(latlngs2, "Line")
+        }
+
+        function initializeAndDisable(latlngs, shape) {
+            document.getElementById('initializedCoords').value = true
+            document.getElementById('latlngs').value = latlngs
+            // map.pm.disableDraw();
+            map.pm.Toolbar.setButtonDisabled(shape, true)
+
+        }
 
         map.on("pm:create", (e) => {
             // if (!workingLayer) return
-            console.log(e)
-            e.layer._latlngs.forEach(latlng => {
-                console.log(latlng.lat);
-                console.log(latlng.lng);
-            });
-            document.getElementById('latlngs').value = JSON.stringify(e.layer._latlngs)
-            // map.pm.disableDraw();
-            map.pm.Toolbar.setButtonDisabled(e.shape, true)
+            initializeAndDisable(JSON.stringify(e.layer._latlngs), e.shape)
+
         });
 
         map.on("pm:remove", _ => {
             map.pm.disableGlobalRemovalMode()
+            document.getElementById('initializedCoords').value = false
             map.pm.Toolbar.setButtonDisabled('Line', false)
         });
 

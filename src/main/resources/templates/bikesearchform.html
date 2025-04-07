@@ -169,6 +169,7 @@
                 <li th:each="err : ${#fields.errors('lon')}" th:text="${err}"/>
             </ul>
         </div>
+        <input type="text" id="initializedCoords" th:field="*{initializedCoords}" hidden>
         <br>
         <br>
         <div>
@@ -209,20 +210,32 @@
 
         let latitude = [[${bicycleAnnouncementCommand.lat}]] || 0;
         let longitude = [[${bicycleAnnouncementCommand.lon}]] || 0;
+        let initialized = [[${bicycleAnnouncementCommand.initializedCoords}]] || false
+        let zoom = initialized ? 18 : 1
 
+        if (initialized) {
+            initializeAndDisable(latitude, longitude, "Marker")
+            L.marker([latitude, longitude]).addTo(map)
+        }
 
-        map.setView([latitude, longitude], 1);
+        map.setView([latitude, longitude], zoom);
 
         map.on("pm:create", (e) => {
             // if (!workingLayer) return
-            document.getElementById('lat').value = e.layer._latlng.lat;
-            document.getElementById('lon').value = e.layer._latlng.lng;
-            map.pm.disableDraw();
-            map.pm.Toolbar.setButtonDisabled(e.shape, true)
+            initializeAndDisable(e.layer._latlng.lat, e.layer._latlng.lng, e.shape)
         });
+
+        function initializeAndDisable(lat, lng, shape) {
+            document.getElementById('lat').value = lat;
+            document.getElementById('lon').value = lng;
+            document.getElementById('initializedCoords').value = true
+            map.pm.disableDraw();
+            map.pm.Toolbar.setButtonDisabled(shape, true)
+        }
 
         map.on("pm:remove", _ => {
             map.pm.disableGlobalRemovalMode()
+            document.getElementById('initializedCoords').value = false
             map.pm.Toolbar.setButtonDisabled('Marker', false)
         });
 

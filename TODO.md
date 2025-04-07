@@ -29,4 +29,4 @@
 - [ ] continue editing for unpublished announcements
 - [ ] show/center on map action on main screen
 - [ ] dynamic redirect after login
-- [ ] if error on form, location pin not retained
+- [x] if error on form, location pin not retained
