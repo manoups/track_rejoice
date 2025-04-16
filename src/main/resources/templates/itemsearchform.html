@@ -32,7 +32,7 @@
     <h2 th:utext="#{item.search.form}">Item Search Form</h2>
     <form class="needs-validation" th:object="${itemAnnouncementCommand}" th:action="@{/bolo/form/item}" method="post"
           name="mainForm" id="mainForm">
-
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
