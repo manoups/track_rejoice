@@ -43,7 +43,6 @@ class SearchController(
         model.addAttribute("lat", lat)
         model.addAttribute("zoom", zoom)
         model.addAttribute("identify", identify)
-        model.addAttribute("firstName", utilService.getName(context))
         myLat.ifPresent { model.addAttribute("myLat", it) }
         myLng.ifPresent { model.addAttribute("myLng", it) }
         return "index"

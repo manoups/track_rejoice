@@ -53,12 +53,12 @@
                 <br/><br/>
                 <p>
                 <label for="username" class="screenreader" th:utext="#{label.form.loginEmail}">Email</label>
-                <input type='text' class="form-control"  name='username' value='' id="username" th:placeholder="#{label.form.loginEmail}" required autofocus/>
+                <input type='text' class="form-control"  name='username' value='' id="username" th:placeholder="#{label.form.loginEmail}" required autofocus autocomplete="off"/>
                 </p>
                 <br/>
                 <p>
                 <label class="screenreader" for="password" th:utext="#{label.form.loginPass}">password</label>
-                <input class="form-control" type='password' name='password' id="password" th:placeholder="#{label.form.loginPass}" required/>
+                <input class="form-control" type='password' name='password' id="password" th:placeholder="#{label.form.loginPass}" required autocomplete="off"/>
                 </p>
                 <br/>
                 <label class="col-sm-4" th:remove="all" th:utext="#{label.form.login2fa}">Google Authenticator

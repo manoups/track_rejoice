@@ -37,7 +37,7 @@
     <div th:replace="~{fragments/navbar::navbar}"></div>
 </div>
 <div class="container">
-    <h2 th:if="${firstName} ne null" th:text="'Welcome '+${firstName}">Welcome</h2>
+    <h2 sec:authorize="isAuthenticated()" th:text="'Welcome '+${#authentication?.principal?.firstName}">Welcome</h2>
     <p class="alert alert-info"><i class="fa fa-info" aria-hidden="true"></i> &nbsp;
         <span th:utext="#{index.search.instructions}"></span>
     </p>
