@@ -43,8 +43,11 @@ class SecurityConfig {
         requestMatcherProvider: RequestMatcherProvider
     ): SecurityFilterChain {
         http {
+//            headers { frameOptions { sameOrigin = true } }
+//            csrf { ignoringRequestMatchers("/api/orders/**") }
             csrf { disable() }
             authorizeHttpRequests {
+                authorize("/public/**", permitAll)
                 authorize("/login/**", permitAll)
                 authorize("/css/**", permitAll)
                 authorize("/js/**", permitAll)
