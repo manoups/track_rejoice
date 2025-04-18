@@ -1,0 +1,3 @@
+label:not(:has(+ input:required)):not(:has(+ select:required)):after {
+    content: ' (optional)';
+}
