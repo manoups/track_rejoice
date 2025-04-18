@@ -11,10 +11,6 @@ body {
     padding: 3rem !important;
 }
 
-label:not(:has(+ input:required)):not(:has(+ select:required)):after {
-    content: ' (optional)';
-}
-
 .oauth-btn { background-color: #4285F4; color: white; border: none; }
 
 .form-control {

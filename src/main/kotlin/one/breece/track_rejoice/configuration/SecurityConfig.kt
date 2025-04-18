@@ -1,9 +1,7 @@
 package one.breece.track_rejoice.configuration
 
-import one.breece.track_rejoice.security.CustomRememberMeServices
 import one.breece.track_rejoice.security.command.UserCommand
 import one.breece.track_rejoice.security.domain.Provider
-import one.breece.track_rejoice.security.repository.UserRepository
 import one.breece.track_rejoice.security.service.impl.UserServiceImpl
 import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider
 import org.springframework.context.annotation.Bean
@@ -17,7 +15,6 @@ import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.session.SessionRegistryImpl
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
@@ -28,14 +25,14 @@ import org.springframework.security.web.FilterInvocation
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
-import org.springframework.security.web.authentication.RememberMeServices
-import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository
 import org.springframework.security.web.session.HttpSessionEventPublisher
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(val customTokenRepository: PersistentTokenRepository) {
     @Bean
     fun filterChain(
         http: HttpSecurity,
@@ -43,9 +40,9 @@ class SecurityConfig {
         requestMatcherProvider: RequestMatcherProvider
     ): SecurityFilterChain {
         http {
-//            headers { frameOptions { sameOrigin = true } }
-//            csrf { ignoringRequestMatchers("/api/orders/**") }
-            csrf { disable() }
+            headers { frameOptions { sameOrigin = true } }
+            csrf { ignoringRequestMatchers("/api/orders/**") }
+//            csrf { disable() }
             authorizeHttpRequests {
                 authorize("/public/**", permitAll)
                 authorize("/login/**", permitAll)
@@ -80,11 +77,13 @@ class SecurityConfig {
                 defaultSuccessUrl("/", true)
             }
             logout {
+                logoutRequestMatcher = AntPathRequestMatcher("/logout", "GET")
                 clearAuthentication = true
                 invalidateHttpSession = true
                 logoutSuccessUrl = "/"
-                deleteCookies("remove", "JSESSIONID")
+                deleteCookies("remove", "remember-me")
             }
+            rememberMe { tokenRepository = customTokenRepository }
         }
         return http.build()
     }
@@ -104,13 +103,6 @@ class SecurityConfig {
     @Bean
     fun sessionRegistry(): SessionRegistry {
         return SessionRegistryImpl()
-    }
-
-    @Bean
-    fun rememberMeServices(userDetailsService: UserDetailsService, userRepository: UserRepository): RememberMeServices {
-        val rememberMeServices =
-            CustomRememberMeServices("theKey", userDetailsService, InMemoryTokenRepositoryImpl(), userRepository)
-        return rememberMeServices
     }
 
     @Bean
