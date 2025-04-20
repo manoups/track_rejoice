@@ -3,12 +3,12 @@ package one.breece.track_rejoice.configuration
 import one.breece.track_rejoice.security.command.UserCommand
 import one.breece.track_rejoice.security.domain.Provider
 import one.breece.track_rejoice.security.service.impl.UserServiceImpl
-import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.access.expression.SecurityExpressionHandler
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
@@ -25,6 +25,7 @@ import org.springframework.security.web.FilterInvocation
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository
 import org.springframework.security.web.session.HttpSessionEventPublisher
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
@@ -32,12 +33,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(val customTokenRepository: PersistentTokenRepository) {
     @Bean
     fun filterChain(
         http: HttpSecurity,
-        customAuthenticationFailureHandler: AuthenticationFailureHandler,
-        requestMatcherProvider: RequestMatcherProvider
+        customAuthenticationFailureHandler: AuthenticationFailureHandler
     ): SecurityFilterChain {
         http {
             headers { frameOptions { sameOrigin = true } }
@@ -69,6 +70,7 @@ class SecurityConfig(val customTokenRepository: PersistentTokenRepository) {
                 loginPage = "/login"
                 failureUrl = "/login?error=true"
                 defaultSuccessUrl("/", true)
+                authenticationSuccessHandler = SavedRequestAwareAuthenticationSuccessHandler()
 //                permitAll = true
                 authenticationFailureHandler = customAuthenticationFailureHandler
             }
@@ -83,7 +85,10 @@ class SecurityConfig(val customTokenRepository: PersistentTokenRepository) {
                 logoutSuccessUrl = "/"
                 deleteCookies("remove", "remember-me")
             }
-            rememberMe { tokenRepository = customTokenRepository }
+            rememberMe {
+                tokenRepository = customTokenRepository
+                tokenValiditySeconds = 7 * 24 * 60 * 60
+            }
         }
         return http.build()
     }
