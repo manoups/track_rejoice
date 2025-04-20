@@ -3,6 +3,12 @@ server:
   error:
     whitelabel:
       enabled: false
+  servlet:
+    session:
+      timeout: 5m
+      cookie:
+        secure: true
+        http-only: true
 spring:
   cloud:
     azure:
