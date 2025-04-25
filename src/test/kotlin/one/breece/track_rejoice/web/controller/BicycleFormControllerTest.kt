@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 @WebMvcTest
 @MockitoBean(
     types = [BicycleService::class, BikeQueryService::class, ItemQueryService::class, PetQueryService::class,
-        BoloQueryService::class, UtilService::class, BoloService::class, AWSController::class, ItemSearchController::class,
+        BoloQueryService::class, UtilService::class, BoloService::class, AWSController::class, ItemFormController::class,
         PetFormController::class, PayPalController::class, UploadController::class, UploadRestController::class,
         AccountController::class, RegistrationCaptchaController::class, RegistrationController::class,
         RegistrationRestController::class]

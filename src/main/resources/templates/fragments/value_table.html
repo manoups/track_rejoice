@@ -42,6 +42,7 @@
             <th th:text="#{search.table.description}">Description</th>
             <th th:text="#{search.table.color}">Color</th>
             <th th:text="#{search.table.date}">Last seen date</th>
+            <th th:text="#{search.table.state}">Status</th>
             <th th:text="#{search.table.actions}">Actions</th>
         </tr>
         <tr th:each="bolo, itr: ${bolos}">
@@ -52,19 +53,26 @@
             </td>
             <td th:text="${#strings.isEmpty(bolo.color) ? 'N/A' : bolo.color}">Color</td>
             <td th:text="${#temporals.format(bolo.lastSeenDate, 'dd-MM-yyyy HH:mm')}">Last Seen Date</td>
+            <td th:text="${#strings.capitalize(#strings.toLowerCase(bolo.status))}">Status</td>
             <td>
                 <!--<a data-toggle="modal" data-target="#modal-warning"
                    th:attr="data-target='#modal-warning'+${pet.id }"><span
                         class="glyphicon glyphicon-trash"></span></a>-->
                 <div class="row">
-                    <div class="col-md-6">
-                        <form action="#" th:action="@{'/announcements/mark/found/{sku}'(sku=${bolo.sku})}" th:method="post">
-                            <button class="btn btn-info btn-sm" type="submit" th:text="#{action.mark.found}">Mark as
+                    <div class="col-md-8" th:if="${#strings.equalsIgnoreCase('active', bolo.status)}">
+                        <form action="#" th:action="@{'/announcements/mark/found/{sku}'(sku=${bolo.sku})}"
+                              th:method="post">
+                            <button class="btn btn-success btn-sm" type="submit" th:text="#{action.mark.found}">Mark as
                                 Found
                             </button>
                         </form>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8" th:if="${#strings.equalsIgnoreCase('draft', bolo.status)}">
+                        <a class="btn btn-info btn-sm" type="submit" th:text="#{action.resume.publish}" th:href="${bolo.detailsUrl}">Resume
+                            Publishing
+                        </a>
+                    </div>
+                    <div class="col-md-4">
                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                 th:attr="data-bs-target='#modal-warning-'+${itr.index}">Delete
                         </button>

@@ -15,6 +15,7 @@ class PetToProjCommandRepository:Converter<Pet, BeOnTheLookOutProj> {
             "Marker",
             source.lastSeenDate,
             source.sku.toString(),
+            source.state.toString(),
             "/details/pet/${source.sku}"
         )
     }

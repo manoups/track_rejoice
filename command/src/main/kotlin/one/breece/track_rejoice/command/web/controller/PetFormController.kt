@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.command.command.PetAnnouncementCommand
 import one.breece.track_rejoice.command.service.PetService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -43,6 +44,7 @@ class PetFormController(private val petService: PetService) {
         }
     }
 
+    @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/created/{sku}")
     fun created(@PathVariable sku: UUID, model: Model): String {
         val bolo = petService.readBySku(sku)

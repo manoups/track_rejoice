@@ -5,7 +5,7 @@ server:
       enabled: false
   servlet:
     session:
-      timeout: 5m
+      timeout: 1m
       cookie:
         secure: true
         http-only: true

@@ -16,6 +16,7 @@ class BicycleToProjRepository : Converter<Bicycle, BeOnTheLookOutProj> {
             "Marker",
             source.lastSeenDate,
             source.sku.toString(),
+            source.state.toString(),
             "/details/bike/${source.sku}"
         )
     }

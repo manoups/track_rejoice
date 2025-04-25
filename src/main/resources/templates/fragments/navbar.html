@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -47,13 +47,6 @@
 
                 </li>
 
-
-                <li th:remove="all" class="nav-item">
-
-                    <a class="nav-link" href="/bolo/form">Create Announcement</a>
-
-                </li>
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
@@ -66,22 +59,18 @@
                     </ul>
                 </li>
 
-                <li class="nav-item dropdown" th:remove="all">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Found
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/bolo/form">Pet</a></li>
-                        <li><a class="dropdown-item" href="/?target=create">Bike/ Scooter</a></li>
-                        <li><a class="dropdown-item" href="/?target=create">Item</a></li>
-                    </ul>
-                </li>
                 <li class="nav-item">
 
                     <a class="nav-link" href="/announcements">My Announcements</a>
 
                 </li>
+
+                <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
+
+                    <a class="nav-link" href="/admin">Admin</a>
+
+                </li>
+
                 <li class="nav-item">
 
                     <a class="nav-link" href="/account">My Account</a>

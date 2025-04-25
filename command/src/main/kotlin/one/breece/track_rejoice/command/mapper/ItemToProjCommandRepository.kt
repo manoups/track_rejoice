@@ -15,6 +15,7 @@ class ItemToProjCommandRepository:Converter<Item, BeOnTheLookOutProj> {
             "MultiPoint",
             source.lastSeenDate,
             source.sku.toString(),
+            source.state.toString(),
             "/details/item/${source.sku}"
         )
     }

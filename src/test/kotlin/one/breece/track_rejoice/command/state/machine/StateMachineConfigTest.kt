@@ -33,7 +33,7 @@ import java.util.*
 @MockitoBean(
  types = [BicycleService::class, BikeQueryService::class, ItemQueryService::class, PetQueryService::class,
   BeOnTheLookOut::class, Bicycle::class, Item::class, Pet::class, BeOnTheLookoutQueryRepository::class,
-  BoloQueryService::class, UtilService::class, BoloService::class, AWSController::class, ItemSearchController::class,
+  BoloQueryService::class, UtilService::class, BoloService::class, AWSController::class, ItemFormController::class,
   PetFormController::class, PayPalController::class, UploadController::class, UploadRestController::class,
   AccountController::class, RegistrationCaptchaController::class, RegistrationController::class,
   RegistrationRestController::class, PayPalClientConfig::class])

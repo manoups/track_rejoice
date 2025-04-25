@@ -46,9 +46,9 @@ class BoloServiceImpl(
         val bolos = repository.findAllByStateIn(listOf(BoloStates.DRAFT, BoloStates.ACTIVE), pageable)
         val responsePayload = bolos.content.map {
             when (it) {
-                is Pet -> petToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/pet/created/${ptr?.sku}" }
-                is Item -> itemToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/item/created/${ptr?.sku}" }
-                is Bicycle -> bicycleToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/bike/created/${ptr?.sku}" }
+                is Pet -> petToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/pet/created/${ptr.sku}" }
+                is Item -> itemToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/item/created/${ptr.sku}" }
+                is Bicycle -> bicycleToProjCommandRepository.convert(it).also { ptr -> ptr?.detailsUrl = "/bolo/form/transport/created/${ptr.sku}" }
                 else -> throw IllegalArgumentException("Unknown type $it")
             }
         }

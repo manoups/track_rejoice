@@ -9,5 +9,6 @@ class BeOnTheLookOutProj (
     val geometryType: String,
     val lastSeenDate: LocalDateTime,
     val sku: String? = null,
+    val status: String,
     var detailsUrl: String
 )

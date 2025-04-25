@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Track Rejoice</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/lux/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
+          integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+          integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+          crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+          integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+          crossorigin=""></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/form-style.css">
+
+
+</head>
+<body>
+
+<div sec:authorize="isAuthenticated()">
+  <div th:replace="~{fragments/navbar::navbar}"></div>
+</div>
+<div class="container" sec:authorize="hasAuthority('ADMIN')">
+  <h2 sec:authorize="isAuthenticated()" th:text="'Welcome '+${#authentication?.principal?.firstName}">Welcome</h2>
+  <p class="alert alert-info"><i class="fa fa-info" aria-hidden="true"></i> &nbsp;
+    <span th:utext="#{index.search.instructions}"></span>
+  </p>
+  <div th:if="${message != null}" class="alert alert-info" th:utext="${message}">message</div>
+  <div class="row">
+    <div class="col-md-6">
+      <div id="mapid" style="width: 600px; height: 400px;"></div>
+      <form th:action="@{/search}" method="get" id="form" name="coords">
+        <input type="text" th:name="lat" id="lat" th:value="${lat}" hidden>
+        <input type="text" th:name="lng" id="lng" th:value="${lng}" hidden>
+        <input type="text" th:name="zoom" id="zoom" hidden>
+        <input th:remove="all" type="submit" value="Search">
+      </form>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div th:if="${#lists.isEmpty(bolos)}">
+          <div th:replace="~{fragments/empty_table::empty_table}"></div>
+        </div>
+        <div th:unless="${#lists.isEmpty(bolos)}">
+          <div th:replace="~{fragments/value_table::value_table}"></div>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn" th:onclick="myFunction()">Post An Announcement</button>
+        <div id="myDropdown" class="dropdown-content">
+          <a href="/bolo/form/pet">Pet</a>
+          <a href="/bolo/form/transport">Bike</a>
+          <a href="/bolo/form/item">Item</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:inline="javascript">
+
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+  var mymap = L.map('mapid', {
+    minZoom: 1,
+    maxZoom: 18,
+    attributionControl: false
+  })
+  const data = [[${bolos}]];
+
+  const name = [[${firstName}]]
+
+  let latitude = [[${lat}]] || 0;
+  let longitude = [[${lng}]] || 0;
+  let initZoom = [[${zoom}]] || 10;
+  let myLat = [[${myLat}]]
+  let myLng = [[${myLng}]]
+  let init = [[${identify}]]
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
+
+
+  mymap.setView([latitude, longitude], initZoom);
+  if (init) {
+    L.marker([myLat, myLng]).addTo(mymap)
+            .bindPopup(name || "You");
+  }
+
+  var markers = []
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].geometryType == 'Marker') {
+      if (data[i].lastSeenLocation.length != 1) {
+        console.error("Expected size 1, found " + data[i].lastSeenLocation.size)
+      }
+      markers.push(L.marker([data[i].lastSeenLocation[0][1], data[i].lastSeenLocation[0][0]]).addTo(mymap)
+              .bindPopup(data[i].shortDescription || data[i].type));
+    } else if (data[i].geometryType == 'MultiPoint') {
+      if (data[i].lastSeenLocation.length < 2) {
+        console.error("Expected size > 1, found " + data[i].lastSeenLocation.size)
+      }
+      markers.push(L.polyline(data[i].lastSeenLocation, {color: 'red'}).addTo(mymap)
+              .bindPopup(data[i].shortDescription || data[i].type));
+    }
+  }
+  document.getElementById('zoom').value = mymap.getZoom();
+
+  mymap.on('zoom', function () {
+    document.getElementById('zoom').value = mymap.getZoom()
+
+  });
+  mymap.on('click', function (e) {
+    // Get the click coordinates relative to the map
+    var clickPoint = mymap.mouseEventToLayerPoint(e.originalEvent);
+
+    // Access the X and Y coordinates of the click
+    var x = clickPoint.x;
+    var y = clickPoint.y;
+
+    console.log("Clicked at X:", x, "Y:", y);
+    var lat = e.latlng.lat
+    var lng = e.latlng.lng
+    // location = '/search?lng=' + x + '&lat=' + y + '&distance=1'
+    // (param1 = 'value1', param2 = 'value2');
+    document.getElementById('lat').value = lat;
+    document.getElementById('lng').value = lng;
+    document.coords.submit();
+    // You can use these coordinates for further actions, like displaying a popup
+  });
+
+  function onBoloClicked(index) {
+    if (data[index].geometryType == 'Marker') {
+      mymap.setView([data[index].lastSeenLocation[0][1], data[index].lastSeenLocation[0][0]], document.getElementById('zoom').value || 18);
+    } else if (data[index].geometryType == 'MultiPoint') {
+      mymap.setView(data[index].lastSeenLocation[0], document.getElementById('zoom').value || 18);
+    }
+    markers[index].openPopup();
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

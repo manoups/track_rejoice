@@ -2,8 +2,7 @@ package one.breece.track_rejoice.security.web.controller
 
 import one.breece.track_rejoice.security.domain.AppUser
 import one.breece.track_rejoice.security.repository.UserRepository
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
+@PreAuthorize("isFullyAuthenticated()")
 @RequestMapping("/account")
 class AccountController(private val userRepository: UserRepository) {
-    val LOGGER: Logger = LoggerFactory.getLogger(javaClass)
 
     @GetMapping(value = ["", "/"])
     fun account(model: Model): String {

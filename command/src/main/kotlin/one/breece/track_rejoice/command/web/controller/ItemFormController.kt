@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import one.breece.track_rejoice.command.command.ItemAnnouncementCommand
 import one.breece.track_rejoice.command.service.ItemService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -15,7 +16,7 @@ import java.util.*
 
 @Controller
 @RequestMapping("/bolo/form/item")
-class ItemSearchController(private val itemService: ItemService) {
+class ItemFormController(private val itemService: ItemService) {
     @GetMapping(value = ["", "/"])
     fun checkoutForm(model: Model): String {
         model.addAttribute("itemAnnouncementCommand", ItemAnnouncementCommand())
@@ -40,6 +41,7 @@ class ItemSearchController(private val itemService: ItemService) {
         }
     }
 
+    @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/created/{sku}")
     fun created(@PathVariable sku: UUID, model: Model): String {
         val itemResponseCommand = itemService.readBySku(sku)
