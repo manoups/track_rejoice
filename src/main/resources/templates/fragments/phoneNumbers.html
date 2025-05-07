@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Phone Number Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        #phoneNumber {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .country-display {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Phone Number Form</h2>
+
+<div th:fragment="phoneInput">
+    <div class="phone-input-wrapper">
+        <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
+            Number:</label>
+        <input id="phoneNumber" type="tel" name="phoneNumber" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
+            'phone-input form-control is-invalid':'phone-input form-control'" th:field="*{phoneNumber}" required
+               aria-describedby="phoneFeedback"/>
+        <div id="phone-error" class="phone-error hidden">
+            <ul>
+                <li>Invalid phone number</li>
+            </ul>
+        </div>
+        <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+    <script>
+        (function () {
+            document.querySelectorAll(".phone-input-wrapper").forEach(wrapper => {
+                const input = wrapper.querySelector(".phone-input");
+                const errorDiv = wrapper.querySelector(".phone-error");
+
+                const iti = window.intlTelInput(input, {
+                    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+                    initialCountry: "auto",
+                    preferredCountries: ["us", "gb", "de", "fr", "nl"],
+                    strictMode: true,
+                    nationalMode: true,
+                    geoIpLookup: callback => {
+                        fetch("https://ipapi.co/json")
+                            .then(res => res.json())
+                            .then(data => callback(data.country_code))
+                            .catch(() => callback("us"));
+                    }
+                });
+
+                // Find the parent form and bind submit event only to that
+                const parentForm = input.closest("form");
+                console.log("Parent form: "+parentForm)
+                if (parentForm) {
+                    parentForm.addEventListener("submit", function (e) {
+                        if (!iti.isValidNumber()) {
+                            e.preventDefault();
+                            errorDiv.classList.remove("hidden");
+                        } else {
+                            errorDiv.classList.add("hidden");
+                            input.value = iti.getNumber();
+                        }
+                    });
+                }
+            });
+        })();
+    </script>
+</div>
+</body>
+</html>

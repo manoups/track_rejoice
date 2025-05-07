@@ -7,6 +7,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
 
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/lux/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"/>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
@@ -32,7 +34,7 @@
 <div class="container">
     <h2>Pet Search Form</h2>
     <form class="needs-validation" th:object="${petAnnouncementCommand}" th:action="@{/bolo/form/pet}" method="post"
-          name="mainForm" id="mainForm">
+          name="petSearchForm" id="petSearchForm">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <div class="row">
             <div class="col-md-6">
@@ -49,16 +51,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
-                            Number:</label>
-                        <input type="tel" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
-            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
-                               aria-describedby="phoneFeedback">
-                        <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
-                            </ul>
-                        </div>
+                        <div th:replace="~{fragments/phoneNumbers::phoneInput}"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -194,7 +187,7 @@
 
         document.getElementById("name").addEventListener("change", _ =>
             document.getElementById("displayMessage").textContent =
-                document.getElementsByName("mainForm")[0].querySelector('#name').value
+                document.getElementsByName("petSearchForm")[0].querySelector('#name').value
         )
         var map = L.map('mapid', {
             minZoom: 1,

@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"/>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
@@ -33,7 +34,7 @@
     <h2>Bike Search Form</h2>
     <form class="needs-validation" th:object="${bicycleAnnouncementCommand}"
           th:action="@{/bolo/form/transport}" method="post"
-          name="mainForm" id="mainForm">
+          name="bikeSearchForm" id="bikeSearchForm">
 
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <div class="row">
@@ -110,17 +111,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="phoneNumber" class="form-label" th:text="#{search.form.phoneNumber}">Phone
-                            Number:</label>
-                        <input type="tel" class="form-control" th:class="${#fields.hasErrors('phoneNumber')} ?
-            'form-control is-invalid':'form-control'" id="phoneNumber" th:field="*{phoneNumber}" required
-                               th:disabled="${#strings.equals(action, 'publish')}"
-                               aria-describedby="phoneFeedback">
-                        <div id="phoneFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('phoneNumber')}" th:text="${err}"/>
-                            </ul>
-                        </div>
+                        <div th:replace="~{fragments/phoneNumbers::phoneInput}"></div>
                     </div>
                 </div>
                 <div class="row">

@@ -1,3 +1,22 @@
 label:not(:has(+ input:required)):not(:has(+ select:required)):after {
     content: ' (optional)';
 }
+
+.hidden {
+    display: none;
+}
+
+.phone-error {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: .875em;
+    color: red;
+}
+
+.phone-input-wrapper .form-label::after {
+    content: none !important;
+}
+
+.iti {
+    display: flex !important;
+}
